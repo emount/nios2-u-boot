@@ -46,7 +46,7 @@ sub get_module
 {
     my ($name) = @_;
     foreach my $module ($doc->findnodes(
-			    "/system/module[\@name='$name']")) {
+			    "/EnsembleReport/module[\@name='$name']")) {
 	return $module;
     }
 }
@@ -54,7 +54,7 @@ sub get_module
 sub get_start
 {
     my ($kind, $end) = @_;
-    foreach my $conn ($doc->findnodes("/system/connection[
+    foreach my $conn ($doc->findnodes("/EnsembleReport/connection[
 	\@kind='$kind' and
 	\@end='$end']")) {
 	return $conn->getAttribute('start');
@@ -64,7 +64,7 @@ sub get_start
 sub get_end
 {
     my ($kind, $start) = @_;
-    foreach my $conn ($doc->findnodes("/system/connection[
+    foreach my $conn ($doc->findnodes("/EnsembleReport/connection[
 	\@kind='$kind' and
 	\@start='$start']")) {
 	return $conn->getAttribute('end');
@@ -76,7 +76,7 @@ sub get_irq
     my ($name) = @_;
     my $irq;
     my $start = $cpu_name . '.d_irq';
-    foreach my $conn ($doc->findnodes("/system/connection[
+    foreach my $conn ($doc->findnodes("/EnsembleReport/connection[
 	\@kind='interrupt' and
 	\@start='$start' and
 	\@end='$name']")) {
@@ -153,7 +153,7 @@ sub gen_uboot
     my $name = $slave;
     $name =~ s/\.\w+$//; # strip slave port
     foreach my $module ($doc->findnodes(
-			    "/system/module[\@name='$name']")) {
+			    "/EnsembleReport/module[\@name='$name']")) {
 	my $kind = $module->getAttribute('kind');
 	printf("\n/* $slave is a $kind */\n");
 	if ($kind eq 'altera_nios2') {
@@ -401,7 +401,7 @@ sub gen_fdt
     my $name = $slave;
     $name =~ s/\.\w+$//; # strip slave port
     foreach my $module ($doc->findnodes(
-			    "/system/module[\@name='$name']")) {
+			    "/EnsembleReport/module[\@name='$name']")) {
 	my $kind = $module->getAttribute('kind');
 #	printf("\n/* $slave is a $kind */\n");
 	if ($kind eq 'altera_nios2') {
@@ -474,7 +474,7 @@ EOF
 sub scan_bus
 {
     my ($bus, $bus_base) = @_;
-    foreach my $conn ($doc->findnodes("/system/connection[\@start='$bus']")) {
+    foreach my $conn ($doc->findnodes("/EnsembleReport/connection[\@start='$bus']")) {
 	my $slave = $conn->getAttribute('end');
 	my $name = $slave;
 	$name =~ s/\.\w+$//; # strip slave port
@@ -483,7 +483,7 @@ sub scan_bus
 	$base += $bus_base; # add bus offset
 	# check module info
 	foreach my $module ($doc->findnodes(
-				"/system/module[\@name='$name']")) {
+				"/EnsembleReport/module[\@name='$name']")) {
 	    my $kind = $module->getAttribute('kind');
 	    if ($kind eq 'altera_avalon_pipeline_bridge' ||
 		$kind eq 'altera_avalon_clock_crossing') {
@@ -520,13 +520,13 @@ $doc = $parser->parse_file($sopc);
 # find cpu
 if ($cpu_name) {
     foreach my $t ($doc->findnodes(
-			   "/system/module[\@kind='altera_nios2' and
+			   "/EnsembleReport/module[\@kind='altera_nios2' and
 				\@name='$cpu_name']")) {
 	$cpu = $t;
     }
 } else {
     my @cpus = $doc->findnodes(
-			   "/system/module[\@kind='altera_nios2']");
+			   "/EnsembleReport/module[\@kind='altera_nios2']");
     if ($#cpus > 0) {
 	printf("More than one CPU found, please select one with --module\n");
 	foreach my $t (@cpus) {
