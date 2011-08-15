@@ -30,3 +30,5 @@ PLATFORM_CPPFLAGS += -I$(TOPDIR)/board/$(VENDOR)/include
 ifeq ($(debug),1)
 PLATFORM_CPPFLAGS += -DDEBUG
 endif
+
+# CONFIG_STATUS_LED = 1

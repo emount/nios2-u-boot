@@ -28,7 +28,9 @@
 /*
  * BOARD/CPU
  */
-#include "../board/altera/nios2-generic/neek_ocm_spi_mmu.h"
+/* TEMPORARY - Trying out sopc2dts header! */
+//#include "../board/altera/nios2-generic/neek_ocm_spi_mmu.h"
+#include "../board/altera/NEEK/NEEK_MMU.h"
 #define CONFIG_BOARD_NAME "NEEK"
 #define CONFIG_BOARD_EARLY_INIT_F	/* enable early board-spec. init */
 #define CONFIG_SYS_NIOS_SYSID_BASE	CONFIG_SYS_SYSID_BASE

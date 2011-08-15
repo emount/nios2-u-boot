@@ -28,8 +28,8 @@
 /*
  * BOARD/CPU
  */
-#include "../board/altera/nios2-generic/neek_ocm_spi_mmu.h"
-#define CONFIG_BOARD_NAME "NEEK"
+#include "../board/altera/DE2_115/DE2_115_SOPC.h"
+#define CONFIG_BOARD_NAME "DE2-115"
 #define CONFIG_BOARD_EARLY_INIT_F	/* enable early board-spec. init */
 #define CONFIG_SYS_NIOS_SYSID_BASE	CONFIG_SYS_SYSID_BASE
 
@@ -62,12 +62,15 @@
 /*
  * STATUS LED
  */
+/* Revisit this once basic functionality is working */
+#if 0
 #define CONFIG_STATUS_LED		/* Enable status driver */
 #define CONFIG_GPIO_LED		/* Enable gpioled driver */
 
 #define STATUS_LED_BIT			2	/* Bit-2 on GPIO */
 #define STATUS_LED_STATE		1	/* Blinking */
 #define STATUS_LED_PERIOD	(500 / CONFIG_SYS_NIOS_TMRMS) /* 500 msec */
+#endif
 
 /*
  * BOOTP options
