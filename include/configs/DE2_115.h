@@ -35,11 +35,17 @@
 
 /*
  * SERIAL
+ *
+ * NOTE - Using the actual RS-232 serial port; uncomment the following line
+ *        if it is ever desirable to use the JTAG UART.  The JTAG UART will,
+ *        however, hang the boot process unless a ByteBlaster is actually
+ *        connected and nios2-terminal running!
+ * #define CONFIG_ALTERA_JTAG_UART
  */
-#define CONFIG_ALTERA_JTAG_UART
 #if defined(CONFIG_ALTERA_JTAG_UART)
 # define CONFIG_SYS_NIOS_CONSOLE	CONFIG_SYS_JTAG_UART_BASE
 #else
+# define CONFIG_ALTERA_UART
 # define CONFIG_SYS_NIOS_CONSOLE	CONFIG_SYS_UART_BASE
 #endif
 
