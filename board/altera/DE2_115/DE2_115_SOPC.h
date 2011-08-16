@@ -17,7 +17,7 @@
 #define CONFIG_SYS_ICACHELINE_SIZE	32
 #define CONFIG_SYS_EXCEPTION_ADDR	0xc0000020
 #define CONFIG_SYS_ICACHE_SIZE	4096
-#define CONFIG_SYS_RESET_ADDR	0xc0000000
+#define CONFIG_SYS_RESET_ADDR	0xc9800000
 #define IO_REGION_BASE	0xE0000000
 
 /* clock_crossing_io.s1 is a altera_avalon_clock_crossing */
@@ -62,73 +62,18 @@
 /* eep_i2c_sda.s1 is a altera_avalon_pio */
 #define EEP_I2C_SDA_BASE	0xEB0000D0
 
-/* lcd.control_slave is a altera_avalon_lcd_16207 */
-#define LCD_BASE	0xEB0000E0
-
 /* ir.s1 is a altera_avalon_pio */
 #define IR_BASE	0xEB0000F0
-
-/* seg7.avalon_slave is a SEG7_IF */
-#define SEG7_BASE	0xEB000040
-
-/* sd_clk.s1 is a altera_avalon_pio */
-#define SD_CLK_BASE	0xEB000100
-
-/* sd_cmd.s1 is a altera_avalon_pio */
-#define SD_CMD_BASE	0xEB000110
-
-/* sd_dat.s1 is a altera_avalon_pio */
-#define SD_DAT_BASE	0xEB000120
-
-/* sd_wp_n.s1 is a altera_avalon_pio */
-#define SD_WP_N_BASE	0xEB000130
 
 /* sdram.s1 is a altera_avalon_new_sdram_controller */
 #define CONFIG_SYS_SDRAM_BASE	0xC0000000
 #define CONFIG_SYS_SDRAM_SIZE	0x08000000
-
-/* sma_in.s1 is a altera_avalon_pio */
-#define SMA_IN_BASE	0xE82224A0
-
-/* sma_out.s1 is a altera_avalon_pio */
-#define SMA_OUT_BASE	0xE82224B0
-
-/* sram.avalon_slave is a TERASIC_SRAM */
-#define SRAM_BASE	0xEA000000
 
 /* jtag_uart.avalon_jtag_slave is a altera_avalon_jtag_uart */
 #define CONFIG_SYS_JTAG_UART_BASE	0xE82224D0
 
 /* pll.pll_slave is a altpll */
 #define PLL_BASE	0xE82224C0
-
-/* audio.avalon_slave is a AUDIO_IF */
-#define AUDIO_BASE	0xE8222480
-
-/* usb.hc is a ISP1362_IF */
-#define USB_HC	0xE82224D8
-#define USB_DC	0xE82224E0
-#define USB_HC_IRQ	5
-#define USB_DC_IRQ	6
-
-/* tse_mac.control_port is a triple_speed_ethernet */
-#define CONFIG_SYS_ALTERA_TSE_RX_FIFO	2048
-#define CONFIG_SYS_ALTERA_TSE_SGDMA_TX_BASE	0xE8222400
-#define CONFIG_SYS_ALTERA_TSE_SGDMA_RX_BASE	0xE8222440
-#define CONFIG_SYS_ALTERA_TSE_TX_FIFO	2048
-#define CONFIG_SYS_ALTERA_TSE_DESC	0xE8220000
-#define CONFIG_SYS_ALTERA_TSE_MAC_BASE	0xE8222000
-#define CONFIG_ALTERA_TSE
-#define CONFIG_MII
-#define CONFIG_CMD_MII
-#define CONFIG_SYS_ALTERA_TSE_PHY_ADDR 1
-#define CONFIG_SYS_ALTERA_TSE_FLAGS 0
-
-/* ISP1362_IF_0.hc is a ISP1362_IF */
-#define ISP1362_IF_0_HC	0xE8221000
-#define ISP1362_IF_0_DC	0xE8221008
-#define ISP1362_IF_0_HC_IRQ	9
-#define ISP1362_IF_0_DC_IRQ	10
 
 /* cfi_flash.s1 is a altera_avalon_cfi_flash */
 #define CONFIG_SYS_FLASH_BASE	0xE9800000
