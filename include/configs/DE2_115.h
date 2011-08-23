@@ -105,17 +105,16 @@
 #endif
 
 /*
- * ENVIRONMENT -- Put environment in sector CONFIG_SYS_MONITOR_LEN above
- * CONFIG_SYS_RESET_ADDR, since we assume the monitor is stored at the
- * reset address, no? This will keep the environment in user region
- * of flash. NOTE: the monitor length must be multiple of sector size
- * (which is common practice).
+ * ENVIRONMENT -- Put environment in the very first bottom-boot sector
+ *                of the Spansion S29GL064 device.  This part has eight
+ *                8-KiB bottom boot block sectors, followed by 127 64-KiB
+ *                sectors.
  */
 #define CONFIG_ENV_IS_IN_FLASH
 
-#define CONFIG_ENV_SIZE		0x20000	/* 128k, 1 sector */
+#define CONFIG_ENV_SIZE		0x2000	/* 8k, 1 sector */
 #define CONFIG_ENV_OVERWRITE		/* Serial change Ok	*/
-#define CONFIG_ENV_ADDR		(CONFIG_SYS_FLASH_BASE + 0xfe0000)
+#define CONFIG_ENV_ADDR		(CONFIG_SYS_FLASH_BASE + 0x00000000)
 
 /*
  * MEMORY ORGANIZATION
