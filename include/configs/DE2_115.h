@@ -33,6 +33,9 @@
 #define CONFIG_BOARD_EARLY_INIT_F	/* enable early board-spec. init */
 #define CONFIG_SYS_NIOS_SYSID_BASE	CONFIG_SYS_SYSID_BASE
 
+/* Perform the normal bootdelay checking */
+#define CONFIG_BOOTDELAY 1
+
 /*
  * SERIAL
  *

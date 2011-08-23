@@ -5,18 +5,17 @@ set clobstart 0xC0000000
 
 echo Bootloader Configuration:
 set bootsize 0x80000
-set bootstart 0xC9802000
+set bootstart 0xC9810000
 set bootenvsize 0x02000
 set bootenvstart 0xC9800000
 set eraseenv 'protect off ${bootenvstart} +${bootenvsize}; erase ${bootenvstart} +${bootenvsize}'
 
 echo Kernel Configuration:
 set kernsize 0x00180000
-set kernstart 0xC9810000
-set kernexec 0xC1000000
+set kernstart 0xC9880000
 
 echo Boot Configuration:
-set bootcmd 'cp.b ${kernstart} ${kernexec} ${kernsize}; bootm ${kernexec}'
+set bootcmd 'bootm ${kernstart}'
 set bootdelay 3
 
 echo Saving Configurations...
