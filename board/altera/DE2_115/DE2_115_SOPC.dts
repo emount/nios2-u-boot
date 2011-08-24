@@ -40,11 +40,11 @@
 			0x09000000 0x00000400>;
 	};
 	sopc@0 {
+		ranges ;
 		#address-cells = <1>;
 		#size-cells = <1>;
 		device_type = "soc";
 		compatible = "ALTR,avalon","simple-bus";
-		ranges;
 		bus-frequency = < 100000000 >;
 		//Port instruction_master of cpu
 		clock_crossing_io: bridge@0xb000000 {
