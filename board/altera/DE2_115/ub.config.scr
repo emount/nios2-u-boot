@@ -16,6 +16,7 @@ set kernstart 0xC9880000
 
 echo Boot Configuration:
 set bootcmd 'bootm ${kernstart}'
+set bootargs 'console=/dev/ttyAL0 root=mtd4 rootfstype=jffs2 init=/bin/init'
 set bootdelay 3
 
 echo Saving Configurations...
