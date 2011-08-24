@@ -158,10 +158,30 @@
 		}; //end bridge (clock_crossing_io)
 
 		cfi_flash: flash@0x9800000 {
+			#address-cells = <1>;
+			#size-cells = <1>;
 			compatible = "ALTR,cfi_flash-11.0","cfi-flash";
 			reg = < 0x9800000 0x800000>;
 			bank-width = <1>;
 			device-width = <1>;
+			bootenv@0 {
+				reg = < 0x00000000 0x00002000 >;
+			};
+			sparelow@2000 {
+				reg = < 0x00002000 0x0000E000 >;
+			};
+			uboot@10000 {
+				reg = < 0x00010000 0x00070000 >;
+			};
+			kernel@80000 {
+				reg = < 0x00080000 0x00180000 >;
+			};
+			rootfs@200000 {
+				reg = < 0x00200000 0x00500000 >;
+			};
+			sparehigh@700000 {
+				reg = < 0x00700000 0x00100000 >;
+			};
 		}; //end flash (cfi_flash)
 
 		//Port tightly_coupled_instruction_master_0 of cpu
@@ -181,6 +201,6 @@
 		//Port tightly_coupled_data_master_0 of cpu
 	}; //sopc
 	chosen {
-		bootargs = "debug console=ttyAL0,115200";
+		bootargs = "console=ttyAL0 root=mtd4 rootfstype=jffs2 init=/bin/init";
 	};
 };
