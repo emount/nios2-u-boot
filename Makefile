@@ -1055,8 +1055,12 @@ smdk6400_config	:	unconfig
 ## Nios-II
 #########################################################################
 
+# Custom builds for NIOS2-based platforms
+DE2_115_config : unconfig
+	@$(MKCONFIG) $@ nios2 nios2 DE2_115 altera
+
 # nios2 generic boards
-NIOS2_GENERIC = nios2-generic NEEK DE2_115
+NIOS2_GENERIC = nios2-generic NEEK
 
 $(NIOS2_GENERIC:%=%_config) : unconfig
 	@$(MKCONFIG) $@ nios2 nios2 nios2-generic altera

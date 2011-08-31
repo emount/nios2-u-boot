@@ -17,7 +17,7 @@
 #define CONFIG_SYS_ICACHELINE_SIZE	32
 #define CONFIG_SYS_EXCEPTION_ADDR	0xc0000020
 #define CONFIG_SYS_ICACHE_SIZE	4096
-#define CONFIG_SYS_RESET_ADDR	0xc9800000
+#define CONFIG_SYS_RESET_ADDR	0xc9810000
 #define IO_REGION_BASE	0xE0000000
 
 /* clock_crossing_io.s1 is a altera_avalon_clock_crossing */
@@ -64,6 +64,10 @@
 
 /* ir.s1 is a altera_avalon_pio */
 #define IR_BASE	0xEB0000F0
+
+/* usb_mailbox_0.slave_interface is a usb_mailbox */
+#define USB_MAILBOX_0_BASE	0xEB004000
+#define USB_MAILBOX_0_IRQ	5
 
 /* sdram.s1 is a altera_avalon_new_sdram_controller */
 #define CONFIG_SYS_SDRAM_BASE	0xC0000000

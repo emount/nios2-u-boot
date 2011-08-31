@@ -29,7 +29,7 @@
 			ALTR,tlb-num-entries = <256>;	//embeddedsw.CMacro.TLB_NUM_ENTRIES type NUMBER
 			ALTR,tlb-ptr-sz = <8>;	//embeddedsw.CMacro.TLB_PTR_SZ type NUMBER
 			ALTR,has-mul;	//embeddedsw.CMacro.HARDWARE_MULTIPLY_PRESENT type NUMBER
-			ALTR,reset-addr = <0xc9800000>;	//embeddedsw.CMacro.RESET_ADDR type NUMBER
+			ALTR,reset-addr = <0xc9810000>;	//embeddedsw.CMacro.RESET_ADDR type NUMBER
 			ALTR,fast-tlb-miss-addr = <0xc9000000>;	//embeddedsw.CMacro.FAST_TLB_MISS_EXCEPTION_ADDR type NUMBER
 			ALTR,exception-addr = <0xc0000020>;	//embeddedsw.CMacro.EXCEPTION_ADDR type NUMBER
 		};
@@ -49,7 +49,7 @@
 		//Port instruction_master of cpu
 		clock_crossing_io: bridge@0xb000000 {
 			compatible = "ALTR,avalon-11.0","simple-bus";
-			reg = < 0xb000000 0x200>;
+			reg = < 0xb000000 0x8000>;
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges = <0x00000000 0x0B000000 0x00000020
@@ -63,7 +63,8 @@
 				0x000000B0 0x0B0000B0 0x00000010
 				0x000000C0 0x0B0000C0 0x00000010
 				0x000000D0 0x0B0000D0 0x00000010
-				0x000000F0 0x0B0000F0 0x00000010>;
+				0x000000F0 0x0B0000F0 0x00000010
+				0x00004000 0x0B004000 0x00002000>;
 
 			//Port m1 of clock_crossing_io
 			timer: timer@0x0 {
@@ -154,6 +155,13 @@
 				width = <1>;	//width type NUMBER
 				resetvalue = <0>;	//resetValue type NUMBER
 			}; //end gpio (ir)
+
+			usb_mailbox_0: unknown@0x4000 {
+				compatible = "unknown,unknown-1.0";
+				reg = < 0x4000 0x2000>;
+				interrupt-parent = < &cpu >;
+				interrupts = < 5 >;
+			}; //end unknown (usb_mailbox_0)
 
 		}; //end bridge (clock_crossing_io)
 
