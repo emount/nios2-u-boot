@@ -1,3 +1,4 @@
+#include <common.h>
 #include "usb_mailbox.h"
 
 #ifndef FALSE
@@ -7,23 +8,33 @@
 #define TRUE 1
 #endif
 
+/* Low-level macros for read and write from / to the mailbox */
+#define USB_MBOX_READ_REG(reg) ( *((volatile unsigned short *)reg) )
+#define USB_MBOX_WRITE_REG(reg, val) ( *((volatile unsigned short *)reg) = val )
 
-uint8_t bPollingSPIMbox=FALSE;
-uint8_t bWaitingForSPIMsg=FALSE;
+uint8_t bPollingUSBMbox=FALSE;
+uint8_t bWaitingForUSBMsg=FALSE;
 
-void SetupSPIMbox(void)
-{
+void SetupUsbMbox(void) {
+  printf("Initializing USB Mailbox\n");
+
+  //  printf("CTRL REG 0: 0x%04X\n", USB_MBOX_READ_REG(USB_MBOX_CTRL0));
+  USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_ENABLE);
+  USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_DISABLE);
+  USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_ENABLE);
+  //  printf("CTRL REG 0: 0x%04X\n", USB_MBOX_READ_REG(USB_MBOX_CTRL0));
+
 #if 0
   /* Clear the message ready flag and reset / enable the mailbox */
-  SPI_MBOX_WRITE_REG(SPI_MBOX_CTRL,  SPI_MBOX_DISABLE);
-  SPI_MBOX_WRITE_REG(SPI_MBOX_IRQ_MASK,  SPI_MBOX_NO_IRQS);
-  SPI_MBOX_WRITE_REG(SPI_MBOX_CTRL,  SPI_MBOX_ENABLE);
+  USB_MBOX_WRITE_REG(USB_MBOX_CTRL,  USB_MBOX_DISABLE);
+  USB_MBOX_WRITE_REG(USB_MBOX_IRQ_MASK,  USB_MBOX_NO_IRQS);
+  USB_MBOX_WRITE_REG(USB_MBOX_CTRL,  USB_MBOX_ENABLE);
 #endif
 }
 
 /**
- * Reads a message out of the SPI Mailbox. Controlled by
- * global variable bPollingSPIMbox which can be used to
+ * Reads a message out of the USB Mailbox. Controlled by
+ * global variable bPollingUSBMbox which can be used to
  * force return
  *
  * Paramaters:
@@ -35,25 +46,24 @@ void SetupSPIMbox(void)
  *       TRUE  - Message was read
  *       FALSE - No message was read
  */
-int ReadSPIMailbox(uint8_t *buffer, uint32_t *size)
-{
+int ReadUsbMailbox(uint8_t *buffer, uint32_t *size) {
 #if 0
   int bStatus = FALSE;
   int idx;
 
-  bWaitingForSPIMsg = TRUE;
-  while(bWaitingForSPIMsg)
+  bWaitingForUSBMsg = TRUE;
+  while(bWaitingForUSBMsg)
   {
     /* Use the IRQ flags register to determine when a message has been received,
      * despite the fact that we don't actually use interrupts.  Write the flags
      * back each time to clear any pending events prior to servicing.
      */
-    uint32_t flags_reg = SPI_MBOX_READ_REG(SPI_MBOX_FLAGS);
-    SPI_MBOX_WRITE_REG(SPI_MBOX_FLAGS, flags_reg);
-    if(flags_reg & SPI_MBOX_HOST2SLAVE)
+    uint32_t flags_reg = USB_MBOX_READ_REG(USB_MBOX_FLAGS);
+    USB_MBOX_WRITE_REG(USB_MBOX_FLAGS, flags_reg);
+    if(flags_reg & USB_MBOX_HOST2SLAVE)
     {
       /* A message has been received from the host, obtain its length */
-      uint32_t bufLen = SPI_MBOX_READ_REG(SPI_MBOX_MSG_LENGTH);
+      uint32_t bufLen = USB_MBOX_READ_REG(USB_MBOX_MSG_LENGTH);
       if (*size < bufLen) {
         /* We received a message longer than the requested message size; bail
          * out and return FALSE as an indication
@@ -66,12 +76,12 @@ int ReadSPIMailbox(uint8_t *buffer, uint32_t *size)
 
       /* Retrieve and buffer the message words for the client */
       for (idx = 0; idx < ((*size + 3) / 4); idx++) {
-        ((uint32_t *) buffer)[idx] = ((uint32_t *) SPI_MBOX_DATA)[idx];
+        ((uint32_t *) buffer)[idx] = ((uint32_t *) USB_MBOX_DATA)[idx];
       }
 
-      SPI_MBOX_WRITE_REG(SPI_MBOX_CTRL, (SPI_MBOX_MSG_CONSUMED | SPI_MBOX_ENABLE));
+      USB_MBOX_WRITE_REG(USB_MBOX_CTRL, (USB_MBOX_MSG_CONSUMED | USB_MBOX_ENABLE));
       bStatus = TRUE;
-      bWaitingForSPIMsg = FALSE;
+      bWaitingForUSBMsg = FALSE;
     }
   }
   return bStatus;
@@ -80,22 +90,21 @@ int ReadSPIMailbox(uint8_t *buffer, uint32_t *size)
 }
 
 /**
- * Writes a message out to the SPI mailbox
+ * Writes a message out to the USB mailbox
  *
  * buffer - Pointer to data buffer to copy message from
  * size   - size of buffer to write
  */
-void WriteSPIMailbox(uint8_t *buffer, uint32_t size)
-{
+void WriteUsbMailbox(uint8_t *buffer, uint32_t size) {
 #if 0
   int idx;
 
   /* Write the response words into the data buffer */
   for(idx = 0; idx < (size + 3) / 4; idx++) {
-    ((uint32_t *) SPI_MBOX_DATA)[idx] = ((uint32_t *) buffer)[idx];
+    ((uint32_t *) USB_MBOX_DATA)[idx] = ((uint32_t *) buffer)[idx];
   }
 
   /* Commit the response message to the host */
-  SPI_MBOX_WRITE_REG(SPI_MBOX_MSG_LENGTH, size);
+  USB_MBOX_WRITE_REG(USB_MBOX_MSG_LENGTH, size);
 #endif
 }

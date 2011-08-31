@@ -31,6 +31,7 @@ LIB	= $(obj)lib$(BOARD).o
 CFLAGS	+= -I. 
 COBJS-y	 = $(BOARD).o
 COBJS-y += usb_mailbox.o 
+COBJS-y += firmware_update.o
 
 SOBJS-y := text_base.o
 

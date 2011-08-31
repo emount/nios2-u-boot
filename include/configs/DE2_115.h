@@ -36,6 +36,9 @@
 /* Perform the normal bootdelay checking */
 #define CONFIG_BOOTDELAY 1
 
+/* Perform a test for firmware update once initialized */
+#define CONFIG_FIRMWARE_UPDATE
+
 /*
  * SERIAL
  *

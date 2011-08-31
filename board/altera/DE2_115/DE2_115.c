@@ -52,7 +52,6 @@ int board_early_init_f(void)
 int checkboard(void)
 {
 	printf("BOARD : %s\n", CONFIG_BOARD_NAME);
-    printf("Testing USB mailbox - ?\n");
 	return 0;
 }
 
