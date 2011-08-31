@@ -16,13 +16,21 @@ uint8_t bPollingUSBMbox=FALSE;
 uint8_t bWaitingForUSBMsg=FALSE;
 
 void SetupUsbMbox(void) {
+  uint16_t regValue;
+
   printf("Initializing USB Mailbox\n");
 
   //  printf("CTRL REG 0: 0x%04X\n", USB_MBOX_READ_REG(USB_MBOX_CTRL0));
   USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_ENABLE);
   USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_DISABLE);
   USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_ENABLE);
-  //  printf("CTRL REG 0: 0x%04X\n", USB_MBOX_READ_REG(USB_MBOX_CTRL0));
+  // TEMPORARY hanging on read access - think the Slave_Read_Data_Valid
+  // signal needs to assert for pairs of 16-bit reads to form full 32-bit
+  // accesses by NIOS2...
+  //  regValue = USB_MBOX_READ_REG(USB_MBOX_CTRL0);
+
+  printf("USB Mailbox initialized\n");
+  //  printf("CTRL REG 0: %d\n", (int32_t) regValue);
 
 #if 0
   /* Clear the message ready flag and reset / enable the mailbox */
