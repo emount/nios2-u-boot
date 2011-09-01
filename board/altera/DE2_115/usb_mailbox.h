@@ -9,6 +9,7 @@
 
 /* Data buffer range */
 #define USB_MBOX_DATA              (USB_MBOX_BASE + 0x0000)
+#  define USB_MBOX_DATA_BYTES (1024)
 
 /* Register range */
 #define USB_MBOX_REGS_BASE         (USB_MBOX_BASE + 0x1000)

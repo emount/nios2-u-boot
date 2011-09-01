@@ -20,5 +20,5 @@ void CheckFirmwareUpdate(void)
   printf("Checking for firmware update...\n");
 
   /* For the moment, unconditionally perform an update */
-  SetupUsbMbox();
+  SetupUsbMailbox();
 }

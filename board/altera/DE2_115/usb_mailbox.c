@@ -9,35 +9,45 @@
 #endif
 
 /* Low-level macros for read and write from / to the mailbox */
-#define USB_MBOX_READ_REG(reg) ( *((volatile unsigned short *)reg) )
-#define USB_MBOX_WRITE_REG(reg, val) ( *((volatile unsigned short *)reg) = val )
+#define USB_MBOX_READ_REG(reg) ( *((volatile uint16_t *)reg) )
+#define USB_MBOX_WRITE_REG(reg, val) ( *((volatile uint16_t *)reg) = val )
 
 uint8_t bPollingUSBMbox=FALSE;
 uint8_t bWaitingForUSBMsg=FALSE;
 
-void SetupUsbMbox(void) {
-  uint16_t regValue;
+/* Number of microseconds to hold the USB transceiver in reset */
+#define USB_RESET_USECS (10000)
 
+/* Static buffer to hold packet data in */
+static uint8_t packetBuffer[USB_MBOX_DATA_BYTES];
+
+void SetupUsbMailbox(void) {
+  volatile uint16_t *dataPtr;
+  uint32_t byteIndex;
+  uint32_t errorCount;
+    
   printf("Initializing USB Mailbox\n");
 
-  //  printf("CTRL REG 0: 0x%04X\n", USB_MBOX_READ_REG(USB_MBOX_CTRL0));
-  USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_ENABLE);
+  /* Ensure the USB chip receives a solid minimum reset */
   USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_DISABLE);
+  udelay(USB_RESET_USECS);
   USB_MBOX_WRITE_REG(USB_MBOX_CTRL0, USB_MBOX_ENABLE);
-  // TEMPORARY hanging on read access - think the Slave_Read_Data_Valid
-  // signal needs to assert for pairs of 16-bit reads to form full 32-bit
-  // accesses by NIOS2...
-  //  regValue = USB_MBOX_READ_REG(USB_MBOX_CTRL0);
+
+  /* Perform a quick test of the mailbox data RAM */
+  dataPtr = (volatile uint16_t *) USB_MBOX_DATA;
+  for(byteIndex = 0; byteIndex < USB_MBOX_DATA_BYTES; byteIndex++) {
+    *dataPtr++ = (uint16_t) ~byteIndex;
+  }
+  
+  errorCount = 0;
+  dataPtr = (volatile uint16_t *) USB_MBOX_DATA;
+  for(byteIndex = 0; byteIndex < USB_MBOX_DATA_BYTES; byteIndex++) {
+    if(*dataPtr++ != (~byteIndex & 0x0FF)) errorCount++;
+  }
+
+  printf("USB mailbox tested with %d errors\n", errorCount);
 
   printf("USB Mailbox initialized\n");
-  //  printf("CTRL REG 0: %d\n", (int32_t) regValue);
-
-#if 0
-  /* Clear the message ready flag and reset / enable the mailbox */
-  USB_MBOX_WRITE_REG(USB_MBOX_CTRL,  USB_MBOX_DISABLE);
-  USB_MBOX_WRITE_REG(USB_MBOX_IRQ_MASK,  USB_MBOX_NO_IRQS);
-  USB_MBOX_WRITE_REG(USB_MBOX_CTRL,  USB_MBOX_ENABLE);
-#endif
 }
 
 /**
