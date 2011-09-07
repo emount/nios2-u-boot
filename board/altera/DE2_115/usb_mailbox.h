@@ -34,6 +34,7 @@
 #  define USB_MBOX_RX_IRQ            0x00000001
 #  define USB_MBOX_OVFLW_IRQ         0x00000002
 #  define USB_MBOX_TX_IRQ            0x00000004
+#  define USB_MBOX_ALL_IRQS          0x00000007
 
 /* Public functions */
 extern void SetupUsbMailbox(void);
