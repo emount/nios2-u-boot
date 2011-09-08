@@ -1059,6 +1059,10 @@ smdk6400_config	:	unconfig
 DE2_115_config : unconfig
 	@$(MKCONFIG) $@ nios2 nios2 DE2_115 altera
 
+# Entertainment Experience eeColor board
+eeColor_config : unconfig
+	@$(MKCONFIG) $@ nios2 nios2 eeColor entexp
+
 # nios2 generic boards
 NIOS2_GENERIC = nios2-generic NEEK
 
