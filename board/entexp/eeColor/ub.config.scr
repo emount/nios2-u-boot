@@ -27,7 +27,7 @@ set rootfsstart 0xEA580000
 set rootfssize 0x500000
 
 echo Boot Configuration:
-set bootcmd 'bootm ${kernstart}'
+set bootcmd 'bootm ${kernelastart}'
 set bootargs 'console=/dev/ttyAL0 root=mtd5 rootfstype=jffs2 init=/bin/init'
 set bootdelay 3
 
