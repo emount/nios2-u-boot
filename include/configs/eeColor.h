@@ -110,6 +110,9 @@
 # define CONFIG_CMD_PING
 #endif
 
+/* Define the width of the Flash for the CFI driver */
+#define CONFIG_SYS_FLASH_CFI_WIDTH	FLASH_CFI_16BIT
+
 /*
  * ENVIRONMENT -- Put environment in the very first bottom-boot sector
  *                of the Spansion S29GL064 device.  This part has eight
@@ -118,9 +121,9 @@
  */
 #define CONFIG_ENV_IS_IN_FLASH
 
-#define CONFIG_ENV_SIZE		0x2000	/* 8k, 1 sector */
+#define CONFIG_ENV_SIZE		0x8000	/* 32k, 1 top-boot sector */
 #define CONFIG_ENV_OVERWRITE		/* Serial change Ok	*/
-#define CONFIG_ENV_ADDR		(CONFIG_SYS_FLASH_BASE + 0x00000000)
+#define CONFIG_ENV_ADDR		(CONFIG_SYS_FLASH_BASE + 0x00FF8000)
 
 /*
  * MEMORY ORGANIZATION

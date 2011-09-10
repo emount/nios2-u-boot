@@ -17,7 +17,7 @@
 		</Partition>
 		<Partition name="padding" address="0xA80000" size="0x578000">
 		</Partition>
-		<Partition name="bootenv" address="0x700000" size="0x100000">
+		<Partition name="bootenv" address="0xFF8000" size="0x8000">
 		</Partition>
 	</FlashPartitions>
 </BoardInfo>

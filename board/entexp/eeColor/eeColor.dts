@@ -244,8 +244,8 @@
 			padding@a80000 {
 				reg = < 0x00A80000 0x00578000 >;
 			};
-			bootenv@700000 {
-				reg = < 0x00700000 0x00100000 >;
+			bootenv@ff8000 {
+				reg = < 0x00FF8000 0x00008000 >;
 			};
 		}; //end flash (cfi_flash)
 
