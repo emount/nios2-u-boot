@@ -3,21 +3,23 @@
 		<Bootargs val="console=ttyAL0 root=mtd4 rootfstype=jffs2 init=/bin/init"/>
 	</Chosen>
 	<FlashPartitions>
-		<Partition name="goldenfpga" address="0x0" size="0x120000">
+		<Partition name="bottompad" address="0x00000000" size="0x00020000">
 		</Partition>
-		<Partition name="runtimefpga" address="0x120000" size="0x120000">
+		<Partition name="goldenfpga" address="0x00020000" size="0x00140000">
 		</Partition>
-		<Partition name="uboot" address="0x240000" size="0x40000">
+		<Partition name="runtimefpga" address="0x00160000" size="0x00140000">
 		</Partition>
-		<Partition name="kernel_a" address="0x280000" size="0x180000">
+		<Partition name="uboot" address="0x002A0000" size="0x00040000">
 		</Partition>
-		<Partition name="kernel_b" address="0x400000" size="0x180000">
+		<Partition name="kernel_a" address="0x002E0000" size="0x00180000">
 		</Partition>
-		<Partition name="rootfs" address="0x580000" size="0x500000">
+		<Partition name="kernel_b" address="0x00460000" size="0x00180000">
 		</Partition>
-		<Partition name="padding" address="0xA80000" size="0x578000">
+		<Partition name="rootfs" address="0x005E0000" size="0x00500000">
 		</Partition>
-		<Partition name="bootenv" address="0xFF8000" size="0x8000">
+		<Partition name="toppad" address="0x00AE0000" size="0x00518000">
+		</Partition>
+		<Partition name="bootenv" address="0x00FF8000" size="0x00008000">
 		</Partition>
 	</FlashPartitions>
 </BoardInfo>

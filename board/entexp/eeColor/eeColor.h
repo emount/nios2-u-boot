@@ -17,7 +17,7 @@
 #define CONFIG_SYS_ICACHELINE_SIZE	32
 #define CONFIG_SYS_EXCEPTION_ADDR	0xc0000020
 #define CONFIG_SYS_ICACHE_SIZE	4096
-#define CONFIG_SYS_RESET_ADDR	0xca240000
+#define CONFIG_SYS_RESET_ADDR	0xca2a0000
 #define IO_REGION_BASE	0xE0000000
 
 /* altpll_0.pll_slave is a altpll */
@@ -68,24 +68,6 @@
 /* stat0_reg.s1 is a altera_avalon_pio */
 #define STAT0_REG_BASE	0xEB000010
 
-/* rx_i2c_reg.s1 is a altera_avalon_pio */
-#define RX_I2C_REG_BASE	0xEB0000C0
-
-/* rx_i2c_da_reg.s1 is a altera_avalon_pio */
-#define RX_I2C_DA_REG_BASE	0xEB0000E0
-
-/* tx_i2c_reg.s1 is a altera_avalon_pio */
-#define TX_I2C_REG_BASE	0xEB000100
-
-/* tx_i2c_da_reg.s1 is a altera_avalon_pio */
-#define TX_I2C_DA_REG_BASE	0xEB000120
-
-/* temp_i2c_reg.s1 is a altera_avalon_pio */
-#define TEMP_I2C_REG_BASE	0xEB000140
-
-/* temp_i2c_da_reg.s1 is a altera_avalon_pio */
-#define TEMP_I2C_DA_REG_BASE	0xEB000160
-
 /* uart_0.s1 is a altera_avalon_uart */
 #define CONFIG_SYS_UART_BAUD	115200
 #define CONFIG_SYS_UART_BASE	0xEB000180
@@ -100,6 +82,9 @@
 
 /* revision_reg.s1 is a altera_avalon_pio */
 #define REVISION_REG_BASE	0xEB0001C0
+
+/* gpio_i2c.s1 is a altera_avalon_pio */
+#define GPIO_I2C_BASE	0xEB000100
 
 /* cfi_flash.s1 is a altera_avalon_cfi_flash */
 #define CONFIG_SYS_FLASH_BASE	0xEA000000

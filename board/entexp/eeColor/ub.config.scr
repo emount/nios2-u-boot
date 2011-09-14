@@ -4,31 +4,31 @@ echo Clobber DDR2 Configuration:
 set clobstart 0xC0000000
 
 echo FPGA Configuration:
-set goldenfpgastart 0xEA000000
-set goldenfpgasize 0x120000
-set runfpgastart 0xEA120000
-set runfpgasize 0x120000
+set goldenfpgastart 0xEA020000
+set goldenfpgasize 0x140000
+set runfpgastart 0xEA160000
+set runfpgasize 0x140000
 
 echo Bootloader Configuration:
-set bootstart 0xEA240000
+set bootstart 0xEA2A0000
 set bootsize 0x40000
 set bootenvstart 0xEAFF8000
 set bootenvsize 0x02000
 set eraseenv 'protect off ${bootenvstart} +${bootenvsize}; erase ${bootenvstart} +${bootenvsize}'
 
 echo Kernel Configuration:
-set kernelastart 0xEA280000
+set kernelastart 0xEA2E0000
 set kernelasize 0x00180000
-set kernelbstart 0xEA400000
+set kernelbstart 0xEA460000
 set kernelbsize 0x00180000
 
 echo Root Filesystem Configuration:
-set rootfsstart 0xEA580000
+set rootfsstart 0xEA5E0000
 set rootfssize 0x500000
 
 echo Boot Configuration:
 set bootcmd 'bootm ${kernelastart}'
-set bootargs 'console=ttyAL0,115200 root=/dev/mtdblock5 rootfstype=squashfs init=/bin/init'
+set bootargs 'console=ttyAL0,115200 root=/dev/mtdblock6 rootfstype=squashfs init=/bin/init'
 set bootdelay 3
 
 echo Saving Configurations...
