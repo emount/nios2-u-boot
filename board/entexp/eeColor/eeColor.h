@@ -83,8 +83,17 @@
 /* revision_reg.s1 is a altera_avalon_pio */
 #define REVISION_REG_BASE	0xEB0001C0
 
-/* gpio_i2c.s1 is a altera_avalon_pio */
-#define GPIO_I2C_BASE	0xEB000100
+/* hdmi_tx_i2c.s1 is a opencores_i2c_master */
+#define HDMI_TX_I2C_BASE	0xEB000800
+#define HDMI_TX_I2C_IRQ	4
+
+/* hdmi_rx_i2c.s1 is a opencores_i2c_master */
+#define HDMI_RX_I2C_BASE	0xEB000900
+#define HDMI_RX_I2C_IRQ	7
+
+/* temp_i2c.s1 is a opencores_i2c_master */
+#define TEMP_I2C_BASE	0xEB000A00
+#define TEMP_I2C_IRQ	8
 
 /* cfi_flash.s1 is a altera_avalon_cfi_flash */
 #define CONFIG_SYS_FLASH_BASE	0xEA000000
