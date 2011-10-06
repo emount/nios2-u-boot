@@ -13,7 +13,7 @@ echo Bootloader Configuration:
 set bootstart 0xEA2A0000
 set bootsize 0x40000
 set bootenvstart 0xEAFF8000
-set bootenvsize 0x02000
+set bootenvsize 0x08000
 set eraseenv 'protect off ${bootenvstart} +${bootenvsize}; erase ${bootenvstart} +${bootenvsize}'
 
 echo Kernel Configuration:
