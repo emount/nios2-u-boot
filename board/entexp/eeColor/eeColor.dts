@@ -85,12 +85,12 @@
 				reg = < 0x0 0x8>;
 			}; //end sysid (sysid)
 
-			IR_Decode_0: unknown@0x400 {
-				compatible = "unknown,unknown-1.0";
+			IR_Decode_0: ir_decode@0x400 {
+				compatible = "entexp,ir_decode-1.0";
 				reg = < 0x400 0x400>;
 				interrupt-parent = < &cpu >;
 				interrupts = < 5 >;
-			}; //end unknown (IR_Decode_0)
+			}; //end ir_decode (IR_Decode_0)
 
 			video_top_0: unknown@0x20000 {
 				compatible = "unknown,unknown-1.0";
