@@ -92,10 +92,10 @@
 				interrupts = < 5 >;
 			}; //end ir_decode (IR_Decode_0)
 
-			video_top_0: unknown@0x20000 {
-				compatible = "unknown,unknown-1.0";
+			video_top_0: video_pipeline@0x20000 {
+				compatible = "entexp,video_pipeline-1.0";
 				reg = < 0x20000 0x10000 0x40000 0x2000>;
-			}; //end unknown (video_top_0)
+			}; //end video_pipeline (video_top_0)
 
 			usb_mailbox_0: unknown@0x2000 {
 				compatible = "unknown,unknown-1.0";
