@@ -107,8 +107,8 @@
 			ctl0_reg: gpio@0x40 {
 				compatible = "ALTR,pio-11.0","ALTR,pio-1.0";
 				reg = < 0x40 0x20>;
-				width = <12>;	//width type NUMBER
-				resetvalue = <0>;	//resetValue type NUMBER
+				width = <16>;	//width type NUMBER
+				resetvalue = <12>;	//resetValue type NUMBER
 			}; //end gpio (ctl0_reg)
 
 			ctl1_reg: gpio@0x60 {
