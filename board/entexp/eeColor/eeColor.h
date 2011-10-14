@@ -45,10 +45,6 @@
 #define IR_DECODE_0_BASE	0xEB000400
 #define IR_DECODE_0_IRQ	5
 
-/* video_top_0.tri_interface is a video_top */
-#define VIDEO_TOP_0_TRI_INTERFACE	0xEB020000
-#define VIDEO_TOP_0_OSD_INTERFACE	0xEB040000
-
 /* usb_mailbox_0.slave_interface is a usb_mailbox */
 #define USB_MAILBOX_0_BASE	0xEB002000
 #define USB_MAILBOX_0_IRQ	6
@@ -94,6 +90,9 @@
 /* temp_i2c.s1 is a opencores_i2c_master */
 #define TEMP_I2C_BASE	0xEB000A00
 #define TEMP_I2C_IRQ	8
+
+/* video_top_0.slave_interface is a video_top */
+#define VIDEO_TOP_0_BASE	0xEB020000
 
 /* cfi_flash.s1 is a altera_avalon_cfi_flash */
 #define CONFIG_SYS_FLASH_BASE	0xEA000000
