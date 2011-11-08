@@ -12,6 +12,12 @@
 #define FALSE 0 
 #endif
 
+/* Definitions for low-level peripheral register access */
+#define READ_REG16(reg) ( *((volatile uint16_t *)reg) )
+#define WRITE_REG16(reg, val) ( *((volatile uint16_t *)reg) = val )
+#define READ_REG32(reg) ( *((volatile uint32_t *)reg) )
+#define WRITE_REG32(reg, val) ( *((volatile uint32_t *)reg) = val )
+
 /* Definitions for the altera_avalon_pio-based pushbutton */
 #define BUTTON_GPIO_BASE  (STAT0_REG_BASE)
 #  define BUTTON_DATA_REG     (BUTTON_GPIO_BASE + 0x0) /* Data register  */
@@ -21,10 +27,14 @@
 
 #define BUTTON_GPIO_BIT  (0x04)
 
-#define BUTTON_READ_REG(reg) ( *((volatile uint16_t *)reg) )
-#define BUTTON_WRITE_REG(reg, val) ( *((volatile uint16_t *)reg) = val )
+#define BUTTON_PRESSED ((READ_REG16(BUTTON_DATA_REG) & BUTTON_GPIO_BIT) == 0)
 
-#define BUTTON_PRESSED ((BUTTON_READ_REG(BUTTON_DATA_REG) & BUTTON_GPIO_BIT) == 0)
+/* Constants for the system ID peripheral */
+#define SYSID_BASE  (CONFIG_SYS_SYSID_BASE)
+#  define SYSID_ID_REG         (SYSID_BASE + 0x0)  /* ID register */
+#  define SYSID_TIMESTAMP_REG  (SYSID_BASE + 0x4)  /* Timestamp register */
+#define SYSID_ID_VALUE   READ_REG32(SYSID_ID_REG)
+#define SYSID_TIMESTAMP  READ_REG32(SYSID_TIMESTAMP_REG)
 
 /* Data buffer range */
 #define USB_MBOX_DATA              (USB_MBOX_BASE + 0x0000)
@@ -38,7 +48,13 @@ void CheckFirmwareUpdate(void)
 {
   int readStatus;
   uint32_t messageLength;
-  uint16_t regValue;
+  uint32_t idValue;
+  uint32_t timestamp;
+
+  /* Print values from the system ID peripheral */
+  idValue   = SYSID_ID_VALUE;
+  timestamp = SYSID_TIMESTAMP;
+  printf("FPGA ID value %d, timestamp %d\n", idValue, timestamp);
 
   printf("Checking for firmware update...\n");
 
