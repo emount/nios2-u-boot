@@ -7,17 +7,25 @@
 		</Partition>
 		<Partition name="goldenfpga" address="0x00020000" size="0x00140000">
 		</Partition>
-		<Partition name="runtimefpga" address="0x00160000" size="0x00140000">
+		<Partition name="fpga_a" address="0x00160000" size="0x00140000">
 		</Partition>
 		<Partition name="uboot" address="0x002A0000" size="0x00040000">
 		</Partition>
-		<Partition name="kernel_a" address="0x002E0000" size="0x00180000">
+		<Partition name="golden_kernel" address="0x002E0000" size="0x00100000">
 		</Partition>
-		<Partition name="kernel_b" address="0x00460000" size="0x00180000">
+		<Partition name="kernel_a" address="0x003E0000" size="0x00100000">
 		</Partition>
-		<Partition name="rootfs" address="0x005E0000" size="0x00500000">
+		<Partition name="kernel_b" address="0x004E0000" size="0x00100000">
 		</Partition>
-		<Partition name="toppad" address="0x00AE0000" size="0x00518000">
+		<Partition name="golden_rootfs" address="0x005E0000" size="0x00280000">
+		</Partition>
+		<Partition name="rootfs_a" address="0x00860000" size="0x00280000">
+		</Partition>
+		<Partition name="rootfs_b" address="0x00AE0000" size="0x00280000">
+		</Partition>
+		<Partition name="fpga_b" address="0x00D60000" size="0x00140000">
+		</Partition>
+		<Partition name="toppad" address="0x00EA0000" size="0x00158000">
 		</Partition>
 		<Partition name="bootenv" address="0x00FF8000" size="0x00008000">
 		</Partition>

@@ -210,23 +210,35 @@
 			goldenfpga@20000 {
 				reg = < 0x00020000 0x00140000 >;
 			};
-			runtimefpga@160000 {
+			fpga_a@160000 {
 				reg = < 0x00160000 0x00140000 >;
 			};
 			uboot@2a0000 {
 				reg = < 0x002A0000 0x00040000 >;
 			};
-			kernel_a@2e0000 {
-				reg = < 0x002E0000 0x00180000 >;
+			golden_kernel@2e0000 {
+				reg = < 0x002E0000 0x00100000 >;
 			};
-			kernel_b@460000 {
-				reg = < 0x00460000 0x00180000 >;
+			kernel_a@3e0000 {
+				reg = < 0x003E0000 0x00100000 >;
 			};
-			rootfs@5e0000 {
-				reg = < 0x005E0000 0x00500000 >;
+			kernel_b@4e0000 {
+				reg = < 0x004E0000 0x00100000 >;
 			};
-			toppad@ae0000 {
-				reg = < 0x00AE0000 0x00518000 >;
+			golden_rootfs@5e0000 {
+				reg = < 0x005E0000 0x00280000 >;
+			};
+			rootfs_a@860000 {
+				reg = < 0x00860000 0x00280000 >;
+			};
+			rootfs_b@ae0000 {
+				reg = < 0x00AE0000 0x00280000 >;
+			};
+			fpga_b@d60000 {
+				reg = < 0x00D60000 0x00140000 >;
+			};
+			toppad@ea0000 {
+				reg = < 0x00EA0000 0x00158000 >;
 			};
 			bootenv@ff8000 {
 				reg = < 0x00FF8000 0x00008000 >;

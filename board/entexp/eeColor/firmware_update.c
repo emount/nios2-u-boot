@@ -46,6 +46,10 @@
 /* Buffer for storage of USB messages */
 static uint8_t messageBuffer[USB_MBOX_DATA_BYTES];
 
+/* Buffer for constructing command strings */
+#define CMD_FORMAT_BUF_SZ (256)
+static char commandBuffer[CMD_FORMAT_BUF_SZ];
+
 /* System ID signature of the test / bootloader FPGA */
 #define BOOT_FPGA_ID (0x01234567)
 
@@ -96,6 +100,8 @@ void CheckFirmwareUpdate(void)
   uint32_t messageLength;
   uint32_t timestamp;
   uint32_t runtimeImage;
+  char *kernelStart = NULL;
+  char *rootfsPartition = NULL;
 
   /* Print values from the status GPIO peripheral */
   timestamp = READ_REG32(REVISION_REG_BASE + 0x00);
@@ -113,12 +119,19 @@ void CheckFirmwareUpdate(void)
 
   /* Perform run-time or bootloader processing */
   if(runtimeImage) {
-    printf("Booting Linux\n");
+    /* Select the run-time Linux image for boot */
+    printf("Booting run-time Linux kernel 'A'...\n");
+    kernelStart     = "kernel_a_start";
+    rootfsPartition = "mtdblock8";
   } else {
     printf("Checking for test mode...\n");
 
     if(BUTTON_PRESSED) {
-      printf("Factory self-test mode initiating...\n");
+      /* Select the run-time Linux image for boot */
+      printf("<<< TEST MODE >>>\n");
+      printf("Booting golden Linux kernel...\n");
+      kernelStart     = "golden_kernel_start";
+      rootfsPartition = "mtdblock7";
     } else {
       /* Determine which run-time FPGA image to reconfigure into */
       printf("Reconfiguring to run-time FPGA\n");
@@ -130,8 +143,30 @@ void CheckFirmwareUpdate(void)
                                    (((RUNTIME_FPGA_ADDR - CONFIG_SYS_FLASH_BASE)) >> RSU_ADDRESS_SHIFT), // MSB 22-bits of 24-bit address
                                    WATCHDOG_TIMEOUT_NONE // MSB 12-bits of 29-bit timeout count
                                    );
+
+      /* Should never reach here */
       while(1);
     }
+  }
+
+  /* Alter the boot string for the kernel selection */
+  sprintf(commandBuffer, "set bootcmd 'bootm ${%s}'", kernelStart);
+  commandBuffer[CMD_FORMAT_BUF_SZ - 1] = '\0';
+
+  if(parse_string_outer(commandBuffer,
+                        (FLAG_PARSE_SEMICOLON | FLAG_EXIT_FROM_LOOP)) != 0) {
+    printf("Set of bootcmd \"%s\" failed\n", commandBuffer);
+  }
+
+  /* Alter the kernel arguments accordingly */
+  sprintf(commandBuffer, 
+          "set bootargs 'console=ttyAL0,115200 root=/dev/%s rootfstype=squashfs init=/bin/init'",
+          rootfsPartition);
+  commandBuffer[CMD_FORMAT_BUF_SZ - 1] = '\0';
+
+  if(parse_string_outer(commandBuffer,
+                        (FLAG_PARSE_SEMICOLON | FLAG_EXIT_FROM_LOOP)) != 0) {
+    printf("Set of bootargs \"%s\" failed\n", commandBuffer);
   }
 
 #if 0
