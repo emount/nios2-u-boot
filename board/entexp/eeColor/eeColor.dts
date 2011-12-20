@@ -46,7 +46,6 @@
 		device_type = "soc";
 		compatible = "ALTR,avalon","simple-bus";
 		bus-frequency = < 100000000 >;
-		//Port instruction_master of cpu
 		clock_crossing_io: bridge@0xb000000 {
 			compatible = "ALTR,avalon-11.0","simple-bus";
 			reg = < 0xb000000 0x40000>;
@@ -70,7 +69,6 @@
 				0x00000A00 0x0B000A00 0x00000020
 				0x00020000 0x0B020000 0x00020000>;
 
-			//Port m1 of clock_crossing_io
 			timer: timer@0x20 {
 				compatible = "ALTR,timer-11.0","ALTR,timer-1.0";
 				reg = < 0x20 0x20>;
@@ -245,12 +243,10 @@
 			};
 		}; //end flash (cfi_flash)
 
-		//Port tightly_coupled_instruction_master_0 of cpu
-		//Port data_master of cpu
-		altpll_0: unknown@0x82224c0 {
-			compatible = "unknown,unknown-11.0";
+		altpll_0: clock@0x82224c0 {
+			compatible = "ALTR,pll-11.0","ALTR,pll-1.0";
 			reg = < 0x82224c0 0x10>;
-		}; //end unknown (altpll_0)
+		}; //end clock (altpll_0)
 
 		jtag_uart_0: serial@0x82224d0 {
 			compatible = "ALTR,juart-11.0","ALTR,juart-1.0";
@@ -259,7 +255,6 @@
 			interrupts = < 0 >;
 		}; //end serial (jtag_uart_0)
 
-		//Port tightly_coupled_data_master_0 of cpu
 	}; //sopc
 	chosen {
 		bootargs = "console=ttyAL0 root=mtd4 rootfstype=jffs2 init=/bin/init";
