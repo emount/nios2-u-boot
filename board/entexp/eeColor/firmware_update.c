@@ -32,6 +32,23 @@
 
 #define BUTTON_PRESSED ((READ_REG32(BUTTON_DATA_REG) & BUTTON_GPIO_BIT) == 0)
 
+/* Definitions for the altera_avalon_pio-based control register */
+#define CTRL_GPIO_BASE  (CTL0_REG_BASE)
+#  define CTRL_DATA_REG     (CTRL_GPIO_BASE + 0x0) /* Data register  */
+#  define CTRL_DIR_REG      (CTRL_GPIO_BASE + 0x4) /* I/O direction register  */
+#  define CTRL_IRQ_MASK_REG (CTRL_GPIO_BASE + 0x8) /* IRQ mask register */
+#  define CTRL_EDGE_CAP_REG (CTRL_GPIO_BASE + 0xc) /* Edge capture register */
+
+/* LED control constants */
+#define LED_FLASH_RED_AMBER   (0x00000000)
+#define LED_FLASH_RED         (0x00000080)
+#define LED_FLASH_AMBER       (0x00000100)
+#define LED_FLASH_RED_GREEN   (0x00000180)
+#define LED_FLASH_GREEN_AMBER (0x00000200)
+#define LED_FLASH_GREEN       (0x00000280)
+#define LED_GREEN             (0x00000300)
+#define LED_OFF               (0x00000380)
+
 /* Constants for the system ID peripheral */
 #define SYSID_BASE  (CONFIG_SYS_SYSID_BASE)
 #  define SYSID_ID_REG         (SYSID_BASE + 0x0)  /* ID register */
@@ -102,6 +119,9 @@ void CheckFirmwareUpdate(void)
   uint32_t runtimeImage;
   char *kernelStart = NULL;
   char *rootfsPartition = NULL;
+
+  /* Flash amber, indicating we are in U-Boot */
+  WRITE_REG32(CTRL_GPIO_BASE, LED_FLASH_AMBER);
 
   /* Print values from the status GPIO peripheral */
   timestamp = READ_REG32(REVISION_REG_BASE + 0x00);
