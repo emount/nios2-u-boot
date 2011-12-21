@@ -118,7 +118,7 @@
 #define CONFIG_ENV_SIZE		0x8000	/* 32k, 1 bottom-boot sector */
 #define CONFIG_ENV_OVERWRITE		/* Serial change Ok	*/
 #define CONFIG_ENV_ADDR		(CONFIG_SYS_FLASH_BASE + 0x00000000)
-x
+
 /*
  * MEMORY ORGANIZATION
  *	-Monitor at top of sdram.
