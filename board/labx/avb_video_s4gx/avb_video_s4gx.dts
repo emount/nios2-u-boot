@@ -52,130 +52,29 @@
 			reg = < 0x82224c0 0x10>;
 		}; //end clock (altpll_0)
 
-		cfi_flash: unknown@0xc000000 {
-			compatible = "unknown,unknown-11.0";
+		cfi_flash: flash@0xc000000 {
+			#address-cells = <1>;
+			#size-cells = <1>;
+			compatible = "ALTR,cfi_flash-altera_generic_tristate_controller","cfi-flash";
 			reg = < 0xc000000 0x4000000>;
-			//Dumping SOPC parameters...
-			unknown,embeddedsw.configuration.hwClassnameDriverSupportList = "altera_avalon_lan91c111,altera_avalon_cfi_flash";	//embeddedsw.configuration.hwClassnameDriverSupportList type STRING
-			unknown,embeddedsw.memoryInfo.DAT-SYM-INSTALL-DIR = "SIM_DIR";	//embeddedsw.memoryInfo.DAT_SYM_INSTALL_DIR type STRING
-			unknown,embeddedsw.memoryInfo.GENERATE-DAT-SYM = <1>;	//embeddedsw.memoryInfo.GENERATE_DAT_SYM type NUMBER
-			unknown,embeddedsw.memoryInfo.MEM-INIT-DATA-WIDTH = <16>;	//embeddedsw.memoryInfo.MEM_INIT_DATA_WIDTH type NUMBER
-			unknown,postgeneration.simulation.init-file.param-name = "INIT_FILE";	//postgeneration.simulation.init_file.param_name type STRING
-			unknown,postgeneration.simulation.init-file.param-owner = "tcm";	//postgeneration.simulation.init_file.param_owner type STRING
-			unknown,postgeneration.simulation.init-file.type = "MEM_INIT";	//postgeneration.simulation.init_file.type type STRING
-			unknown,testbench.partner.external-mem-bfm.class = "altera_external_memory_bfm";	//testbench.partner.external_mem_bfm.class type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.ACTIVE-LOW-BEGINTRANSFER = <0>;	//testbench.partner.external_mem_bfm.parameter.ACTIVE_LOW_BEGINTRANSFER type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.ACTIVE-LOW-BYTEENABLE = <0>;	//testbench.partner.external_mem_bfm.parameter.ACTIVE_LOW_BYTEENABLE type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.ACTIVE-LOW-CHIPSELECT = <1>;	//testbench.partner.external_mem_bfm.parameter.ACTIVE_LOW_CHIPSELECT type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.ACTIVE-LOW-OUTPUTENABLE = <0>;	//testbench.partner.external_mem_bfm.parameter.ACTIVE_LOW_OUTPUTENABLE type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.ACTIVE-LOW-READ = <1>;	//testbench.partner.external_mem_bfm.parameter.ACTIVE_LOW_READ type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.ACTIVE-LOW-RESET = <0>;	//testbench.partner.external_mem_bfm.parameter.ACTIVE_LOW_RESET type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.ACTIVE-LOW-WRITE = <1>;	//testbench.partner.external_mem_bfm.parameter.ACTIVE_LOW_WRITE type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.CDT-ADDRESS-W = <26>;	//testbench.partner.external_mem_bfm.parameter.CDT_ADDRESS_W type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.CDT-NUMSYMBOLS = <2>;	//testbench.partner.external_mem_bfm.parameter.CDT_NUMSYMBOLS type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.CDT-READ-LATENCY = <0>;	//testbench.partner.external_mem_bfm.parameter.CDT_READ_LATENCY type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.CDT-SYMBOL-W = <8>;	//testbench.partner.external_mem_bfm.parameter.CDT_SYMBOL_W type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-ADDRESS-ROLES = "tcm_address_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_ADDRESS_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-BEGINTRANSFER-ROLES = "tcm_begintransfer_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_BEGINTRANSFER_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-BYTEENABLE-ROLES = "tcm_byteenable_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_BYTEENABLE_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-CHIPSELECT-ROLES = "tcm_chipselect_n_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_CHIPSELECT_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-DATA-ROLES = "tcm_data_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_DATA_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-OUTPUTENABLE-ROLES = "tcm_outputenable_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_OUTPUTENABLE_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-READ-ROLES = "tcm_read_n_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_READ_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-RESET-ROLES = "tcm_reset_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_RESET_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.SIGNAL-WRITE-ROLES = "tcm_write_n_out";	//testbench.partner.external_mem_bfm.parameter.SIGNAL_WRITE_ROLES type STRING
-			unknown,testbench.partner.external-mem-bfm.parameter.USE-BEGINTRANSFER = <0>;	//testbench.partner.external_mem_bfm.parameter.USE_BEGINTRANSFER type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.USE-BYTEENABLE = <0>;	//testbench.partner.external_mem_bfm.parameter.USE_BYTEENABLE type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.USE-CHIPSELECT = <1>;	//testbench.partner.external_mem_bfm.parameter.USE_CHIPSELECT type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.USE-OUTPUTENABLE = <0>;	//testbench.partner.external_mem_bfm.parameter.USE_OUTPUTENABLE type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.USE-READ = <1>;	//testbench.partner.external_mem_bfm.parameter.USE_READ type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.USE-RESET = <0>;	//testbench.partner.external_mem_bfm.parameter.USE_RESET type NUMBER
-			unknown,testbench.partner.external-mem-bfm.parameter.USE-WRITE = <1>;	//testbench.partner.external_mem_bfm.parameter.USE_WRITE type NUMBER
-			unknown,testbench.partner.map.clk = "external_mem_bfm.clk";	//testbench.partner.map.clk type STRING
-			unknown,testbench.partner.map.tcm = "external_mem_bfm.conduit";	//testbench.partner.map.tcm type STRING
-			unknown,TCM-ADDRESS-W = <26>;	//TCM_ADDRESS_W type NUMBER
-			unknown,TCM-DATA-W = <16>;	//TCM_DATA_W type NUMBER
-			unknown,TCM-BYTEENABLE-W = <2>;	//TCM_BYTEENABLE_W type NUMBER
-			unknown,TCM-READ-WAIT = <160>;	//TCM_READ_WAIT type NUMBER
-			unknown,TCM-WRITE-WAIT = <160>;	//TCM_WRITE_WAIT type NUMBER
-			unknown,TCM-SETUP-WAIT = <100>;	//TCM_SETUP_WAIT type NUMBER
-			unknown,TCM-DATA-HOLD = <100>;	//TCM_DATA_HOLD type NUMBER
-			unknown,TCM-MAX-PENDING-READ-TRANSACTIONS = <3>;	//TCM_MAX_PENDING_READ_TRANSACTIONS type NUMBER
-			unknown,TCM-TURNAROUND-TIME = <2>;	//TCM_TURNAROUND_TIME type NUMBER
-			unknown,TCM-TIMING-UNITS = <0>;	//TCM_TIMING_UNITS type NUMBER
-			unknown,TCM-READLATENCY = <2>;	//TCM_READLATENCY type NUMBER
-			unknown,TCM-SYMBOLS-PER-WORD = <2>;	//TCM_SYMBOLS_PER_WORD type NUMBER
-			unknown,USE-READDATA = <1>;	//USE_READDATA type NUMBER
-			unknown,USE-WRITEDATA = <1>;	//USE_WRITEDATA type NUMBER
-			unknown,USE-READ = <1>;	//USE_READ type NUMBER
-			unknown,USE-WRITE = <1>;	//USE_WRITE type NUMBER
-			unknown,USE-BEGINTRANSFER = <0>;	//USE_BEGINTRANSFER type NUMBER
-			unknown,USE-BYTEENABLE = <0>;	//USE_BYTEENABLE type NUMBER
-			unknown,USE-CHIPSELECT = <1>;	//USE_CHIPSELECT type NUMBER
-			unknown,USE-LOCK = <0>;	//USE_LOCK type NUMBER
-			unknown,USE-ADDRESS = <1>;	//USE_ADDRESS type NUMBER
-			unknown,USE-WAITREQUEST = <0>;	//USE_WAITREQUEST type NUMBER
-			unknown,USE-WRITEBYTEENABLE = <0>;	//USE_WRITEBYTEENABLE type NUMBER
-			unknown,USE-OUTPUTENABLE = <0>;	//USE_OUTPUTENABLE type NUMBER
-			unknown,USE-RESETREQUEST = <0>;	//USE_RESETREQUEST type NUMBER
-			unknown,USE-IRQ = <0>;	//USE_IRQ type NUMBER
-			unknown,USE-RESET-OUTPUT = <0>;	//USE_RESET_OUTPUT type NUMBER
-			unknown,ACTIVE-LOW-READ = <1>;	//ACTIVE_LOW_READ type NUMBER
-			unknown,ACTIVE-LOW-LOCK = <0>;	//ACTIVE_LOW_LOCK type NUMBER
-			unknown,ACTIVE-LOW-WRITE = <1>;	//ACTIVE_LOW_WRITE type NUMBER
-			unknown,ACTIVE-LOW-CHIPSELECT = <1>;	//ACTIVE_LOW_CHIPSELECT type NUMBER
-			unknown,ACTIVE-LOW-BYTEENABLE = <0>;	//ACTIVE_LOW_BYTEENABLE type NUMBER
-			unknown,ACTIVE-LOW-OUTPUTENABLE = <0>;	//ACTIVE_LOW_OUTPUTENABLE type NUMBER
-			unknown,ACTIVE-LOW-WRITEBYTEENABLE = <0>;	//ACTIVE_LOW_WRITEBYTEENABLE type NUMBER
-			unknown,ACTIVE-LOW-WAITREQUEST = <0>;	//ACTIVE_LOW_WAITREQUEST type NUMBER
-			unknown,ACTIVE-LOW-BEGINTRANSFER = <0>;	//ACTIVE_LOW_BEGINTRANSFER type NUMBER
-			unknown,ACTIVE-LOW-RESETREQUEST = <0>;	//ACTIVE_LOW_RESETREQUEST type NUMBER
-			unknown,ACTIVE-LOW-IRQ = <0>;	//ACTIVE_LOW_IRQ type NUMBER
-			unknown,ACTIVE-LOW-RESET-OUTPUT = <0>;	//ACTIVE_LOW_RESET_OUTPUT type NUMBER
-			unknown,CHIPSELECT-THROUGH-READLATENCY = <0>;	//CHIPSELECT_THROUGH_READLATENCY type NUMBER
-			unknown,IS-MEMORY-DEVICE = <1>;	//IS_MEMORY_DEVICE type NUMBER
-			unknown,MODULE-ASSIGNMENT-KEYS;	//MODULE_ASSIGNMENT_KEYS type BOOLEAN
-			unknown,MODULE-ASSIGNMENT-VALUES;	//MODULE_ASSIGNMENT_VALUES type BOOLEAN
-			unknown,CLOCK-RATE = <100000000>;	//CLOCK_RATE type NUMBER
-			unknown,AUTO-CLK-CLOCK-DOMAIN;	//AUTO_CLK_CLOCK_DOMAIN type BOOLEAN
-			unknown,AUTO-CLK-RESET-DOMAIN;	//AUTO_CLK_RESET_DOMAIN type BOOLEAN
-			unknown,AUTO-DEVICE-FAMILY;	//AUTO_DEVICE_FAMILY type BOOLEAN
-			unknown,deviceFamily;	//deviceFamily type BOOLEAN
-			unknown,deviceFamily;	//deviceFamily type BOOLEAN
-			unknown,clockRateKnown;	//clockRateKnown type BOOLEAN
-			unknown,clockRate;	//clockRate type BOOLEAN
-			unknown,associatedClock;	//associatedClock type BOOLEAN
-			unknown,synchronousEdges;	//synchronousEdges type BOOLEAN
-			unknown,deviceFamily;	//deviceFamily type BOOLEAN
-			unknown,embeddedsw.configuration.isFlash = <0>;	//embeddedsw.configuration.isFlash type NUMBER
-			unknown,embeddedsw.configuration.isMemoryDevice = <1>;	//embeddedsw.configuration.isMemoryDevice type NUMBER
-			unknown,embeddedsw.configuration.isNonVolatileStorage = <0>;	//embeddedsw.configuration.isNonVolatileStorage type NUMBER
-			unknown,embeddedsw.configuration.isPrintableDevice = <0>;	//embeddedsw.configuration.isPrintableDevice type NUMBER
-			unknown,addressAlignment;	//addressAlignment type BOOLEAN
-			unknown,addressGroup = <0>;	//addressGroup type NUMBER
-			unknown,addressSpan = <67108864>;	//addressSpan type NUMBER
-			unknown,addressUnits;	//addressUnits type BOOLEAN
-			unknown,associatedClock;	//associatedClock type BOOLEAN
-			unknown,associatedReset;	//associatedReset type BOOLEAN
-			unknown,bitsPerSymbol = <8>;	//bitsPerSymbol type NUMBER
-			unknown,burstcountUnits;	//burstcountUnits type BOOLEAN
-			unknown,explicitAddressSpan = <0>;	//explicitAddressSpan type NUMBER
-			unknown,holdTime = <0>;	//holdTime type NUMBER
-			unknown,isMemoryDevice;	//isMemoryDevice type BOOLEAN
-			unknown,maximumPendingReadTransactions = <3>;	//maximumPendingReadTransactions type NUMBER
-			unknown,minimumUninterruptedRunLength = <1>;	//minimumUninterruptedRunLength type NUMBER
-			unknown,readLatency = <0>;	//readLatency type NUMBER
-			unknown,readWaitStates = <0>;	//readWaitStates type NUMBER
-			unknown,readWaitTime = <0>;	//readWaitTime type NUMBER
-			unknown,setupTime = <0>;	//setupTime type NUMBER
-			unknown,timingUnits;	//timingUnits type BOOLEAN
-			unknown,writeLatency = <0>;	//writeLatency type NUMBER
-			unknown,writeWaitStates = <0>;	//writeWaitStates type NUMBER
-			unknown,writeWaitTime = <0>;	//writeWaitTime type NUMBER
-			unknown,deviceFamily;	//deviceFamily type BOOLEAN
-			unknown,associatedClock;	//associatedClock type BOOLEAN
-			unknown,deviceFamily;	//deviceFamily type BOOLEAN
-		}; //end unknown (cfi_flash)
+			bank-width = <2>;
+			device-width = <1>;
+			bootenv@0 {
+				reg = < 0x00000000 0x00008000 >;
+			};
+			bottompad@8000 {
+				reg = < 0x00008000 0x00018000 >;
+			};
+			goldenfpga@20000 {
+				reg = < 0x00020000 0x00C00000 >;
+			};
+			uboot@c20000 {
+				reg = < 0x00C20000 0x00040000 >;
+			};
+			toppad@c60000 {
+				reg = < 0x00C60000 0x033A0000 >;
+			};
+		}; //end flash (cfi_flash)
 
 		mm_clock_crossing_bridge_0: bridge@0xb000000 {
 			compatible = "ALTR,avalon-11.0","simple-bus";
