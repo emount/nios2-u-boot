@@ -1056,6 +1056,12 @@ smdk6400_config	:	unconfig
 #########################################################################
 
 # Custom builds for NIOS2-based platforms
+
+# Lab X AVB Video platform on Stratix-IV GX board
+labx_avb_video_s4gx_config : unconfig
+	@$(MKCONFIG) $@ nios2 nios2 avb_video_s4gx labx
+
+# TerASIC / Altera DE2 Cyclone-IV board
 DE2_115_config : unconfig
 	@$(MKCONFIG) $@ nios2 nios2 DE2_115 altera
 

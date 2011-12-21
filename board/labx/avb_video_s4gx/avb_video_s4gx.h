@@ -23,7 +23,14 @@
 #define DDR3_BOT_BASE	0xE0000000
 
 /* cfi_flash.uas is a altera_generic_tristate_controller */
-#define CFI_FLASH_BASE	0xEC000000
+#define CONFIG_SYS_FLASH_BASE	0xEC000000
+#define CONFIG_FLASH_CFI_DRIVER
+#define CONFIG_SYS_CFI_FLASH_STATUS_POLL /* fix amd flash issue */
+#define CONFIG_SYS_FLASH_CFI
+#define CONFIG_SYS_FLASH_USE_BUFFER_WRITE
+#define CONFIG_SYS_FLASH_PROTECTION
+#define CONFIG_SYS_MAX_FLASH_BANKS 1
+#define CONFIG_SYS_MAX_FLASH_SECT 1024
 
 /* mm_clock_crossing_bridge_0.s0 is a altera_avalon_mm_clock_crossing_bridge */
 /* Dumping slaves of mm_clock_crossing_bridge_0.m0*/
