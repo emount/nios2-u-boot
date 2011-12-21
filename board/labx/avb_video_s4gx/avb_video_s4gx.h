@@ -11,7 +11,14 @@
 /* Dumping slaves of nios2_qsys_0.data_master*/
 
 /* nios2_qsys_0.jtag_debug_module is a altera_nios2_qsys */
-#define NIOS2_QSYS_0_BASE	0xE8221800
+#define CONFIG_SYS_CLK_FREQ	100000000
+#define CONFIG_SYS_DCACHE_SIZE	2048
+#define CONFIG_SYS_DCACHELINE_SIZE	32
+#define CONFIG_SYS_ICACHELINE_SIZE	32
+#define CONFIG_SYS_EXCEPTION_ADDR	-1073741792
+#define CONFIG_SYS_ICACHE_SIZE	4096
+#define CONFIG_SYS_RESET_ADDR	-859701248
+#define IO_REGION_BASE	0xE0000000
 
 /* altpll_0.pll_slave is a altpll */
 #define ALTPLL_0_BASE	0xE82224C0
@@ -20,7 +27,8 @@
 #define ONCHIP_MEMORY_BASE	0xE9000000
 
 /* ddr3_bot.avl is a altera_mem_if_ddr3_emif */
-#define DDR3_BOT_BASE	0xE0000000
+#define CONFIG_SYS_SDRAM_BASE	0xC0000000
+#define CONFIG_SYS_SDRAM_SIZE	0x08000000
 
 /* cfi_flash.uas is a altera_generic_tristate_controller */
 #define CONFIG_SYS_FLASH_BASE	0xEC000000
@@ -41,10 +49,14 @@
 #define CONFIG_SYS_UART_FREQ	10000000
 
 /* timer.s1 is a altera_avalon_timer */
+#define CONFIG_SYS_TIMER_IRQ	0
 #define CONFIG_SYS_TIMER_FREQ	10000000
 #define CONFIG_SYS_TIMER_BASE	0xEB000020
 
 /* led_reg.s1 is a altera_avalon_pio */
 #define LED_REG_BASE	0xEB000040
+
+/* sysid_qsys_0.control_slave is a altera_avalon_sysid_qsys */
+#define CONFIG_SYS_SYSID_BASE	0xEB000000
 
 #endif	//CUSTOM_FPGA_H_
