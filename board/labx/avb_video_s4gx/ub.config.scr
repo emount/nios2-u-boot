@@ -1,0 +1,25 @@
+echo Setting up AVB Video / Stratix-IV GX environment
+echo ------------------------------
+echo Clobber DDR3 Configuration:
+set clobstart 0xC0000000
+
+echo FPGA Configuration:
+set goldenfpgastart 0xEC020000
+set goldenfpgasize 0x00C00000
+
+echo Bootloader Configuration:
+set bootstart 0xECC20000
+set bootsize 0x40000
+set bootenvstart 0xEC000000
+set bootenvsize 0x08000
+set eraseenv 'protect off ${bootenvstart} +${bootenvsize}; erase ${bootenvstart} +${bootenvsize}'
+
+echo Boot Configuration:
+set bootcmd 'bootm ${kernelastart}'
+set bootargs 'console=ttyAL0,115200 root=/dev/mtdblock6 rootfstype=squashfs init=/bin/init'
+set bootdelay 3
+
+echo Saving Configurations...
+saveenv
+
+echo Configuration Completed

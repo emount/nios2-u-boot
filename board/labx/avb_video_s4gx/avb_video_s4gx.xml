@@ -1,0 +1,17 @@
+<BoardInfo pov="cpu">
+	<Chosen>
+		<Bootargs val="console=ttyAL0 root=mtd4 rootfstype=squashfs init=/bin/init"/>
+	</Chosen>
+	<FlashPartitions>
+		<Partition name="bootenv" address="0x00000000" size="0x00008000">
+		</Partition>
+		<Partition name="bottompad" address="0x00008000" size="0x00018000">
+		</Partition>
+		<Partition name="goldenfpga" address="0x00020000" size="0x00C00000">
+		</Partition>
+		<Partition name="uboot" address="0x00C20000" size="0x00040000">
+		</Partition>
+		<Partition name="toppad" address="0x00C60000" size="0x033A0000">
+		</Partition>
+	</FlashPartitions>
+</BoardInfo>
