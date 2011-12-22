@@ -573,7 +573,9 @@ static int flash_status_check (flash_info_t * info, flash_sect_t sector,
 #endif
 
 	/* Wait for command completion */
+#ifdef CONFIG_SYS_LOW_RES_TIMER
 	reset_timer();
+#endif
 	start = get_timer (0);
 	while (flash_is_busy (info, sector)) {
 		if (get_timer (start) > tout) {
@@ -662,7 +664,9 @@ static int flash_status_poll(flash_info_t *info, void *src, void *dst,
 #endif
 
 	/* Wait for command completion */
+#ifdef CONFIG_SYS_LOW_RES_TIMER
 	reset_timer();
+#endif
 	start = get_timer(0);
 	while (1) {
 		switch (info->portwidth) {
@@ -1874,6 +1878,10 @@ static void flash_fixup_stm(flash_info_t *info, struct cfi_qry *qry)
 			    info->device_id == 0x22D7) { /* M29W800DT */
 				cfi_reverse_geometry(qry);
 			}
+		} else if (flash_read_uchar(info, info->ext_addr + 0xf) == 3) {
+			/* CFI >= 1.1, deduct from top/bottom flag */
+			/* note: ext_addr is valid since cfi_version > 0 */
+			cfi_reverse_geometry(qry);
 		}
 	}
 }
@@ -2141,7 +2149,7 @@ void flash_protect_default(void)
 
 #if defined(CONFIG_SYS_FLASH_AUTOPROTECT_LIST)
 	for (i = 0; i < (sizeof(apl) / sizeof(struct apl_s)); i++) {
-		debug("autoprotecting from %08x to %08x\n",
+		debug("autoprotecting from %08lx to %08lx\n",
 		      apl[i].start, apl[i].start + apl[i].size - 1);
 		flash_protect(FLAG_PROTECT_SET,
 			       apl[i].start,

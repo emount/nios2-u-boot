@@ -34,14 +34,17 @@ extern void fsl_ddr_set_memctl_regs(const fsl_ddr_cfg_regs_t *regs,
 u8 spd_i2c_addr[CONFIG_NUM_DDR_CONTROLLERS][CONFIG_DIMM_SLOTS_PER_CTLR] = {
 	[0][0] = SPD_EEPROM_ADDRESS,
 };
-#endif
-#if (CONFIG_NUM_DDR_CONTROLLERS == 2) && (CONFIG_DIMM_SLOTS_PER_CTLR == 1)
+#elif (CONFIG_NUM_DDR_CONTROLLERS == 1) && (CONFIG_DIMM_SLOTS_PER_CTLR == 2)
+u8 spd_i2c_addr[CONFIG_NUM_DDR_CONTROLLERS][CONFIG_DIMM_SLOTS_PER_CTLR] = {
+	[0][0] = SPD_EEPROM_ADDRESS1,	/* controller 1 */
+	[0][1] = SPD_EEPROM_ADDRESS2,	/* controller 1 */
+};
+#elif (CONFIG_NUM_DDR_CONTROLLERS == 2) && (CONFIG_DIMM_SLOTS_PER_CTLR == 1)
 u8 spd_i2c_addr[CONFIG_NUM_DDR_CONTROLLERS][CONFIG_DIMM_SLOTS_PER_CTLR] = {
 	[0][0] = SPD_EEPROM_ADDRESS1,	/* controller 1 */
 	[1][0] = SPD_EEPROM_ADDRESS2,	/* controller 2 */
 };
-#endif
-#if (CONFIG_NUM_DDR_CONTROLLERS == 2) && (CONFIG_DIMM_SLOTS_PER_CTLR == 2)
+#elif (CONFIG_NUM_DDR_CONTROLLERS == 2) && (CONFIG_DIMM_SLOTS_PER_CTLR == 2)
 u8 spd_i2c_addr[CONFIG_NUM_DDR_CONTROLLERS][CONFIG_DIMM_SLOTS_PER_CTLR] = {
 	[0][0] = SPD_EEPROM_ADDRESS1,	/* controller 1 */
 	[0][1] = SPD_EEPROM_ADDRESS2,	/* controller 1 */
@@ -132,7 +135,6 @@ void fsl_ddr_get_spd(generic_spd_eeprom_t *ctrl_dimms_spd,
  *				|  interleaving
  */
 
-#ifdef DEBUG
 const char *step_string_tbl[] = {
 	"STEP_GET_SPD",
 	"STEP_COMPUTE_DIMM_PARMS",
@@ -153,7 +155,6 @@ const char * step_to_string(unsigned int step) {
 
 	return step_string_tbl[s];
 }
-#endif
 
 int step_assign_addresses(fsl_ddr_info_t *pinfo,
 			  unsigned int dbw_cap_adj[],
@@ -174,7 +175,19 @@ int step_assign_addresses(fsl_ddr_info_t *pinfo,
 		switch (pinfo->memctl_opts[i].data_bus_width) {
 		case 2:
 			/* 16-bit */
-			printf("can't handle 16-bit mode yet\n");
+			for (j = 0; j < CONFIG_DIMM_SLOTS_PER_CTLR; j++) {
+				unsigned int dw;
+				if (!pinfo->dimm_params[i][j].n_ranks)
+					continue;
+				dw = pinfo->dimm_params[i][j].primary_sdram_width;
+				if ((dw == 72 || dw == 64)) {
+					dbw_cap_adj[i] = 2;
+					break;
+				} else if ((dw == 40 || dw == 32)) {
+					dbw_cap_adj[i] = 1;
+					break;
+				}
+			}
 			break;
 
 		case 1:
@@ -313,6 +326,7 @@ fsl_ddr_compute(fsl_ddr_info_t *pinfo, unsigned int start_step,
 
 	switch (start_step) {
 	case STEP_GET_SPD:
+#if defined(CONFIG_DDR_SPD) || defined(CONFIG_SPD_EEPROM)
 		/* STEP 1:  Gather all DIMM SPD data */
 		for (i = 0; i < CONFIG_NUM_DDR_CONTROLLERS; i++) {
 			fsl_ddr_get_spd(pinfo->spd_installed_dimms[i], i);
@@ -330,12 +344,20 @@ fsl_ddr_compute(fsl_ddr_info_t *pinfo, unsigned int start_step,
 					&(pinfo->dimm_params[i][j]);
 
 				retval = compute_dimm_parameters(spd, pdimm, i);
+#ifdef CONFIG_SYS_DDR_RAW_TIMING
+				if (retval != 0) {
+					printf("SPD error! Trying fallback to "
+					"raw timing calculation\n");
+					fsl_ddr_get_dimm_params(pdimm, i, j);
+				}
+#else
 				if (retval == 2) {
 					printf("Error: compute_dimm_parameters"
 					" non-zero returned FATAL value "
 					"for memctl=%u dimm=%u\n", i, j);
 					return 0;
 				}
+#endif
 				if (retval) {
 					debug("Warning: compute_dimm_parameters"
 					" non-zero return value for memctl=%u "
@@ -344,6 +366,17 @@ fsl_ddr_compute(fsl_ddr_info_t *pinfo, unsigned int start_step,
 			}
 		}
 
+#else
+	case STEP_COMPUTE_DIMM_PARMS:
+		for (i = 0; i < CONFIG_NUM_DDR_CONTROLLERS; i++) {
+			for (j = 0; j < CONFIG_DIMM_SLOTS_PER_CTLR; j++) {
+				dimm_params_t *pdimm =
+					&(pinfo->dimm_params[i][j]);
+				fsl_ddr_get_dimm_params(pdimm, i, j);
+			}
+		}
+		debug("Filling dimm parameters from board specific file\n");
+#endif
 	case STEP_COMPUTE_COMMON_PARMS:
 		/*
 		 * STEP 3: Compute a common set of timing parameters
@@ -464,7 +497,12 @@ phys_size_t fsl_ddr_sdram(void)
 	memset(&info, 0, sizeof(fsl_ddr_info_t));
 
 	/* Compute it once normally. */
-	total_memory = fsl_ddr_compute(&info, STEP_GET_SPD, 0);
+#ifdef CONFIG_FSL_DDR_INTERACTIVE
+	if (getenv("ddr_interactive"))
+		total_memory = fsl_ddr_interactive(&info);
+	else
+#endif
+		total_memory = fsl_ddr_compute(&info, STEP_GET_SPD, 0);
 
 	/* Check for memory controller interleaving. */
 	memctl_interleaved = 0;

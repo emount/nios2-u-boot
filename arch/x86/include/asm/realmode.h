@@ -1,6 +1,6 @@
 /*
  * (C) Copyright 2002
- * Daniel Engström, Omicron Ceti AB, daniel@omicron.se
+ * Daniel EngstrÃ¶m, Omicron Ceti AB, daniel@omicron.se
  *
  * See file CREDITS for list of people who contributed to this
  * project.
@@ -24,6 +24,10 @@
 #ifndef __ASM_REALMODE_H_
 #define __ASM_REALMODE_H_
 #include <asm/ptrace.h>
+
+extern ulong __realmode_start;
+extern ulong __realmode_size;
+extern char realmode_enter;
 
 int bios_setup(void);
 int enter_realmode(u16 seg, u16 off, struct pt_regs *in, struct pt_regs *out);

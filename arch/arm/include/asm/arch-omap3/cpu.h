@@ -218,6 +218,7 @@ struct sdrc {
 
 /* EMIF4 */
 typedef struct emif4 {
+	unsigned int emif_mod_id_rev;
 	unsigned int sdram_sts;
 	unsigned int sdram_config;
 	unsigned int res1;
@@ -281,6 +282,51 @@ typedef struct emif4 {
 #define SOFTRESET		(0x1 << 1)
 #define SMART_IDLE		(0x2 << 3)
 #define REF_ON_IDLE		(0x1 << 6)
+
+/* DMA */
+#ifndef __KERNEL_STRICT_NAMES
+#ifndef __ASSEMBLY__
+struct dma4_chan {
+	u32 ccr;
+	u32 clnk_ctrl;
+	u32 cicr;
+	u32 csr;
+	u32 csdp;
+	u32 cen;
+	u32 cfn;
+	u32 cssa;
+	u32 cdsa;
+	u32 csel;
+	u32 csfl;
+	u32 cdel;
+	u32 cdfl;
+	u32 csac;
+	u32 cdac;
+	u32 ccen;
+	u32 ccfn;
+	u32 color;
+};
+
+struct dma4 {
+	u32 revision;
+	u8 res1[0x4];
+	u32 irqstatus_l[0x4];
+	u32 irqenable_l[0x4];
+	u32 sysstatus;
+	u32 ocp_sysconfig;
+	u8 res2[0x34];
+	u32 caps_0;
+	u8 res3[0x4];
+	u32 caps_2;
+	u32 caps_3;
+	u32 caps_4;
+	u32 gcr;
+	u8 res4[0x4];
+	struct dma4_chan chan[32];
+};
+
+#endif /*__ASSEMBLY__ */
+#endif /* __KERNEL_STRICT_NAMES */
 
 /* timer regs offsets (32 bit regs) */
 
@@ -497,5 +543,31 @@ struct pm {
 
 /* MUSB base */
 #define MUSB_BASE		(OMAP34XX_CORE_L4_IO_BASE + 0xAB000)
+
+/* OMAP3 GPIO registers */
+#define OMAP_GPIO_REVISION		0x0000
+#define OMAP_GPIO_SYSCONFIG		0x0010
+#define OMAP_GPIO_SYSSTATUS		0x0014
+#define OMAP_GPIO_IRQSTATUS1		0x0018
+#define OMAP_GPIO_IRQSTATUS2		0x0028
+#define OMAP_GPIO_IRQENABLE2		0x002c
+#define OMAP_GPIO_IRQENABLE1		0x001c
+#define OMAP_GPIO_WAKE_EN		0x0020
+#define OMAP_GPIO_CTRL			0x0030
+#define OMAP_GPIO_OE			0x0034
+#define OMAP_GPIO_DATAIN		0x0038
+#define OMAP_GPIO_DATAOUT		0x003c
+#define OMAP_GPIO_LEVELDETECT0		0x0040
+#define OMAP_GPIO_LEVELDETECT1		0x0044
+#define OMAP_GPIO_RISINGDETECT		0x0048
+#define OMAP_GPIO_FALLINGDETECT		0x004c
+#define OMAP_GPIO_DEBOUNCE_EN		0x0050
+#define OMAP_GPIO_DEBOUNCE_VAL		0x0054
+#define OMAP_GPIO_CLEARIRQENABLE1	0x0060
+#define OMAP_GPIO_SETIRQENABLE1		0x0064
+#define OMAP_GPIO_CLEARWKUENA		0x0080
+#define OMAP_GPIO_SETWKUENA		0x0084
+#define OMAP_GPIO_CLEARDATAOUT		0x0090
+#define OMAP_GPIO_SETDATAOUT		0x0094
 
 #endif /* _CPU_H */

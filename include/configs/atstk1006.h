@@ -32,8 +32,6 @@
 #define CONFIG_ATSTK1006
 #define CONFIG_ATSTK1000
 
-#define CONFIG_ATSTK1000_EXT_FLASH
-
 /*
  * Timer clock frequency. We're using the CPU-internal COUNT register
  * for this, so this is equivalent to the CPU core clock frequency
@@ -122,7 +120,6 @@
  * "ethaddr" and "eth1addr". This is normally done during production.
  */
 #define CONFIG_OVERWRITE_ETHADDR_ONCE
-#define CONFIG_NET_MULTI
 
 /*
  * BOOTP options
@@ -161,11 +158,8 @@
 
 #define CONFIG_NR_DRAM_BANKS		1
 
-/* External flash on STK1000 */
-#if 0
-#define CONFIG_SYS_FLASH_CFI			1
-#define CONFIG_FLASH_CFI_DRIVER		1
-#endif
+#define CONFIG_SYS_FLASH_CFI
+#define CONFIG_FLASH_CFI_DRIVER
 
 #define CONFIG_SYS_FLASH_BASE			0x00000000
 #define CONFIG_SYS_FLASH_SIZE			0x800000

@@ -25,43 +25,48 @@
 #include <asm/io.h>
 #include <asm/arch/tegra2.h>
 #include <asm/arch/clk_rst.h>
+#include <asm/arch/clock.h>
 #include <asm/arch/pmc.h>
 #include <asm/arch/pinmux.h>
 #include <asm/arch/scu.h>
 #include <common.h>
 
-u32 s_first_boot = 1;
+/* Returns 1 if the current CPU executing is a Cortex-A9, else 0 */
+static int ap20_cpu_is_cortexa9(void)
+{
+	u32 id = readb(NV_PA_PG_UP_BASE + PG_UP_TAG_0);
+	return id == (PG_UP_TAG_0_PID_CPU & 0xff);
+}
 
 void init_pllx(void)
 {
 	struct clk_rst_ctlr *clkrst = (struct clk_rst_ctlr *)NV_PA_CLK_RST_BASE;
+	struct clk_pll *pll = &clkrst->crc_pll[CLOCK_ID_XCPU];
 	u32 reg;
 
 	/* If PLLX is already enabled, just return */
-	reg = readl(&clkrst->crc_pllx_base);
-	if (reg & PLL_ENABLE)
+	if (readl(&pll->pll_base) & PLL_ENABLE_MASK)
 		return;
 
 	/* Set PLLX_MISC */
-	reg = CPCON;				/* CPCON[11:8]  = 0001 */
-	writel(reg, &clkrst->crc_pllx_misc);
+	writel(1 << PLL_CPCON_SHIFT, &pll->pll_misc);
 
 	/* Use 12MHz clock here */
-	reg = (PLL_BYPASS | PLL_DIVM);
-	reg |= (1000 << 8);			/* DIVN = 0x3E8 */
-	writel(reg, &clkrst->crc_pllx_base);
+	reg = PLL_BYPASS_MASK | (12 << PLL_DIVM_SHIFT);
+	reg |= 1000 << PLL_DIVN_SHIFT;
+	writel(reg, &pll->pll_base);
 
-	reg |= PLL_ENABLE;
-	writel(reg, &clkrst->crc_pllx_base);
+	reg |= PLL_ENABLE_MASK;
+	writel(reg, &pll->pll_base);
 
-	reg &= ~PLL_BYPASS;
-	writel(reg, &clkrst->crc_pllx_base);
+	reg &= ~PLL_BYPASS_MASK;
+	writel(reg, &pll->pll_base);
 }
 
 static void enable_cpu_clock(int enable)
 {
 	struct clk_rst_ctlr *clkrst = (struct clk_rst_ctlr *)NV_PA_CLK_RST_BASE;
-	u32 reg, clk;
+	u32 clk;
 
 	/*
 	 * NOTE:
@@ -83,27 +88,19 @@ static void enable_cpu_clock(int enable)
 		writel(SUPER_CCLK_DIVIDER, &clkrst->crc_super_cclk_div);
 	}
 
-	/* Fetch the register containing the main CPU complex clock enable */
-	reg = readl(&clkrst->crc_clk_out_enb_l);
-	reg |= CLK_ENB_CPU;
-
 	/*
 	 * Read the register containing the individual CPU clock enables and
 	 * always stop the clock to CPU 1.
 	 */
 	clk = readl(&clkrst->crc_clk_cpu_cmplx);
-	clk |= CPU1_CLK_STP;
+	clk |= 1 << CPU1_CLK_STP_SHIFT;
 
-	if (enable) {
-		/* Unstop the CPU clock */
-		clk &= ~CPU0_CLK_STP;
-	} else {
-		/* Stop the CPU clock */
-		clk |= CPU0_CLK_STP;
-	}
-
+	/* Stop/Unstop the CPU clock */
+	clk &= ~CPU0_CLK_STP_MASK;
+	clk |= !enable << CPU0_CLK_STP_SHIFT;
 	writel(clk, &clkrst->crc_clk_cpu_cmplx);
-	writel(reg, &clkrst->crc_clk_out_enb_l);
+
+	clock_enable(PERIPH_ID_CPU);
 }
 
 static int is_cpu_powered(void)
@@ -178,9 +175,6 @@ static void enable_cpu_power_rail(void)
 
 static void reset_A9_cpu(int reset)
 {
-	struct clk_rst_ctlr *clkrst = (struct clk_rst_ctlr *)NV_PA_CLK_RST_BASE;
-	u32 reg, cpu;
-
 	/*
 	* NOTE:  Regardless of whether the request is to hold the CPU in reset
 	*        or take it out of reset, every processor in the CPU complex
@@ -189,48 +183,21 @@ static void reset_A9_cpu(int reset)
 	*        are multiple processors in the CPU complex.
 	*/
 
-	/* Hold CPU 1 in reset */
-	cpu = SET_DBGRESET1 | SET_DERESET1 | SET_CPURESET1;
-	writel(cpu, &clkrst->crc_cpu_cmplx_set);
+	/* Hold CPU 1 in reset, and CPU 0 if asked */
+	reset_cmplx_set_enable(1, crc_rst_cpu | crc_rst_de | crc_rst_debug, 1);
+	reset_cmplx_set_enable(0, crc_rst_cpu | crc_rst_de | crc_rst_debug,
+			       reset);
 
-	reg = readl(&clkrst->crc_rst_dev_l);
-	if (reset) {
-		/* Now place CPU0 into reset */
-		cpu |= SET_DBGRESET0 | SET_DERESET0 | SET_CPURESET0;
-		writel(cpu, &clkrst->crc_cpu_cmplx_set);
-
-		/* Enable master CPU reset */
-		reg |= SWR_CPU_RST;
-	} else {
-		/* Take CPU0 out of reset */
-		cpu = CLR_DBGRESET0 | CLR_DERESET0 | CLR_CPURESET0;
-		writel(cpu, &clkrst->crc_cpu_cmplx_clr);
-
-		/* Disable master CPU reset */
-		reg &= ~SWR_CPU_RST;
-	}
-
-	writel(reg, &clkrst->crc_rst_dev_l);
+	/* Enable/Disable master CPU reset */
+	reset_set_enable(PERIPH_ID_CPU, reset);
 }
 
 static void clock_enable_coresight(int enable)
 {
-	struct clk_rst_ctlr *clkrst = (struct clk_rst_ctlr *)NV_PA_CLK_RST_BASE;
-	u32 rst, clk, src;
+	u32 rst, src;
 
-	rst = readl(&clkrst->crc_rst_dev_u);
-	clk = readl(&clkrst->crc_clk_out_enb_u);
-
-	if (enable) {
-		rst &= ~SWR_CSITE_RST;
-		clk |= CLK_ENB_CSITE;
-	} else {
-		rst |= SWR_CSITE_RST;
-		clk &= ~CLK_ENB_CSITE;
-	}
-
-	writel(clk, &clkrst->crc_clk_out_enb_u);
-	writel(rst, &clkrst->crc_rst_dev_u);
+	clock_set_enable(PERIPH_ID_CORESIGHT, enable);
+	reset_set_enable(PERIPH_ID_CORESIGHT, !enable);
 
 	if (enable) {
 		/*
@@ -240,7 +207,7 @@ static void clock_enable_coresight(int enable)
 		 *  (bits 7:0), so 00000001b == 1.5 (n+1 + .5)
 		 */
 		src = CLK_DIVIDER(NVBL_PLLP_KHZ, 144000);
-		writel(src, &clkrst->crc_clk_src_csite);
+		clock_ll_set_source_divisor(PERIPH_ID_CSI, 0, src);
 
 		/* Unlock the CPU CoreSight interfaces */
 		rst = 0xC5ACCE55;
@@ -321,38 +288,37 @@ void init_pmc_scratch(void)
 	writel(CONFIG_SYS_BOARD_ODMDATA, &pmc->pmc_scratch20);
 }
 
-void cpu_start(void)
+void tegra2_start(void)
 {
 	struct pmux_tri_ctlr *pmt = (struct pmux_tri_ctlr *)NV_PA_APB_MISC_BASE;
 
-	/* enable JTAG */
-	writel(0xC0, &pmt->pmt_cfg_ctl);
+	/* If we are the AVP, start up the first Cortex-A9 */
+	if (!ap20_cpu_is_cortexa9()) {
+		/* enable JTAG */
+		writel(0xC0, &pmt->pmt_cfg_ctl);
 
-	if (s_first_boot) {
 		/*
-		 * Need to set this before cold-booting,
-		 *  otherwise we'll end up in an infinite loop.
-		 */
-		s_first_boot = 0;
-		cold_boot();
-	}
-}
+		* If we are ARM7 - give it a different stack. We are about to
+		* start up the A9 which will want to use this one.
+		*/
+		asm volatile("ldr	sp, =%c0\n"
+			: : "i"(AVP_EARLY_BOOT_STACK_LIMIT));
 
-void tegra2_start()
-{
-	if (s_first_boot) {
-		/* Init Debug UART Port (115200 8n1) */
-		uart_init();
-
-		/* Init PMC scratch memory */
-		init_pmc_scratch();
+		start_cpu((u32)_start);
+		halt_avp();
+		/* not reached */
 	}
 
-#ifdef CONFIG_ENABLE_CORTEXA9
-	/* take the mpcore out of reset */
-	cpu_start();
+	/* Init PMC scratch memory */
+	init_pmc_scratch();
 
-	/* configure cache */
-	cache_configure();
-#endif
+	enable_scu();
+
+	/* enable SMP mode and FW for CPU0, by writing to Auxiliary Ctl reg */
+	asm volatile(
+		"mrc	p15, 0, r0, c1, c0, 1\n"
+		"orr	r0, r0, #0x41\n"
+		"mcr	p15, 0, r0, c1, c0, 1\n");
+
+	/* FIXME: should have ap20's L2 disabled too? */
 }

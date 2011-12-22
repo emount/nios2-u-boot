@@ -35,6 +35,48 @@
 _TEXT_BASE:
 	.word	CONFIG_SYS_TEXT_BASE	/* sdram load addr from config.mk */
 
+.global save_boot_params
+save_boot_params:
+#ifdef CONFIG_SPL_BUILD
+	ldr	r4, =omap3_boot_device
+	ldr	r5, [r0, #0x4]
+	and	r5, r5, #0xff
+	str	r5, [r4]
+#endif
+	bx	lr
+
+.global omap3_gp_romcode_call
+omap3_gp_romcode_call:
+	PUSH {r4-r12, lr} @ Save all registers from ROM code!
+	MOV r12, r0	@ Copy the Service ID in R12
+	MOV r0, r1	@ Copy parameter to R0
+	mcr     p15, 0, r0, c7, c10, 4	@ DSB
+	mcr     p15, 0, r0, c7, c10, 5	@ DMB
+	.word	0xe1600070	@ SMC #0 to enter monitor - hand assembled
+				@ because we use -march=armv5
+	POP {r4-r12, pc}
+
+/*
+ * Funtion for making PPA HAL API calls in secure devices
+ * Input:
+ *	R0 - Service ID
+ *	R1 - paramer list
+ */
+.global do_omap3_emu_romcode_call
+do_omap3_emu_romcode_call:
+	PUSH {r4-r12, lr} @ Save all registers from ROM code!
+	MOV r12, r0	@ Copy the Secure Service ID in R12
+	MOV r3, r1	@ Copy the pointer to va_list in R3
+	MOV r1, #0	@ Process ID - 0
+	MOV r2, #OMAP3_EMU_HAL_START_HAL_CRITICAL	@ Copy the pointer
+							@ to va_list in R3
+	MOV r6, #0xFF	@ Indicate new Task call
+	mcr     p15, 0, r0, c7, c10, 4	@ DSB
+	mcr     p15, 0, r0, c7, c10, 5	@ DMB
+	.word	0xe1600071	@ SMC #1 to call PPA service - hand assembled
+				@ because we use -march=armv5
+	POP {r4-r12, pc}
+
 #if !defined(CONFIG_SYS_NAND_BOOT) && !defined(CONFIG_SYS_NAND_BOOT)
 /**************************************************************************
  * cpy_clk_code: relocates clock code into SRAM where its safer to execute
@@ -174,6 +216,14 @@ lowlevel_init:
 	ldr	sp, SRAM_STACK
 	str	ip, [sp]	/* stash old link register */
 	mov	ip, lr		/* save link reg across call */
+#if !defined(CONFIG_SYS_NAND_BOOT) && !defined(CONFIG_SYS_ONENAND_BOOT)
+/*
+ * No need to copy/exec the clock code - DPLL adjust already done
+ * in NAND/oneNAND Boot.
+ */
+	ldr	r1, =SRAM_CLK_CODE
+	bl	cpy_clk_code
+#endif /* NAND Boot */
 	bl	s_init		/* go setup pll, mux, memory */
 	ldr	ip, [sp]	/* restore save ip */
 	mov	lr, ip		/* restore link reg */

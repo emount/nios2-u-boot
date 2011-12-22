@@ -23,6 +23,7 @@
  */
 
 #include <common.h>
+#include <asm/arch/cpu.h>
 #include <asm/arch/pantheon.h>
 
 /*
@@ -85,13 +86,6 @@ ulong read_timer(void)
 	return val;
 }
 
-void reset_timer_masked(void)
-{
-	/* reset time */
-	gd->tbl = read_timer();
-	gd->tbu = 0;
-}
-
 ulong get_timer_masked(void)
 {
 	ulong now = read_timer();
@@ -108,20 +102,10 @@ ulong get_timer_masked(void)
 	return gd->tbu;
 }
 
-void reset_timer(void)
-{
-	reset_timer_masked();
-}
-
 ulong get_timer(ulong base)
 {
 	return ((get_timer_masked() / (CONFIG_SYS_HZ_CLOCK / 1000)) -
 		base);
-}
-
-void set_timer(ulong t)
-{
-	gd->tbu = t;
 }
 
 void __udelay(unsigned long usec)
@@ -161,7 +145,8 @@ int timer_init(void)
 	/* Enable timer 0 */
 	writel(0x1, &panthtimers->cer);
 	/* init the gd->tbu and gd->tbl value */
-	reset_timer_masked();
+	gd->tbl = read_timer();
+	gd->tbu = 0;
 
 	return 0;
 }

@@ -34,21 +34,16 @@
 #include <i2c.h>
 #include <mmc.h>
 #include <fsl_esdhc.h>
-#include <mxc_gpio.h>
+#include <asm/gpio.h>
 
 DECLARE_GLOBAL_DATA_PTR;
-
-u32 get_board_rev(void)
-{
-	return get_cpu_rev();
-}
 
 int dram_init(void)
 {
 	u32 size1, size2;
 
-	size1 = get_ram_size((volatile void *)PHYS_SDRAM_1, PHYS_SDRAM_1_SIZE);
-	size2 = get_ram_size((volatile void *)PHYS_SDRAM_2, PHYS_SDRAM_2_SIZE);
+	size1 = get_ram_size((void *)PHYS_SDRAM_1, PHYS_SDRAM_1_SIZE);
+	size2 = get_ram_size((void *)PHYS_SDRAM_2, PHYS_SDRAM_2_SIZE);
 
 	gd->ram_size = size1 + size2;
 
@@ -82,6 +77,17 @@ static void setup_iomux_uart(void)
 				PAD_CTL_HYS_ENABLE | PAD_CTL_100K_PU |
 				PAD_CTL_ODE_OPENDRAIN_ENABLE);
 }
+
+#ifdef CONFIG_USB_EHCI_MX5
+int board_ehci_hcd_init(int port)
+{
+	/* request VBUS power enable pin, GPIO[8}, gpio7 */
+	mxc_request_iomux(MX53_PIN_ATA_DA_2, IOMUX_CONFIG_ALT1);
+	gpio_direction_output(IOMUX_TO_GPIO(MX53_PIN_ATA_DA_2), 0);
+	gpio_set_value(IOMUX_TO_GPIO(MX53_PIN_ATA_DA_2), 1);
+	return 0;
+}
+#endif
 
 static void setup_iomux_fec(void)
 {
@@ -145,10 +151,13 @@ int board_mmc_getcd(u8 *cd, struct mmc *mmc)
 {
 	struct fsl_esdhc_cfg *cfg = (struct fsl_esdhc_cfg *)mmc->priv;
 
+	mxc_request_iomux(MX53_PIN_EIM_DA11, IOMUX_CONFIG_ALT1);
+	mxc_request_iomux(MX53_PIN_EIM_DA13, IOMUX_CONFIG_ALT1);
+
 	if (cfg->esdhc_base == MMC_SDHC1_BASE_ADDR)
-		*cd = mxc_gpio_get(77); /*GPIO3_13*/
+		*cd = gpio_get_value(77); /*GPIO3_13*/
 	else
-		*cd = mxc_gpio_get(75); /*GPIO3_11*/
+		*cd = gpio_get_value(75); /*GPIO3_11*/
 
 	return 0;
 }
@@ -288,7 +297,6 @@ int board_early_init_f(void)
 
 int board_init(void)
 {
-	gd->bd->bi_arch_number = MACH_TYPE_MX53_LOCO;
 	gd->bd->bi_boot_params = PHYS_SDRAM_1 + 0x100;
 
 	return 0;

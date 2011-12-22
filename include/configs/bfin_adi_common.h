@@ -55,7 +55,6 @@
 # endif
 # ifdef CONFIG_POST
 #  define CONFIG_CMD_DIAG
-#  define CONFIG_POST_ALT_LIST
 # endif
 # ifdef CONFIG_RTC_BFIN
 #  define CONFIG_CMD_DATE
@@ -111,6 +110,10 @@
 #define CONFIG_SILENT_CONSOLE
 #ifndef CONFIG_BAUDRATE
 # define CONFIG_BAUDRATE	57600
+#endif
+#ifndef CONFIG_DEBUG_EARLY_SERIAL
+# define CONFIG_SERIAL_MULTI
+# define CONFIG_SYS_BFIN_UART
 #endif
 
 /*
@@ -200,7 +203,8 @@
 	"nc=" \
 		"set ncip ${serverip};" \
 		"set stdin nc;" \
-		"set stdout nc" \
+		"set stdout nc;" \
+		"set stderr nc" \
 		"\0"
 # else
 #  define NETCONSOLE_ENV
@@ -261,7 +265,7 @@
 #  define CONFIG_SERVERIP	192.168.0.2
 # endif
 # ifndef CONFIG_ROOTPATH
-#  define CONFIG_ROOTPATH	/romfs
+#  define CONFIG_ROOTPATH	"/romfs"
 # endif
 # ifdef CONFIG_CMD_DHCP
 #  ifndef CONFIG_SYS_AUTOLOAD
@@ -271,6 +275,11 @@
 # define CONFIG_IP_DEFRAG
 # define CONFIG_NET_RETRY_COUNT 20
 #endif
+
+/*
+ * Flash Settings
+ */
+#define CONFIG_FLASH_SHOW_PROGRESS 45
 
 /*
  * SPI Settings

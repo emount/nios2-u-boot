@@ -74,7 +74,7 @@ void diu_set_pixel_clock(unsigned int pixclock)
 	temp = 1000000000 / pixclock;
 	temp *= 1000;
 	pixval = speed_ccb / temp;
-	debug("DIU pixval = %lu\n", pixval);
+	debug("DIU pixval = %u\n", pixval);
 
 	/* Modify PXCLK in GUTS CLKDVDR */
 	temp = in_be32(&gur->clkdvdr) & 0x2000FFFF;
@@ -139,7 +139,7 @@ int platform_diu_init(unsigned int xres, unsigned int yres, const char *port)
 	clrsetbits_be32(&gur->pmuxcr, PMUXCR_ELBCDIU_MASK, PMUXCR_ELBCDIU_DIU);
 	pmuxcr = in_be32(&gur->pmuxcr);
 
-	return fsl_diu_init(xres, pixel_format, 0);
+	return fsl_diu_init(xres, yres, pixel_format, 0);
 }
 
 /*

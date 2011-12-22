@@ -3,7 +3,7 @@
  * Graeme Russ, <graeme.russ@gmail.com>
  *
  * (C) Copyright 2002
- * Daniel Engström, Omicron Ceti AB, <daniel@omicron.se>
+ * Daniel EngstrÃ¶m, Omicron Ceti AB, <daniel@omicron.se>
  *
  * See file CREDITS for list of people who contributed to this
  * project.
@@ -27,7 +27,7 @@
 #include <common.h>
 #include <asm/io.h>
 #include <asm/processor-flags.h>
-#include <asm/ic/sc520.h>
+#include <asm/arch/sc520.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -49,7 +49,7 @@ int cpu_init_f(void)
 	asm("movl	$0x2000, %%ecx\n"
 	    "0:		pushl %%ecx\n"
 	    "popl	%%ecx\n"
-	    "loop 0b\n": : : "ecx");
+	    "loop 0b\n" : : : "ecx");
 
 	return x86_cpu_init_f();
 }

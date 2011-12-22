@@ -1,6 +1,6 @@
 /*
  * (C) Copyright 2002
- * Daniel Engström, Omicron Ceti AB, daniel@omicron.se.
+ * Daniel EngstrÃ¶m, Omicron Ceti AB, daniel@omicron.se.
  *
  * See file CREDITS for list of people who contributed to this
  * project.
@@ -24,6 +24,14 @@
 #ifndef _U_BOOT_I386_H_
 #define _U_BOOT_I386_H_	1
 
+/* Exports from the Linker Script */
+extern ulong __text_start;
+extern ulong __data_end;
+extern ulong __rel_dyn_start;
+extern ulong __rel_dyn_end;
+extern ulong __bss_start;
+extern ulong __bss_end;
+
 /* cpu/.../cpu.c */
 int x86_cpu_init_r(void);
 int cpu_init_r(void);
@@ -36,14 +44,12 @@ typedef void (timer_fnc_t) (void);
 int register_timer_isr (timer_fnc_t *isr_func);
 
 /* Architecture specific - can be in arch/x86/cpu/, arch/x86/lib/, or $(BOARD)/ */
-int timer_init(void);
 int dram_init_f(void);
 
 /* cpu/.../interrupts.c */
 int cpu_init_interrupts(void);
 
 /* board/.../... */
-int board_init(void);
 int dram_init(void);
 
 void setup_pcat_compatibility(void);

@@ -52,7 +52,6 @@
 #define	CONFIG_ETHER_ON_SCC		/* Ethernet is on SCC */
 #undef	CONFIG_ETHER_ON_FCC		/* Ethernet is not on FCC     */
 #undef	CONFIG_ETHER_NONE		/* No external Ethernet   */
-#define CONFIG_NET_MULTI
 
 #define CONFIG_ETHER_INDEX	4
 #define CONFIG_HAS_ETH0
@@ -87,7 +86,7 @@
 	"newenv="							\
 		"prot off 0xFE0C0000 +0x40000 && "			\
 		"era 0xFE0C0000 +0x40000\0"				\
-	"rootpath=/opt/eldk/ppc_82xx\0"					\
+	"arch=ppc_82xx\0"					\
 	""
 
 #define CONFIG_SYS_MONITOR_BASE	CONFIG_SYS_TEXT_BASE
@@ -138,6 +137,13 @@
 					iop->pdat &= ~0x00020000; \
 			} while (0)
 #define I2C_DELAY	udelay(5)	/* 1/4 I2C clock duration */
+
+#ifndef __ASSEMBLY__
+void set_sda(int state);
+void set_scl(int state);
+int get_sda(void);
+int get_scl(void);
+#endif
 
 /* I2C SYSMON (LM75, AD7414 is almost compatible)			*/
 #define CONFIG_DTT_LM75			/* ON Semi's LM75		*/

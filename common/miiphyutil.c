@@ -102,6 +102,7 @@ static int legacy_miiphy_write(struct mii_dev *bus, int addr, int devad,
 /*****************************************************************************
  *
  * Register read and write MII access routines for the device <name>.
+ * This API is now deprecated. Please use mdio_alloc and mdio_register, instead.
  */
 void miiphy_register(const char *name,
 		      int (*read)(const char *devname, unsigned char addr,
@@ -111,7 +112,8 @@ void miiphy_register(const char *name,
 {
 	struct mii_dev *new_dev;
 	struct legacy_mii_dev *ldev;
-	unsigned int name_len;
+
+	BUG_ON(strlen(name) >= MDIO_NAME_LEN);
 
 	/* check if we have unique name */
 	new_dev = miiphy_get_dev_by_name(name);
@@ -121,14 +123,6 @@ void miiphy_register(const char *name,
 	}
 
 	/* allocate memory */
-	name_len = strlen(name);
-	if (name_len > MDIO_NAME_LEN - 1) {
-		/* Hopefully this won't happen, but if it does, we'll know */
-		printf("miiphy_register: MDIO name was longer than %d\n",
-			MDIO_NAME_LEN);
-		return;
-	}
-
 	new_dev = mdio_alloc();
 	ldev = malloc(sizeof(*ldev));
 
@@ -141,7 +135,8 @@ void miiphy_register(const char *name,
 	/* initalize mii_dev struct fields */
 	new_dev->read = legacy_miiphy_read;
 	new_dev->write = legacy_miiphy_write;
-	sprintf(new_dev->name, name);
+	strncpy(new_dev->name, name, MDIO_NAME_LEN);
+	new_dev->name[MDIO_NAME_LEN - 1] = 0;
 	ldev->read = read;
 	ldev->write = write;
 	new_dev->priv = ldev;
@@ -287,6 +282,8 @@ static struct mii_dev *miiphy_get_active_dev(const char *devname)
  * Read to variable <value> from the PHY attached to device <devname>,
  * use PHY address <addr> and register <reg>.
  *
+ * This API is deprecated. Use phy_read on a phy_device found via phy_connect
+ *
  * Returns:
  *   0 on success
  */
@@ -312,6 +309,8 @@ int miiphy_read(const char *devname, unsigned char addr, unsigned char reg,
  *
  * Write <value> to the PHY attached to device <devname>,
  * use PHY address <addr> and register <reg>.
+ *
+ * This API is deprecated. Use phy_write on a phy_device found by phy_connect
  *
  * Returns:
  *   0 on success
@@ -356,6 +355,8 @@ void miiphy_listdev(void)
  * Model:    6 bits (unsigned char)
  * Revision: 4 bits (unsigned char)
  *
+ * This API is deprecated.
+ *
  * Returns:
  *   0 on success
  */
@@ -395,6 +396,9 @@ int miiphy_info(const char *devname, unsigned char addr, unsigned int *oui,
 /*****************************************************************************
  *
  * Reset the PHY.
+ *
+ * This API is deprecated. Use PHYLIB.
+ *
  * Returns:
  *   0 on success
  */

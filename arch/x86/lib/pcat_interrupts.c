@@ -3,7 +3,7 @@
  * Graeme Russ, <graeme.russ@gmail.com>
  *
  * (C) Copyright 2002
- * Daniel Engström, Omicron Ceti AB, <daniel@omicron.se>
+ * Daniel EngstrÃ¶m, Omicron Ceti AB, <daniel@omicron.se>
  *
  * See file CREDITS for list of people who contributed to this
  * project.
@@ -76,7 +76,7 @@ int interrupt_init(void)
 	 * Enable cascaded interrupts by unmasking the cascade IRQ pin of
 	 * the master PIC
 	 */
-	unmask_irq (2);
+	unmask_irq(2);
 
 	enable_interrupts();
 

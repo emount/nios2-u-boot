@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2004-2008
+ * (C) Copyright 2004-2011
  * Texas Instruments, <www.ti.com>
  *
  * Author :
@@ -34,11 +34,13 @@
 #include <status_led.h>
 #endif
 #include <twl4030.h>
+#include <linux/mtd/nand.h>
 #include <asm/io.h>
 #include <asm/arch/mmc_host_def.h>
 #include <asm/arch/mux.h>
+#include <asm/arch/mem.h>
 #include <asm/arch/sys_proto.h>
-#include <asm/arch/gpio.h>
+#include <asm/gpio.h>
 #include <asm/mach-types.h>
 #ifdef CONFIG_USB_EHCI
 #include <usb.h>
@@ -50,6 +52,7 @@ extern struct ehci_hccr *hccr;
 extern volatile struct ehci_hcor *hcor;
 #endif
 #include "beagle.h"
+#include <command.h>
 
 #define pr_debug(fmt, args...) debug(fmt, ##args)
 
@@ -115,21 +118,17 @@ int get_board_revision(void)
 {
 	int revision;
 
-	if (!omap_request_gpio(171) &&
-	    !omap_request_gpio(172) &&
-	    !omap_request_gpio(173)) {
+	if (!gpio_request(171, "") &&
+	    !gpio_request(172, "") &&
+	    !gpio_request(173, "")) {
 
-		omap_set_gpio_direction(171, 1);
-		omap_set_gpio_direction(172, 1);
-		omap_set_gpio_direction(173, 1);
+		gpio_direction_input(171);
+		gpio_direction_input(172);
+		gpio_direction_input(173);
 
-		revision = omap_get_gpio_datain(173) << 2 |
-			   omap_get_gpio_datain(172) << 1 |
-			   omap_get_gpio_datain(171);
-
-		omap_free_gpio(171);
-		omap_free_gpio(172);
-		omap_free_gpio(173);
+		revision = gpio_get_value(173) << 2 |
+			   gpio_get_value(172) << 1 |
+			   gpio_get_value(171);
 	} else {
 		printf("Error: unable to acquire board revision GPIOs\n");
 		revision = -1;
@@ -137,6 +136,69 @@ int get_board_revision(void)
 
 	return revision;
 }
+
+#ifdef CONFIG_SPL_BUILD
+/*
+ * Routine: get_board_mem_timings
+ * Description: If we use SPL then there is no x-loader nor config header
+ * so we have to setup the DDR timings ourself on both banks.
+ */
+void get_board_mem_timings(u32 *mcfg, u32 *ctrla, u32 *ctrlb, u32 *rfr_ctrl,
+		u32 *mr)
+{
+	int pop_mfr, pop_id;
+
+	/*
+	 * We need to identify what PoP memory is on the board so that
+	 * we know what timings to use.  If we can't identify it then
+	 * we know it's an xM.  To map the ID values please see nand_ids.c
+	 */
+	identify_nand_chip(&pop_mfr, &pop_id);
+
+	*mr = MICRON_V_MR_165;
+	switch (get_board_revision()) {
+	case REVISION_C4:
+		if (pop_mfr == NAND_MFR_STMICRO && pop_id == 0xba) {
+			/* 512MB DDR */
+			*mcfg = NUMONYX_V_MCFG_165(512 << 20);
+			*ctrla = NUMONYX_V_ACTIMA_165;
+			*ctrlb = NUMONYX_V_ACTIMB_165;
+			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
+			break;
+		} else if (pop_mfr == NAND_MFR_MICRON && pop_id == 0xbc) {
+			/* Beagleboard Rev C5, 256MB DDR */
+			*mcfg = MICRON_V_MCFG_200(256 << 20);
+			*ctrla = MICRON_V_ACTIMA_200;
+			*ctrlb = MICRON_V_ACTIMB_200;
+			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_200MHz;
+			break;
+		}
+	case REVISION_XM_A:
+	case REVISION_XM_B:
+	case REVISION_XM_C:
+		if (pop_mfr == 0) {
+			/* 256MB DDR */
+			*mcfg = MICRON_V_MCFG_200(256 << 20);
+			*ctrla = MICRON_V_ACTIMA_200;
+			*ctrlb = MICRON_V_ACTIMB_200;
+			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_200MHz;
+		} else {
+			/* 512MB DDR */
+			*mcfg = NUMONYX_V_MCFG_165(512 << 20);
+			*ctrla = NUMONYX_V_ACTIMA_165;
+			*ctrlb = NUMONYX_V_ACTIMB_165;
+			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
+		}
+		break;
+	default:
+		/* Assume 128MB and Micron/165MHz timings to be safe */
+		*mcfg = MICRON_V_MCFG_165(128 << 20);
+		*ctrla = MICRON_V_ACTIMA_165;
+		*ctrlb = MICRON_V_ACTIMB_165;
+		*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
+	}
+}
+#endif
 
 /*
  * Routine: get_expansion_id
@@ -161,6 +223,28 @@ unsigned int get_expansion_id(void)
 	i2c_set_bus_num(TWL4030_I2C_BUS);
 
 	return expansion_config.device_vendor;
+}
+
+/*
+ * Configure DSS to display background color on DVID
+ * Configure VENC to display color bar on S-Video
+ */
+void beagle_display_init(void)
+{
+	omap3_dss_venc_config(&venc_config_std_tv, VENC_HEIGHT, VENC_WIDTH);
+	switch (get_board_revision()) {
+	case REVISION_AXBX:
+	case REVISION_CX:
+	case REVISION_C4:
+		omap3_dss_panel_config(&dvid_cfg);
+		break;
+	case REVISION_XM_A:
+	case REVISION_XM_B:
+	case REVISION_XM_C:
+	default:
+		omap3_dss_panel_config(&dvid_cfg_xm);
+		break;
+	}
 }
 
 /*
@@ -209,6 +293,16 @@ int misc_init_r(void)
 	case REVISION_XM_B:
 		printf("Beagle xM Rev B\n");
 		setenv("beaglerev", "xMB");
+		MUX_BEAGLE_XM();
+		/* Set VAUX2 to 1.8V for EHCI PHY */
+		twl4030_pmrecv_vsel_cfg(TWL4030_PM_RECEIVER_VAUX2_DEDICATED,
+					TWL4030_PM_RECEIVER_VAUX2_VSEL_18,
+					TWL4030_PM_RECEIVER_VAUX2_DEV_GRP,
+					TWL4030_PM_RECEIVER_DEV_GRP_P1);
+		break;
+	case REVISION_XM_C:
+		printf("Beagle xM Rev C\n");
+		setenv("beaglerev", "xMC");
 		MUX_BEAGLE_XM();
 		/* Set VAUX2 to 1.8V for EHCI PHY */
 		twl4030_pmrecv_vsel_cfg(TWL4030_PM_RECEIVER_VAUX2_DEDICATED,
@@ -299,20 +393,30 @@ int misc_init_r(void)
 		setenv(expansion_config.env_var, expansion_config.env_setting);
 
 	twl4030_power_init();
-	twl4030_led_init(TWL4030_LED_LEDEN_LEDAON | TWL4030_LED_LEDEN_LEDBON);
+	switch (get_board_revision()) {
+	case REVISION_XM_A:
+	case REVISION_XM_B:
+		twl4030_led_init(TWL4030_LED_LEDEN_LEDBON);
+		break;
+	default:
+		twl4030_led_init(TWL4030_LED_LEDEN_LEDAON | TWL4030_LED_LEDEN_LEDBON);
+		break;
+	}
+
+	/* Set GPIO states before they are made outputs */
+	writel(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1,
+		&gpio6_base->setdataout);
+	writel(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |
+		GPIO15 | GPIO14 | GPIO13 | GPIO12, &gpio5_base->setdataout);
 
 	/* Configure GPIOs to output */
 	writel(~(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1), &gpio6_base->oe);
 	writel(~(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |
 		GPIO15 | GPIO14 | GPIO13 | GPIO12), &gpio5_base->oe);
 
-	/* Set GPIOs */
-	writel(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1,
-		&gpio6_base->setdataout);
-	writel(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |
-		GPIO15 | GPIO14 | GPIO13 | GPIO12, &gpio5_base->setdataout);
-
 	dieid_num_r();
+	beagle_display_init();
+	omap3_dss_enable();
 
 	return 0;
 }
@@ -328,7 +432,7 @@ void set_muxconf_regs(void)
 	MUX_BEAGLE();
 }
 
-#ifdef CONFIG_GENERIC_MMC
+#if defined(CONFIG_GENERIC_MMC) && !defined(CONFIG_SPL_BUILD)
 int board_mmc_init(bd_t *bis)
 {
 	omap_mmc_init(0);
@@ -344,8 +448,14 @@ int board_mmc_init(bd_t *bis)
 int ehci_hcd_stop(void)
 {
 	pr_debug("Resetting OMAP3 EHCI\n");
-	omap_set_gpio_dataout(GPIO_PHY_RESET, 0);
+	gpio_set_value(GPIO_PHY_RESET, 0);
 	writel(OMAP_UHH_SYSCONFIG_SOFTRESET, OMAP3_UHH_BASE + OMAP_UHH_SYSCONFIG);
+	/* disable USB clocks */
+	struct prcm *prcm_base = (struct prcm *)PRCM_BASE;
+	sr32(&prcm_base->iclken_usbhost, 0, 1, 0);
+	sr32(&prcm_base->fclken_usbhost, 0, 2, 0);
+	sr32(&prcm_base->iclken3_core, 2, 1, 0);
+	sr32(&prcm_base->fclken3_core, 2, 1, 0);
 	return 0;
 }
 
@@ -366,9 +476,9 @@ int ehci_hcd_init(void)
 	pr_debug("Initializing OMAP3 ECHI\n");
 
 	/* Put the PHY in RESET */
-	omap_request_gpio(GPIO_PHY_RESET);
-	omap_set_gpio_direction(GPIO_PHY_RESET, 0);
-	omap_set_gpio_dataout(GPIO_PHY_RESET, 0);
+	gpio_request(GPIO_PHY_RESET, "");
+	gpio_direction_output(GPIO_PHY_RESET, 0);
+	gpio_set_value(GPIO_PHY_RESET, 0);
 
 	/* Hold the PHY in RESET for enough time till DIR is high */
 	/* Refer: ISSUE1 */
@@ -420,7 +530,7 @@ int ehci_hcd_init(void)
 	 * PHY is settled and ready
 	 */
 	udelay(10);
-	omap_set_gpio_dataout(GPIO_PHY_RESET, 1);
+	gpio_set_value(GPIO_PHY_RESET, 1);
 
 	hccr = (struct ehci_hccr *)(OMAP3_EHCI_BASE);
 	hcor = (struct ehci_hcor *)(OMAP3_EHCI_BASE + 0x10);
@@ -430,3 +540,58 @@ int ehci_hcd_init(void)
 }
 
 #endif /* CONFIG_USB_EHCI */
+
+#ifndef CONFIG_SPL_BUILD
+/*
+ * This command returns the status of the user button on beagle xM
+ * Input - none
+ * Returns - 	1 if button is held down
+ *		0 if button is not held down
+ */
+int do_userbutton(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+	int     button = 0;
+	int	gpio;
+
+	/*
+	 * pass address parameter as argv[0] (aka command name),
+	 * and all remaining args
+	 */
+	switch (get_board_revision()) {
+	case REVISION_AXBX:
+	case REVISION_CX:
+	case REVISION_C4:
+		gpio = 7;
+		break;
+	case REVISION_XM_A:
+	case REVISION_XM_B:
+	case REVISION_XM_C:
+	default:
+		gpio = 4;
+		break;
+	}
+	gpio_request(gpio, "");
+	gpio_direction_input(gpio);
+	printf("The user button is currently ");
+	if (gpio_get_value(gpio))
+	{
+		button = 1;
+		printf("PRESSED.\n");
+	}
+	else
+	{
+		button = 0;
+		printf("NOT pressed.\n");
+	}
+
+	return !button;
+}
+
+/* -------------------------------------------------------------------- */
+
+U_BOOT_CMD(
+	userbutton, CONFIG_SYS_MAXARGS, 1,	do_userbutton,
+	"Return the status of the BeagleBoard USER button",
+	""
+);
+#endif

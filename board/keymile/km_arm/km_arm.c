@@ -34,6 +34,7 @@
 #include <netdev.h>
 #include <miiphy.h>
 #include <asm/io.h>
+#include <asm/arch/cpu.h>
 #include <asm/arch/kirkwood.h>
 #include <asm/arch/mpp.h>
 
@@ -130,10 +131,12 @@ int startup_allowed(void)
 			return 1;
 	return 0;
 }
+#endif
 
+#if (defined(CONFIG_MGCOGE3UN)|defined(CONFIG_PORTL2))
 /*
- * mgcoge3un has always ethernet present. Its connected to the 6061 switch
- * and provides ICNev and piggy4 connections.
+ * These two boards have always ethernet present. Its connected to the mv
+ * switch.
  */
 int ethernet_present(void)
 {
@@ -204,8 +207,14 @@ int misc_init_r(void)
 	if (wait_for_ne != NULL) {
 		if (strcmp(wait_for_ne, "true") == 0) {
 			int cnt = 0;
+			int abort = 0;
 			puts("NE go: ");
 			while (startup_allowed() == 0) {
+				if (tstc()) {
+					(void) getc(); /* consume input */
+					abort = 1;
+					break;
+				}
 				udelay(200000);
 				cnt++;
 				if (cnt == 5)
@@ -215,7 +224,10 @@ int misc_init_r(void)
 					puts("    \b\b\b\b");
 				}
 			}
-			puts("OK\n");
+			if (abort == 1)
+				printf("\nAbort waiting for ne\n");
+			else
+				puts("OK\n");
 		}
 	}
 #endif
@@ -255,17 +267,17 @@ int board_early_init_f(void)
 	kw_gpio_set_valid(KM_KIRKWOOD_ENV_WP, 38);
 	kw_gpio_direction_output(KM_KIRKWOOD_ENV_WP, 1);
 #endif
-
+#if defined(CONFIG_KM_RECONFIG_XLX)
+	/* trigger the reconfiguration of the xilinx fpga */
+	kw_gpio_set_valid(KM_XLX_PROGRAM_B_PIN, 1);
+	kw_gpio_direction_output(KM_XLX_PROGRAM_B_PIN, 0);
+	kw_gpio_direction_input(KM_XLX_PROGRAM_B_PIN);
+#endif
 	return 0;
 }
 
 int board_init(void)
 {
-	/*
-	 * arch number of board
-	 */
-	gd->bd->bi_arch_number = MACH_TYPE_KM_KIRKWOOD;
-
 	/* address of boot parameters */
 	gd->bd->bi_boot_params = kw_sdram_bar(0) + 0x100;
 
@@ -319,7 +331,7 @@ int dram_init(void)
 {
 	/* dram_init must store complete ramsize in gd->ram_size */
 	/* Fix this */
-	gd->ram_size = get_ram_size((volatile void *)kw_sdram_bar(0),
+	gd->ram_size = get_ram_size((void *)kw_sdram_bar(0),
 				kw_sdram_bs(0));
 	return 0;
 }
@@ -335,7 +347,42 @@ void dram_init_banksize(void)
 	}
 }
 
-/* Configure and enable MV88E1118 PHY */
+#if (defined(CONFIG_MGCOGE3UN)|defined(CONFIG_PORTL2))
+
+#define	PHY_LED_SEL	0x18
+#define PHY_LED0_LINK	(0x5)
+#define PHY_LED1_ACT	(0x8<<4)
+#define PHY_LED2_INT	(0xe<<8)
+#define	PHY_SPEC_CTRL	0x1c
+#define PHY_RGMII_CLK_STABLE	(0x1<<10)
+#define PHY_CLSA	(0x1<<1)
+
+/* Configure and enable MV88E3018 PHY */
+void reset_phy(void)
+{
+	char *name = "egiga0";
+	unsigned short reg;
+
+	if (miiphy_set_current_dev(name))
+		return;
+
+	/* RGMII clk transition on data stable */
+	if (miiphy_read(name, CONFIG_PHY_BASE_ADR, PHY_SPEC_CTRL, &reg) != 0)
+		printf("Error reading PHY spec ctrl reg\n");
+	if (miiphy_write(name, CONFIG_PHY_BASE_ADR, PHY_SPEC_CTRL,
+		reg | PHY_RGMII_CLK_STABLE | PHY_CLSA) != 0)
+		printf("Error writing PHY spec ctrl reg\n");
+
+	/* leds setup */
+	if (miiphy_write(name, CONFIG_PHY_BASE_ADR, PHY_LED_SEL,
+		PHY_LED0_LINK | PHY_LED1_ACT | PHY_LED2_INT) != 0)
+		printf("Error writing PHY LED reg\n");
+
+	/* reset the phy */
+	miiphy_reset(name, CONFIG_PHY_BASE_ADR);
+}
+#else
+/* Configure and enable MV88E1118 PHY on the piggy*/
 void reset_phy(void)
 {
 	char *name = "egiga0";
@@ -346,6 +393,8 @@ void reset_phy(void)
 	/* reset the phy */
 	miiphy_reset(name, CONFIG_PHY_BASE_ADR);
 }
+#endif
+
 
 #if defined(CONFIG_HUSH_INIT_VAR)
 int hush_init_var(void)
@@ -356,6 +405,15 @@ int hush_init_var(void)
 #endif
 
 #if defined(CONFIG_BOOTCOUNT_LIMIT)
+const ulong patterns[]      = {	0x00000000,
+				0xFFFFFFFF,
+				0xFF00FF00,
+				0x0F0F0F0F,
+				0xF0F0F0F0};
+const ulong NBR_OF_PATTERNS = sizeof(patterns)/sizeof(*patterns);
+const ulong OFFS_PATTERN    = 3;
+const ulong REPEAT_PATTERN  = 1000;
+
 void bootcount_store(ulong a)
 {
 	volatile ulong *save_addr;
@@ -367,21 +425,34 @@ void bootcount_store(ulong a)
 	save_addr = (ulong*)(size - BOOTCOUNT_ADDR);
 	writel(a, save_addr);
 	writel(BOOTCOUNT_MAGIC, &save_addr[1]);
+
+	for (i = 0; i < REPEAT_PATTERN; i++)
+		writel(patterns[i % NBR_OF_PATTERNS],
+			&save_addr[i+OFFS_PATTERN]);
+
 }
 
 ulong bootcount_load(void)
 {
 	volatile ulong *save_addr;
 	volatile ulong size = 0;
-	int i;
+	ulong counter = 0;
+	int i, tmp;
+
 	for (i = 0; i < CONFIG_NR_DRAM_BANKS; i++) {
 		size += gd->bd->bi_dram[i].size;
 	}
 	save_addr = (ulong*)(size - BOOTCOUNT_ADDR);
-	if (readl(&save_addr[1]) != BOOTCOUNT_MAGIC)
-		return 0;
-	else
-		return readl(save_addr);
+
+	counter = readl(&save_addr[0]);
+
+	/* Is the counter reliable, check in the big pattern for bit errors */
+	for (i = 0; (i < REPEAT_PATTERN) && (counter != 0); i++) {
+		tmp = readl(&save_addr[i+OFFS_PATTERN]);
+		if (tmp != patterns[i % NBR_OF_PATTERNS])
+			counter = 0;
+	}
+	return counter;
 }
 #endif
 
@@ -406,6 +477,39 @@ int get_sda(void)
 int get_scl(void)
 {
 	return kw_gpio_get_value(KM_KIRKWOOD_SCL_PIN) ? 1 : 0;
+}
+#endif
+
+#if defined(CONFIG_POST)
+
+#define KM_POST_EN_L	44
+#define POST_WORD_OFF	8
+
+int post_hotkeys_pressed(void)
+{
+	return !kw_gpio_get_value(KM_POST_EN_L);
+}
+
+ulong post_word_load(void)
+{
+	volatile void* addr = (void *) (gd->ram_size - BOOTCOUNT_ADDR + POST_WORD_OFF);
+	return in_le32(addr);
+
+}
+void post_word_store(ulong value)
+{
+	volatile void* addr = (void *) (gd->ram_size - BOOTCOUNT_ADDR + POST_WORD_OFF);
+	out_le32(addr, value);
+}
+
+int arch_memory_test_prepare(u32 *vstart, u32 *size, phys_addr_t *phys_offset)
+{
+	*vstart = CONFIG_SYS_SDRAM_BASE;
+
+	/* we go up to relocation plus a 1 MB margin */
+	*size = CONFIG_SYS_TEXT_BASE - (1<<20);
+
+	return 0;
 }
 #endif
 

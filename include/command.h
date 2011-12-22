@@ -64,6 +64,9 @@ typedef struct cmd_tbl_s	cmd_tbl_t;
 extern cmd_tbl_t  __u_boot_cmd_start;
 extern cmd_tbl_t  __u_boot_cmd_end;
 
+#if defined(CONFIG_CMD_RUN)
+extern int do_run(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
+#endif
 
 /* common/command.c */
 int _do_help (cmd_tbl_t *cmd_start, int cmd_items, cmd_tbl_t * cmdtp, int
@@ -71,7 +74,7 @@ int _do_help (cmd_tbl_t *cmd_start, int cmd_items, cmd_tbl_t * cmdtp, int
 cmd_tbl_t *find_cmd(const char *cmd);
 cmd_tbl_t *find_cmd_tbl (const char *cmd, cmd_tbl_t *table, int table_len);
 
-extern int cmd_usage(cmd_tbl_t *cmdtp);
+extern int cmd_usage(const cmd_tbl_t *cmdtp);
 
 #ifdef CONFIG_AUTO_COMPLETE
 extern int var_complete(int argc, char * const argv[], char last_char, int maxv, char *cmdv[]);
@@ -98,7 +101,15 @@ extern int cmd_get_data_size(char* arg, int default_size);
 #ifdef CONFIG_CMD_BOOTD
 extern int do_bootd(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
 #endif
+#ifdef CONFIG_CMD_BOOTM
 extern int do_bootm(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
+extern int bootm_maybe_autostart(cmd_tbl_t *cmdtp, const char *cmd);
+#else
+static inline int bootm_maybe_autostart(cmd_tbl_t *cmdtp, const char *cmd)
+{
+	return 0;
+}
+#endif
 extern int do_reset(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
 
 #endif	/* __ASSEMBLY__ */
@@ -109,7 +120,8 @@ extern int do_reset(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
 #define CMD_FLAG_REPEAT		0x0001	/* repeat last command		*/
 #define CMD_FLAG_BOOTD		0x0002	/* command is from bootd	*/
 
-#define Struct_Section  __attribute__ ((unused,section (".u_boot_cmd")))
+#define Struct_Section  __attribute__((unused, section(".u_boot_cmd"), \
+		aligned(4)))
 
 #ifdef CONFIG_AUTO_COMPLETE
 # define _CMD_COMPLETE(x) x,

@@ -36,10 +36,13 @@
 #define CONFIG_VERSION_VARIABLE
 #define CONFIG_IDENT_STRING	" on EB+CPUx9K2"
 
-#include <asm/arch/hardware.h>	/* needed for port definitions */
+#include <asm/hardware.h>	/* needed for port definitions */
 
 #define CONFIG_MISC_INIT_R
+#define CONFIG_BOARD_EARLY_INIT_F
 
+#define MACH_TYPE_EB_CPUX9K2		1977
+#define CONFIG_MACH_TYPE		MACH_TYPE_EB_CPUX9K2
 /*--------------------------------------------------------------------------*/
 #define CONFIG_SYS_TEXT_BASE 		0x00000000
 #define CONFIG_SYS_LOAD_ADDR		0x21000000  /* default load address */
@@ -69,7 +72,7 @@
 #define CONFIG_SYS_HZ		1000
 #define CONFIG_SYS_HZ_CLOCK 	(AT91C_MASTER_CLOCK / 2)
 
-#define AT91_SLOW_CLOCK			32768		/* slow clock */
+#define CONFIG_SYS_AT91_SLOW_CLOCK	32768		/* slow clock */
 
 #define CONFIG_CMDLINE_TAG		1
 #define CONFIG_SETUP_MEMORY_TAGS	1
@@ -174,13 +177,13 @@
 #define CONFIG_SYS_BAUDRATE_TABLE	{ 115200, 19200, 38400, 57600, 9600 }
 
 #define CONFIG_BAUDRATE 115200
-#define CONFIG_AT91RM9200_USART
-#define CONFIG_DBGU			/* define DBGU as console */
+#define CONFIG_ATMEL_USART
+#define CONFIG_USART_BASE	ATMEL_BASE_DBGU
+#define CONFIG_USART_ID		0/* ignored in arm */
 
 /*
  * network
  */
-#define CONFIG_NET_MULTI		1
 
 #define CONFIG_NET_RETRY_COUNT		10
 #define CONFIG_RESET_PHY_R		1

@@ -33,6 +33,7 @@
 #include <asm/arch/at91_pio.h>
 #include <asm/arch/at91_pmc.h>
 #include <asm/arch/at91_mc.h>
+#include <asm/arch/at91_common.h>
 
 #ifdef CONFIG_STATUS_LED
 #include <status_led.h>
@@ -77,6 +78,12 @@ int board_init(void)
 	return 0;
 }
 
+int board_early_init_f(void)
+{
+	at91_seriald_hw_init();
+	return 0;
+}
+
 #ifdef CONFIG_MISC_INIT_R
 
 int misc_init_r(void)
@@ -86,7 +93,6 @@ int misc_init_r(void)
 	uchar	midx;
 	uchar	macn6, macn7;
 
-#ifdef CONFIG_NET_MULTI
 	if (getenv("ethaddr") == NULL) {
 		if (i2c_read(CONFIG_SYS_I2C_EEPROM_ADDR, 0x00,
 				CONFIG_SYS_I2C_EEPROM_ADDR_LEN,
@@ -110,7 +116,6 @@ int misc_init_r(void)
 				puts("Error: invalid MAC at EEPROM\n");
 		}
 	}
-#endif
 	gd->jt[XF_do_reset] = (void *) do_reset;
 
 #ifdef CONFIG_STATUS_LED
@@ -134,7 +139,7 @@ void reset_phy(void)
 
 int dram_init(void)
 {
-	gd->ram_size = get_ram_size((volatile long *)CONFIG_SYS_SDRAM_BASE,
+	gd->ram_size = get_ram_size((long *)CONFIG_SYS_SDRAM_BASE,
 			CONFIG_SYS_SDRAM_SIZE);
 	return 0;
 }

@@ -27,13 +27,7 @@
 #ifndef _ASM_ARCH_KIRKWOOD_H
 #define _ASM_ARCH_KIRKWOOD_H
 
-#ifndef __ASSEMBLY__
-#include <asm/types.h>
-#include <asm/io.h>
-#endif /* __ASSEMBLY__ */
-
 #if defined (CONFIG_FEROCEON_88FR131) || defined (CONFIG_SHEEVA_88SV131)
-#include <asm/arch/cpu.h>
 
 /* SOC specific definations */
 #define INTREG_BASE			0xd0000000
@@ -50,6 +44,7 @@
 #define KW_MPP_BASE			(KW_REGISTER(0x10000))
 #define KW_GPIO0_BASE			(KW_REGISTER(0x10100))
 #define KW_GPIO1_BASE			(KW_REGISTER(0x10140))
+#define KW_RTC_BASE			(KW_REGISTER(0x10300))
 #define KW_NANDF_BASE			(KW_REGISTER(0x10418))
 #define KW_SPI_BASE			(KW_REGISTER(0x10600))
 #define KW_CPU_WIN_BASE			(KW_REGISTER(0x20000))

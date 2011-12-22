@@ -71,7 +71,7 @@ compute_ranksize(const ddr3_spd_eeprom_t *spd)
 	bsize = 1ULL << (nbit_sdram_cap_bsize - 3
 		    + nbit_primary_bus_width - nbit_sdram_width);
 
-	debug("DDR: DDR III rank density = 0x%16lx\n", bsize);
+	debug("DDR: DDR III rank density = 0x%16llx\n", bsize);
 
 	return bsize;
 }
@@ -114,7 +114,8 @@ ddr_compute_dimm_parameters(const ddr3_spd_eeprom_t *spd,
 	 * and copying the part name in ASCII from the SPD onto it
 	 */
 	memset(pdimm->mpart, 0, sizeof(pdimm->mpart));
-	memcpy(pdimm->mpart, spd->mpart, sizeof(pdimm->mpart) - 1);
+	if ((spd->info_size_crc & 0xF) > 1)
+		memcpy(pdimm->mpart, spd->mpart, sizeof(pdimm->mpart) - 1);
 
 	/* DIMM organization parameters */
 	pdimm->n_ranks = ((spd->organization >> 3) & 0x7) + 1;
@@ -134,6 +135,7 @@ ddr_compute_dimm_parameters(const ddr3_spd_eeprom_t *spd,
 	switch (spd->module_type & DDR3_SPD_MODULETYPE_MASK) {
 	case DDR3_SPD_MODULETYPE_RDIMM:
 	case DDR3_SPD_MODULETYPE_MINI_RDIMM:
+	case DDR3_SPD_MODULETYPE_72B_SO_RDIMM:
 		/* Registered/buffered DIMMs */
 		pdimm->registered_dimm = 1;
 		for (i = 0; i < 16; i += 2) {
@@ -147,6 +149,12 @@ ddr_compute_dimm_parameters(const ddr3_spd_eeprom_t *spd,
 	case DDR3_SPD_MODULETYPE_SO_DIMM:
 	case DDR3_SPD_MODULETYPE_MICRO_DIMM:
 	case DDR3_SPD_MODULETYPE_MINI_UDIMM:
+	case DDR3_SPD_MODULETYPE_MINI_CDIMM:
+	case DDR3_SPD_MODULETYPE_72B_SO_UDIMM:
+	case DDR3_SPD_MODULETYPE_72B_SO_CDIMM:
+	case DDR3_SPD_MODULETYPE_LRDIMM:
+	case DDR3_SPD_MODULETYPE_16B_SO_DIMM:
+	case DDR3_SPD_MODULETYPE_32B_SO_DIMM:
 		/* Unbuffered DIMMs */
 		if (spd->mod_section.unbuffered.addr_mapping & 0x1)
 			pdimm->mirrored_dimm = 1;

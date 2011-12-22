@@ -362,15 +362,31 @@ usage:
 
 #endif
 
-static void nand_print_info(int idx)
+static void nand_print_and_set_info(int idx)
 {
 	nand_info_t *nand = &nand_info[idx];
 	struct nand_chip *chip = nand->priv;
+	const int bufsz = 32;
+	char buf[bufsz];
+
 	printf("Device %d: ", idx);
 	if (chip->numchips > 1)
 		printf("%dx ", chip->numchips);
 	printf("%s, sector size %u KiB\n",
 	       nand->name, nand->erasesize >> 10);
+	printf("  Page size  %8d b\n", nand->writesize);
+	printf("  OOB size   %8d b\n", nand->oobsize);
+	printf("  Erase size %8d b\n", nand->erasesize);
+
+	/* Set geometry info */
+	sprintf(buf, "%x", nand->writesize);
+	setenv("nand_writesize", buf);
+
+	sprintf(buf, "%x", nand->oobsize);
+	setenv("nand_oobsize", buf);
+
+	sprintf(buf, "%x", nand->erasesize);
+	setenv("nand_erasesize", buf);
 }
 
 int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
@@ -407,7 +423,7 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 		putc('\n');
 		for (i = 0; i < CONFIG_SYS_MAX_NAND_DEVICE; i++) {
 			if (nand_info[i].name)
-				nand_print_info(i);
+				nand_print_and_set_info(i);
 		}
 		return 0;
 	}
@@ -418,7 +434,7 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 			if (dev < 0 || dev >= CONFIG_SYS_MAX_NAND_DEVICE)
 				puts("no devices available\n");
 			else
-				nand_print_info(dev);
+				nand_print_and_set_info(dev);
 			return 0;
 		}
 
@@ -464,21 +480,28 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 		nand_erase_options_t opts;
 		/* "clean" at index 2 means request to write cleanmarker */
 		int clean = argc > 2 && !strcmp("clean", argv[2]);
-		int o = clean ? 3 : 2;
+		int scrub_yes = argc > 2 && !strcmp("-y", argv[2]);
+		int o = (clean || scrub_yes) ? 3 : 2;
 		int scrub = !strncmp(cmd, "scrub", 5);
-		int part = 0;
-		int chip = 0;
 		int spread = 0;
 		int args = 2;
+		const char *scrub_warn =
+			"Warning: "
+			"scrub option will erase all factory set bad blocks!\n"
+			"         "
+			"There is no reliable way to recover them.\n"
+			"         "
+			"Use this command only for testing purposes if you\n"
+			"         "
+			"are sure of what you are doing!\n"
+			"\nReally scrub this NAND flash? <y/N>\n";
 
 		if (cmd[5] != 0) {
 			if (!strcmp(&cmd[5], ".spread")) {
 				spread = 1;
 			} else if (!strcmp(&cmd[5], ".part")) {
-				part = 1;
 				args = 1;
 			} else if (!strcmp(&cmd[5], ".chip")) {
-				chip = 1;
 				args = 0;
 			} else {
 				goto usage;
@@ -508,19 +531,12 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 		opts.spread = spread;
 
 		if (scrub) {
-			puts("Warning: "
-			     "scrub option will erase all factory set "
-			     "bad blocks!\n"
-			     "         "
-			     "There is no reliable way to recover them.\n"
-			     "         "
-			     "Use this command only for testing purposes "
-			     "if you\n"
-			     "         "
-			     "are sure of what you are doing!\n"
-			     "\nReally scrub this NAND flash? <y/N>\n");
+			if (!scrub_yes)
+				puts(scrub_warn);
 
-			if (getc() == 'y') {
+			if (scrub_yes)
+				opts.scrub = 1;
+			else if (getc() == 'y') {
 				puts("y");
 				if (getc() == '\r')
 					opts.scrub = 1;
@@ -575,13 +591,24 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 			else
 				ret = nand_write_skip_bad(nand, off, &rwsize,
 							  (u_char *)addr, 0);
+#ifdef CONFIG_CMD_NAND_TRIMFFS
+		} else if (!strcmp(s, ".trimffs")) {
+			if (read) {
+				printf("Unknown nand command suffix '%s'\n", s);
+				return 1;
+			}
+			ret = nand_write_skip_bad(nand, off, &rwsize,
+						(u_char *)addr,
+						WITH_DROP_FFS);
+#endif
 #ifdef CONFIG_CMD_NAND_YAFFS
 		} else if (!strcmp(s, ".yaffs")) {
 			if (read) {
 				printf("Unknown nand command suffix '%s'.\n", s);
 				return 1;
 			}
-			ret = nand_write_skip_bad(nand, off, &rwsize, (u_char *)addr, 1);
+			ret = nand_write_skip_bad(nand, off, &rwsize,
+						(u_char *)addr, WITH_YAFFS_OOB);
 #endif
 		} else if (!strcmp(s, ".oob")) {
 			/* out-of-band data */
@@ -590,6 +617,22 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 				.ooblen = rwsize,
 				.mode = MTD_OOB_RAW
 			};
+
+			if (read)
+				ret = nand->read_oob(nand, off, &ops);
+			else
+				ret = nand->write_oob(nand, off, &ops);
+		} else if (!strcmp(s, ".raw")) {
+			/* Raw access */
+			mtd_oob_ops_t ops = {
+				.datbuf = (u8 *)addr,
+				.oobbuf = ((u8 *)addr) + nand->writesize,
+				.len = nand->writesize,
+				.ooblen = nand->oobsize,
+				.mode = MTD_OOB_RAW
+			};
+
+			rwsize = nand->writesize + nand->oobsize;
 
 			if (read)
 				ret = nand->read_oob(nand, off, &ops);
@@ -688,6 +731,15 @@ U_BOOT_CMD(
 	"nand write - addr off|partition size\n"
 	"    read/write 'size' bytes starting at offset 'off'\n"
 	"    to/from memory address 'addr', skipping bad blocks.\n"
+	"nand read.raw - addr off|partition\n"
+	"nand write.raw - addr off|partition\n"
+	"    Use read.raw/write.raw to avoid ECC and access the page as-is.\n"
+#ifdef CONFIG_CMD_NAND_TRIMFFS
+	"nand write.trimffs - addr off|partition size\n"
+	"    write 'size' bytes starting at offset 'off' from memory address\n"
+	"    'addr', skipping bad blocks and dropping any pages at the end\n"
+	"    of eraseblocks that contain only 0xFF\n"
+#endif
 #ifdef CONFIG_CMD_NAND_YAFFS
 	"nand write.yaffs - addr off|partition size\n"
 	"    write 'size' bytes starting at offset 'off' with yaffs format\n"
@@ -701,7 +753,7 @@ U_BOOT_CMD(
 	"nand erase.chip [clean] - erase entire chip'\n"
 	"nand bad - show bad blocks\n"
 	"nand dump[.oob] off - dump page\n"
-	"nand scrub off size | scrub.part partition | scrub.chip\n"
+	"nand scrub [-y] off size | scrub.part partition | scrub.chip\n"
 	"    really clean NAND erasing bad blocks (UNSAFE)\n"
 	"nand markbad off [...] - mark bad block(s) at offset (UNSAFE)\n"
 	"nand biterr off - make a bit error at offset (UNSAFE)"
@@ -724,7 +776,7 @@ static int nand_load_image(cmd_tbl_t *cmdtp, nand_info_t *nand,
 			   ulong offset, ulong addr, char *cmd)
 {
 	int r;
-	char *ep, *s;
+	char *s;
 	size_t cnt;
 	image_header_t *hdr;
 #if defined(CONFIG_FIT)
@@ -799,19 +851,7 @@ static int nand_load_image(cmd_tbl_t *cmdtp, nand_info_t *nand,
 
 	load_addr = addr;
 
-	/* Check if we should attempt an auto-start */
-	if (((ep = getenv("autostart")) != NULL) && (strcmp(ep, "yes") == 0)) {
-		char *local_args[2];
-
-		local_args[0] = cmd;
-		local_args[1] = NULL;
-
-		printf("Automatic boot of image at addr 0x%08lx ...\n", addr);
-
-		do_bootm(cmdtp, 0, 1, local_args);
-		return 1;
-	}
-	return 0;
+	return bootm_maybe_autostart(cmdtp, cmd);
 }
 
 int do_nandboot(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])

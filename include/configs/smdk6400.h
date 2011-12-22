@@ -65,7 +65,7 @@
 /*
  * Architecture magic and machine type
  */
-#define MACH_TYPE		1270
+#define CONFIG_MACH_TYPE		1270
 
 #define CONFIG_DISPLAY_CPUINFO
 #define CONFIG_DISPLAY_BOARDINFO
@@ -78,7 +78,6 @@
 /*
  * Hardware drivers
  */
-#define CONFIG_NET_MULTI
 #define CONFIG_CS8900			/* we have a CS8900 on-board	*/
 #define CONFIG_CS8900_BASE	  	0x18800300
 #define CONFIG_CS8900_BUS16		/* follow the Linux driver	*/
