@@ -23,9 +23,6 @@
 /* altpll_0.pll_slave is a altpll */
 #define ALTPLL_0_BASE	0xE82224C0
 
-/* onchip_memory.s2 is a altera_avalon_onchip_memory2 */
-#define ONCHIP_MEMORY_BASE	0xE9000000
-
 /* ddr3_bot.avl is a altera_mem_if_ddr3_emif */
 #define CONFIG_SYS_SDRAM_BASE	0xC0000000
 #define CONFIG_SYS_SDRAM_SIZE	0x08000000
