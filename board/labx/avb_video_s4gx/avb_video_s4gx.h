@@ -43,11 +43,11 @@
 /* uart_0.s1 is a altera_avalon_uart */
 #define CONFIG_SYS_UART_BAUD	115200
 #define CONFIG_SYS_UART_BASE	0xEB000180
-#define CONFIG_SYS_UART_FREQ	10000000
+#define CONFIG_SYS_UART_FREQ	50000000
 
 /* timer.s1 is a altera_avalon_timer */
 #define CONFIG_SYS_TIMER_IRQ	0
-#define CONFIG_SYS_TIMER_FREQ	10000000
+#define CONFIG_SYS_TIMER_FREQ	50000000
 #define CONFIG_SYS_TIMER_BASE	0xEB000020
 
 /* led_reg.s1 is a altera_avalon_pio */

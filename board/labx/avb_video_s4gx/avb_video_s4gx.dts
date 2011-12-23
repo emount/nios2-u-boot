@@ -92,7 +92,7 @@
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 1 >;
 				current-speed = <115200>;	//embeddedsw.CMacro.BAUD type NUMBER
-				clock-frequency = <10000000>;	//embeddedsw.CMacro.FREQ type NUMBER
+				clock-frequency = <50000000>;	//embeddedsw.CMacro.FREQ type NUMBER
 			}; //end serial (uart_0)
 
 			timer: timer@0x20 {
@@ -100,7 +100,7 @@
 				reg = < 0x20 0x20>;
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 0 >;
-				clock-frequency = <10000000>;
+				clock-frequency = <50000000>;
 			}; //end timer (timer)
 
 			led_reg: gpio@0x40 {
