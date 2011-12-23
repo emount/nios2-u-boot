@@ -73,14 +73,21 @@ _exception:
 	rdctl	et, estatus
 	stw	et, 128(sp)
 
-	/* If interrupts are disabled -- software interrupt */
-	rdctl	et, estatus
-	andi	et, et, 1
-	beq	et, r0, 0f
+	/* Extra exception information is available since MMU is enabled.  
+	 * First clear the EH bit before a new exception is received, which
+	 * ensures that estatus is updated for each exception.
+	 */
+	rdctl	et, status
+	movi	r9, -5
+	and	et, et, r9
+	wrctl	status, et
 
-	/* If no interrupts are pending -- software interrupt */
-	rdctl	et, ipending
-	beq	et, r0, 0f
+	/* Check the CAUSE field to identify if this is an interrupt (cause = 2) */
+	rdctl   r5, ctl7
+	movi	r9, 0x007c
+	and	r5, r5, r9
+	movi	r9, 8
+	bne	r5, r9, 0f
 
 	/* HARDWARE INTERRUPT: Call interrupt handler */
 	movhi	r3, %hi(external_interrupt)
