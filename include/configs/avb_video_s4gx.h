@@ -57,11 +57,18 @@
 
 /*
  * TIMER
+ *
+ * CONFIG_SYS_HZ sets the time granularity of the system timestamp;
+ * keep this set to 1000 to use msec.  The CONFIG_SYS_NIOS_TMRMS is
+ * then used to configure the period at which the interval timer
+ * actually interrupts the processor.  The value of one millisecond
+ * is appropriate to ensure that brief timeouts, such as write timeouts
+ * for Flash memory, are checked with sufficient precision.
  */
 #define CONFIG_SYS_NIOS_TMRBASE	CONFIG_SYS_TIMER_BASE
 #define CONFIG_SYS_NIOS_TMRIRQ		CONFIG_SYS_TIMER_IRQ
-#define CONFIG_SYS_HZ			1000	/* Always 1000 */
-#define CONFIG_SYS_NIOS_TMRMS		10	/* Desired period (msec)*/
+#define CONFIG_SYS_HZ               1000  /* Always 1000 */
+#define CONFIG_SYS_NIOS_TMRMS		1     /* Desired period (msec)*/
 #define CONFIG_SYS_NIOS_TMRCNT \
 	(CONFIG_SYS_NIOS_TMRMS * (CONFIG_SYS_TIMER_FREQ / 1000) - 1)
 
@@ -107,17 +114,20 @@
 /* Define the width of the Flash for the CFI driver */
 #define CONFIG_SYS_FLASH_CFI_WIDTH	FLASH_CFI_16BIT
 
+/* Flash driver options */
+#define CONFIG_FLASH_SHOW_PROGRESS 1
+
 /*
  * ENVIRONMENT -- Put environment in the very first bottom-boot sector
  *                of the Numonyx PC28F512P30BF device.  This part has four
  *                32-KiB bottom boot block sectors, followed by 511 128-KiB
  *                sectors.
  */
-#define CONFIG_ENV_IS_IN_FLASH
-
-#define CONFIG_ENV_SIZE		0x8000	/* 32k, 1 bottom-boot sector */
-#define CONFIG_ENV_OVERWRITE		/* Serial change Ok	*/
-#define CONFIG_ENV_ADDR		(CONFIG_SYS_FLASH_BASE + 0x00000000)
+#define CONFIG_ENV_IS_IN_FLASH 1
+#define CONFIG_ENV_SECT_SIZE   0x8000
+#define CONFIG_ENV_SIZE		   0x8000  /* 32k, 1 bottom-boot sector */
+#define CONFIG_ENV_OVERWRITE           /* Serial change Ok	*/
+#define CONFIG_ENV_ADDR		   (CONFIG_SYS_FLASH_BASE + 0x00000000)
 
 /*
  * MEMORY ORGANIZATION
