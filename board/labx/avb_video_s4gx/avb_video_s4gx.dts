@@ -71,8 +71,14 @@
 			uboot@c20000 {
 				reg = < 0x00C20000 0x00040000 >;
 			};
-			toppad@c60000 {
-				reg = < 0x00C60000 0x033A0000 >;
+			kernel@c60000 {
+				reg = < 0x00C60000 0x00200000 >;
+			};
+			rootfs@e60000 {
+				reg = < 0x00E60000 0x00300000 >;
+			};
+			toppad@1160000 {
+				reg = < 0x01160000 0x02EA0000 >;
 			};
 		}; //end flash (cfi_flash)
 
@@ -119,6 +125,6 @@
 
 	}; //sopc
 	chosen {
-		bootargs = "console=ttyAL0 root=mtd4 rootfstype=squashfs init=/bin/init";
+		bootargs = "console=ttyAL0 root=mtd5 rootfstype=squashfs init=/bin/init";
 	};
 };
