@@ -23,7 +23,7 @@ set rootfsstart 0xECE60000
 set rootfssize 0x00300000
 
 echo Boot Configuration:
-set bootcmd 'bootm ${kernelastart}'
+set bootcmd 'bootm ${kernelstart}'
 set bootargs 'console=ttyAL0,115200 root=/dev/mtdblock5 rootfstype=squashfs init=/bin/init'
 set bootdelay 3
 
