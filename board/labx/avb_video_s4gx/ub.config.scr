@@ -1,4 +1,11 @@
 echo  Setting up AVB Video Stratix-IV GX environment...
+echo -----------------------------------
+echo Network Configuration:
+set autoload no
+set ethaddr 00:0a:35:00:60:00
+set ipaddr 192.168.1.1
+set serverip 192.168.1.100
+
 echo ---------------------------------------------------
 echo Clobber DDR3 Configuration:
 set clobstart 0xC0000000

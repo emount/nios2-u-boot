@@ -63,22 +63,7 @@ phys_size_t initdram(int board_type)
 #ifdef CONFIG_CMD_NET
 int board_eth_init(bd_t *bis)
 {
-	int rc = 0;
-#ifdef CONFIG_SMC91111
-	rc += smc91111_initialize(0, CONFIG_SMC91111_BASE);
-#endif
-#ifdef CONFIG_DRIVER_DM9000
-	rc += dm9000_initialize(bis);
-#endif
-#ifdef CONFIG_ALTERA_TSE
-	rc += altera_tse_initialize(0,
-				    CONFIG_SYS_ALTERA_TSE_MAC_BASE,
-				    CONFIG_SYS_ALTERA_TSE_SGDMA_RX_BASE,
-				    CONFIG_SYS_ALTERA_TSE_SGDMA_TX_BASE);
-#endif
-#ifdef CONFIG_ETHOC
-	rc += ethoc_initialize(0, CONFIG_SYS_ETHOC_BASE);
-#endif
-	return rc;
+    /* Initialize the Lab X Ethernet controller */
+    return(labx_eth_initialize(bis));
 }
 #endif

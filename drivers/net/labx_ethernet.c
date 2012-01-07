@@ -719,7 +719,7 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
   ll_fifo->isr = FIFO_ISR_ALL;
   ll_fifo->tdfr = FIFO_RESET_MAGIC;
   ll_fifo->rdfr = FIFO_RESET_MAGIC;
-  //	printf ("fifo isr 0x%08x, fifo_ier 0x%08x, fifo_tdfv 0x%08x, fifo_rdfo 0x%08x fifo_rlf 0x%08x\n", ll_fifo->isr, ll_fifo->ier, ll_fifo->tdfv, ll_fifo->rdfo,ll_fifo->rlf);
+  printf ("fifo isr 0x%08x, fifo_ier 0x%08x, fifo_tdfv 0x%08x, fifo_rdfo 0x%08x fifo_rlf 0x%08x\n", ll_fifo->isr, ll_fifo->ier, ll_fifo->tdfv, ll_fifo->rdfo,ll_fifo->rlf);
 
   /* Configure the MDIO divisor and enable the interface to the PHY.
    * XILINX_HARD_MAC Note: The hard MDIO controller must be configured or
@@ -774,7 +774,7 @@ int labx_eth_initialize(bd_t *bis)
     hang();
   
   memset(dev, 0, sizeof(*dev));
-  sprintf(dev->name, "Lab X Ethernet, eth%d", WHICH_ETH_PORT);
+  sprintf(dev->name, "labx_ethernet%d", WHICH_ETH_PORT);
   dev->name[NAMESIZE - 1] = '\0';
   
   dev->iobase = LABX_PRIMARY_ETH_BASEADDR;

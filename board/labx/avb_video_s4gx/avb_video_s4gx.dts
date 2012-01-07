@@ -123,6 +123,16 @@
 
 		}; //end bridge (mm_clock_crossing_bridge_0)
 
+		labx_ethernet_0: ethernet@0x8300000 {
+			compatible = "labx,labx_ethernet-1.0";
+			reg = < 0x8300000 0x4000>;
+			interrupt-parent = < &nios2_qsys_0 >;
+			interrupts = < 3 >;
+			address-bits = <48>;
+			max-frame-size = <1518>;
+			local-mac-address = [ 00 00 00 00 00 00 ];
+		}; //end ethernet (labx_ethernet_0)
+
 	}; //sopc
 	chosen {
 		bootargs = "console=ttyAL0 root=mtd5 rootfstype=squashfs init=/bin/init";

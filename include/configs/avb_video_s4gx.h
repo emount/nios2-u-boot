@@ -72,6 +72,18 @@
 #define CONFIG_SYS_NIOS_TMRCNT \
 	(CONFIG_SYS_NIOS_TMRMS * (CONFIG_SYS_TIMER_FREQ / 1000) - 1)
 
+/* Lab X Ethernet controller 
+ *
+ * MDIO divisor is set to produce (100 MHz / 100) = 1 MHz
+ */
+#define CONFIG_SYS_ENET            1
+#define CONFIG_LABX_ETHERNET       1
+#define LABX_ETHERNET_MDIO_DIV     100
+#define LABX_PRIMARY_ETH_BASEADDR  LABX_ETHERNET_0_BASE
+#define LABX_MDIO_ETH_BASEADDR     LABX_ETHERNET_0_BASE
+#define LABX_ETHERNET_PHY_ADDR     0x00
+#define WHICH_ETH_PORT             0
+
 /*
  * STATUS LED
  */
