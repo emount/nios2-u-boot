@@ -245,6 +245,11 @@ struct labx_eth_private {
   unsigned char dev_addr[6];
 };
 
+static struct labx_eth_private priv_data = {
+  .idx      = 0,
+  .dev_addr = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
+};
+
 /* Performs a register write to a PHY */
 static void write_phy_register(int phy_addr, int reg_addr, int phy_data)
 {
@@ -257,7 +262,10 @@ static void write_phy_register(int phy_addr, int reg_addr, int phy_data)
   *((volatile unsigned int *) addr) = 
     (PHY_MDIO_WRITE | ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
      (reg_addr & PHY_REG_ADDR_MASK));
-  while(*((volatile unsigned int *) addr) & PHY_MDIO_BUSY);
+
+  /* Wait for the MDIO unit to go busy, then idle again */
+  while((*((volatile unsigned int *) addr) & PHY_MDIO_BUSY) == 0);
+  while((*((volatile unsigned int *) addr) & PHY_MDIO_BUSY) != 0);
 }
 
 /* Performs a register read from a PHY */
@@ -271,7 +279,11 @@ static unsigned int read_phy_register(int phy_addr, int reg_addr)
   *((volatile unsigned int *) addr) = 
     (PHY_MDIO_READ | ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
      (reg_addr & PHY_REG_ADDR_MASK));
-  while(*((volatile unsigned int *) addr) & PHY_MDIO_BUSY);
+
+  /* Wait for the MDIO unit to go busy, then idle again */
+  while((*((volatile unsigned int *) addr) & PHY_MDIO_BUSY) == 0);
+  while((*((volatile unsigned int *) addr) & PHY_MDIO_BUSY) != 0);
+
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_DATA_REG);
   readValue = *((volatile unsigned int *) addr);
   return(readValue);
@@ -414,14 +426,11 @@ static int labx_eth_phy_ctrl(void)
 /* Rx buffer is also used by FIFO mode */
 static unsigned char rx_buffer[ETHER_MTU] __attribute((aligned(32)));
 
-
-
 void debugll(int count)
 {
   printf ("%d fifo isr 0x%08x, fifo_ier 0x%08x, fifo_rdfr 0x%08x, fifo_rdfo 0x%08x fifo_rlr 0x%08x\n",count, ll_fifo->isr, \
 	  ll_fifo->ier, ll_fifo->rdfr, ll_fifo->rdfo, ll_fifo->rlf);
 }
-
 
 static int labx_eth_send_fifo(unsigned char *buffer, int length)
 {
@@ -666,7 +675,7 @@ static int labx_eth_addr_setup(struct labx_eth_private * lp)
     printf("cannot get enviroment for \"ethaddr\".\n");
     return -1;
   }
-  
+
   for (i = 0; i < 6; i++) {
     lp->dev_addr[i] = env_p ? simple_strtoul(env_p, &end, 16) : 0;
     if (env_p) env_p = (*end) ? end + 1 : end;
@@ -719,7 +728,7 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
   ll_fifo->isr = FIFO_ISR_ALL;
   ll_fifo->tdfr = FIFO_RESET_MAGIC;
   ll_fifo->rdfr = FIFO_RESET_MAGIC;
-  printf ("fifo isr 0x%08x, fifo_ier 0x%08x, fifo_tdfv 0x%08x, fifo_rdfo 0x%08x fifo_rlf 0x%08x\n", ll_fifo->isr, ll_fifo->ier, ll_fifo->tdfv, ll_fifo->rdfo,ll_fifo->rlf);
+  // printf ("fifo isr 0x%08x, fifo_ier 0x%08x, fifo_tdfv 0x%08x, fifo_rdfo 0x%08x fifo_rlf 0x%08x\n", ll_fifo->isr, ll_fifo->ier, ll_fifo->tdfv, ll_fifo->rdfo,ll_fifo->rlf);
 
   /* Configure the MDIO divisor and enable the interface to the PHY.
    * XILINX_HARD_MAC Note: The hard MDIO controller must be configured or
@@ -778,11 +787,11 @@ int labx_eth_initialize(bd_t *bis)
   dev->name[NAMESIZE - 1] = '\0';
   
   dev->iobase = LABX_PRIMARY_ETH_BASEADDR;
-  dev->priv = 0;
-  dev->init = labx_eth_init;
-  dev->halt = labx_eth_halt;
-  dev->send = labx_eth_send;
-  dev->recv = labx_eth_recv;
+  dev->priv   = &priv_data;
+  dev->init   =  labx_eth_init;
+  dev->halt   =  labx_eth_halt;
+  dev->send   =  labx_eth_send;
+  dev->recv   =  labx_eth_recv;
   
   eth_register(dev);
   
