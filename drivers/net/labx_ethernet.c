@@ -135,6 +135,18 @@
 #  define MDIO_DIVISOR_MASK  (0x0000003F)
 #  define MDIO_ENABLED       (0x00000040)
 
+/* SGMII PCS registers, mapped into the MAC register set for SGMII shims */
+#define LABX_SGMII_REGS_BASE  (LABX_MAC_REGS_BASE + 0x0100)
+#define SGMII_CTRL_REG             (LABX_SGMII_REGS_BASE + 0x00)
+#define SGMII_STATUS_REG           (LABX_SGMII_REGS_BASE + 0x04)
+#define SGMII_PHY_ID_HIGH_REG      (LABX_SGMII_REGS_BASE + 0x08)
+#define SGMII_PHY_ID_LOW_REG       (LABX_SGMII_REGS_BASE + 0x0C)
+#define SGMII_DEV_ABILITY_REG      (LABX_SGMII_REGS_BASE + 0x10)
+#define SGMII_PARTNER_ABILITY_REG  (LABX_SGMII_REGS_BASE + 0x14)
+#define SGMII_AN_EXPANSION_REG     (LABX_SGMII_REGS_BASE + 0x18)
+#define SGMII_SCRATCH_REG          (LABX_SGMII_REGS_BASE + 0x40)
+#define SGMII_IF_MODE_REG          (LABX_SGMII_REGS_BASE + 0x50)
+
 /* Maximum Ethernet MTU (with VLAN tag extension) */
 #define ETHER_MTU		1520
 
@@ -253,48 +265,48 @@ static struct labx_eth_private priv_data = {
 /* Performs a register write to a PHY */
 static void write_phy_register(int phy_addr, int reg_addr, int phy_data)
 {
-  unsigned int addr;
+  uint32_t addr;
 
   /* Write the data first, then the control register */
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_DATA_REG);
-  *((volatile unsigned int *) addr) = phy_data;
+  *((volatile uint32_t *) addr) = phy_data;
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_CONTROL_REG);
-  *((volatile unsigned int *) addr) = 
+  *((volatile uint32_t *) addr) = 
     (PHY_MDIO_WRITE | ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
      (reg_addr & PHY_REG_ADDR_MASK));
 
   /* Wait for the MDIO unit to go busy, then idle again */
-  while((*((volatile unsigned int *) addr) & PHY_MDIO_BUSY) == 0);
-  while((*((volatile unsigned int *) addr) & PHY_MDIO_BUSY) != 0);
+  while((*((volatile uint32_t *) addr) & PHY_MDIO_BUSY) == 0);
+  while((*((volatile uint32_t *) addr) & PHY_MDIO_BUSY) != 0);
 }
 
 /* Performs a register read from a PHY */
-static unsigned int read_phy_register(int phy_addr, int reg_addr)
+static uint32_t read_phy_register(int phy_addr, int reg_addr)
 {
-  unsigned int addr;
-  unsigned int readValue;
+  uint32_t addr;
+  uint32_t readValue;
 
   /* Write to the MDIO control register to initiate the read */
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_CONTROL_REG);
-  *((volatile unsigned int *) addr) = 
+  *((volatile uint32_t *) addr) = 
     (PHY_MDIO_READ | ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
      (reg_addr & PHY_REG_ADDR_MASK));
 
   /* Wait for the MDIO unit to go busy, then idle again */
-  while((*((volatile unsigned int *) addr) & PHY_MDIO_BUSY) == 0);
-  while((*((volatile unsigned int *) addr) & PHY_MDIO_BUSY) != 0);
+  while((*((volatile uint32_t *) addr) & PHY_MDIO_BUSY) == 0);
+  while((*((volatile uint32_t *) addr) & PHY_MDIO_BUSY) != 0);
 
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_DATA_REG);
-  readValue = *((volatile unsigned int *) addr);
+  readValue = *((volatile uint32_t *) addr);
   return(readValue);
 }
 
 /* Writes a value to a MAC register */
-static void labx_eth_write_mac_reg(int reg_offset, int reg_data)
+static void labx_eth_write_mac_reg(uint32_t reg_offset, uint32_t reg_data)
 {
-  //printf("REG %04X = %08X (was %08X)\n", reg_offset, reg_data, *(volatile unsigned int *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset));
+  //printf("REG %04X = %08X (was %08X)\n", reg_offset, reg_data, *(volatile uint32_t *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset));
   /* Apply the register offset to the base address */
-  *(volatile unsigned int *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset) = reg_data;
+  *(volatile uint32_t *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset) = reg_data;
 }
 
 /* Writes a value to the MDIO configuration register within the register
@@ -304,13 +316,13 @@ static void labx_eth_write_mac_reg(int reg_offset, int reg_data)
 static void labx_eth_write_mdio_config(int config_data)
 {
   /* Apply the MDIO register offset to the base address */
-  *(volatile unsigned int *)(LABX_MDIO_ETH_BASEADDR + MAC_MDIO_CONFIG_REG) = config_data;
+  *(volatile uint32_t *)(LABX_MDIO_ETH_BASEADDR + MAC_MDIO_CONFIG_REG) = config_data;
 }
 
 /* Reads a value from a MAC register */
-int labx_eth_read_mac_reg(int reg_offset)
+uint32_t labx_eth_read_mac_reg(uint32_t reg_offset)
 {
-  unsigned int val = *(volatile unsigned int *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset);
+  uint32_t val = *(volatile uint32_t *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset);
   return(val);
 }
 
@@ -321,59 +333,67 @@ static int first = 1;
 /* setting ll_temac and phy to proper setting */
 static int labx_eth_phy_ctrl(void)
 {
-  unsigned int result;
+  uint32_t result;
 
   if(first) {
-    unsigned int id_high;
-    unsigned id_low;
+    uint32_t id_high;
+    uint32_t id_low;
 
     /* Read and report the PHY */
     id_high = read_phy_register(phy_addr, 2);
     id_low = read_phy_register(phy_addr, 3);
     printf("PHY ID at address 0x%02X: 0x%04X%04X\n", phy_addr, id_high, id_low);
+
+    /* Perform RXC and TXC phase adjustment specific to some PHYs */
     if (id_high == BCM5481_ID_HIGH &&
-    		(id_low & BCM5481_ID_LOW_MASK) == BCM5481_ID_LOW)
-    {
-    	/* RGMII Transmit Clock Delay: The RGMII transmit timing can be adjusted
-		 * by software control. TXD-to-GTXCLK clock delay time can be increased
-		 * by approximately 1.9 ns for 1000BASE-T mode, and between 2 ns to 6 ns
-		 * when in 10BASE-T or 100BASE-T mode by setting Register 1ch, SV 00011,
-		 * bit 9 = 1. Enabling this timing adjustment eliminates the need for
-		 * board trace delays as required by the RGMII specification.
-    	 */
-    	write_phy_register(phy_addr, 0x1C, BCM5481_CLOCK_ALIGNMENT_REGISTER_SEL);
-    	result = read_phy_register(phy_addr, 0x1C);
-    	write_phy_register(phy_addr, 0x1C,
-    			BCM5481_SHADOW_WRITE | BCM5481_CLOCK_ALIGNMENT_REGISTER_SEL | BCM5481_XMIT_CLOCK_DELAY);
-    	write_phy_register(phy_addr, 0x1C, BCM5481_CLOCK_ALIGNMENT_REGISTER_SEL);
-    	printf("RGMII Transmit Clock Delay: %d (0x%04X) => %d\n",
-    			((result & BCM5481_XMIT_CLOCK_DELAY) != 0), result,
-    			((read_phy_register(phy_addr, 0x1C)& BCM5481_XMIT_CLOCK_DELAY) != 0));
+        (id_low & BCM5481_ID_LOW_MASK) == BCM5481_ID_LOW) {
+      /* RGMII Transmit Clock Delay: The RGMII transmit timing can be adjusted
+       * by software control. TXD-to-GTXCLK clock delay time can be increased
+       * by approximately 1.9 ns for 1000BASE-T mode, and between 2 ns to 6 ns
+       * when in 10BASE-T or 100BASE-T mode by setting Register 1ch, SV 00011,
+       * bit 9 = 1. Enabling this timing adjustment eliminates the need for
+       * board trace delays as required by the RGMII specification.
+       */
+      write_phy_register(phy_addr, 0x1C, BCM5481_CLOCK_ALIGNMENT_REGISTER_SEL);
+      result = read_phy_register(phy_addr, 0x1C);
+      write_phy_register(phy_addr, 0x1C,
+                         BCM5481_SHADOW_WRITE | BCM5481_CLOCK_ALIGNMENT_REGISTER_SEL | BCM5481_XMIT_CLOCK_DELAY);
+      write_phy_register(phy_addr, 0x1C, BCM5481_CLOCK_ALIGNMENT_REGISTER_SEL);
+      printf("RGMII Transmit Clock Delay: %d (0x%04X) => %d\n",
+             ((result & BCM5481_XMIT_CLOCK_DELAY) != 0), result,
+             ((read_phy_register(phy_addr, 0x1C)& BCM5481_XMIT_CLOCK_DELAY) != 0));
 
-	result = read_phy_register(phy_addr, 0x00);
-	result = result | BCM5481_AUTO_NEGOTIATE_ENABLE;
-	write_phy_register(phy_addr, 0x00, result);
-	printf("Auto-Negotiate Enable: %d (0x%04X) => %d\n",
-	                ((result & BCM5481_AUTO_NEGOTIATE_ENABLE) != 0), result,
-	                ((read_phy_register(phy_addr, 0x00) & BCM5481_AUTO_NEGOTIATE_ENABLE) != 0));
-	result = read_phy_register(phy_addr, 0x18);
-	result = result | BCM5481_SHADOW_WRITE | BCM5481_HPE_REGISTER_SELECT;
-	result = result & ~BCM5481_HIGH_PERFORMANCE_ENABLE;
-	printf("High-Performance Enable: %d (0x%04X) => %d\n",
-	                ((result & BCM5481_HIGH_PERFORMANCE_ENABLE) != 0), result,
-	                ((read_phy_register(phy_addr, 0x18) & BCM5481_HIGH_PERFORMANCE_ENABLE) != 0));
+      result = read_phy_register(phy_addr, 0x00);
+      result = result | BCM5481_AUTO_NEGOTIATE_ENABLE;
+      write_phy_register(phy_addr, 0x00, result);
+      printf("Auto-Negotiate Enable: %d (0x%04X) => %d\n",
+             ((result & BCM5481_AUTO_NEGOTIATE_ENABLE) != 0), result,
+             ((read_phy_register(phy_addr, 0x00) & BCM5481_AUTO_NEGOTIATE_ENABLE) != 0));
+      result = read_phy_register(phy_addr, 0x18);
+      result = result | BCM5481_SHADOW_WRITE | BCM5481_HPE_REGISTER_SELECT;
+      result = result & ~BCM5481_HIGH_PERFORMANCE_ENABLE;
+      printf("High-Performance Enable: %d (0x%04X) => %d\n",
+             ((result & BCM5481_HIGH_PERFORMANCE_ENABLE) != 0), result,
+             ((read_phy_register(phy_addr, 0x18) & BCM5481_HIGH_PERFORMANCE_ENABLE) != 0));
 
-    	write_phy_register(phy_addr, 0x18, BCM5481_RX_SKEW_REGISTER_SEL);
-    	result = read_phy_register(phy_addr, 0x18);
-    	write_phy_register(phy_addr, 0x18,
-    			result | BCM5481_SHADOW_WRITE | BCM5481_RX_SKEW_REGISTER_SEL | BCM5481_RX_SKEW_ENABLE);
-    	write_phy_register(phy_addr, 0x18, BCM5481_RX_SKEW_REGISTER_SEL);
-    	printf("RGMII Receive Clock Skew: %d (0x%04X) => %d\n",
-    			((result & BCM5481_RX_SKEW_ENABLE) != 0), result,
-    			((read_phy_register(phy_addr, 0x18)& BCM5481_RX_SKEW_ENABLE) != 0));
+      write_phy_register(phy_addr, 0x18, BCM5481_RX_SKEW_REGISTER_SEL);
+      result = read_phy_register(phy_addr, 0x18);
+      write_phy_register(phy_addr, 0x18,
+                         result | BCM5481_SHADOW_WRITE | BCM5481_RX_SKEW_REGISTER_SEL | BCM5481_RX_SKEW_ENABLE);
+      write_phy_register(phy_addr, 0x18, BCM5481_RX_SKEW_REGISTER_SEL);
+      printf("RGMII Receive Clock Skew: %d (0x%04X) => %d\n",
+             ((result & BCM5481_RX_SKEW_ENABLE) != 0), result,
+             ((read_phy_register(phy_addr, 0x18)& BCM5481_RX_SKEW_ENABLE) != 0));
 	
     }
-  }
+
+    /* Probe the SGMII PCS/PMA layer if present */
+#if LABX_ETH_ALTERA_SGMII
+    result = labx_eth_read_mac_reg(SGMII_PHY_ID_HIGH_REG);
+    printf("SGMII PHY ID : 0x%08X\n", 
+           (result | (labx_eth_read_mac_reg(SGMII_PHY_ID_LOW_REG) << 16)));
+#endif
+  } /* if(first call) */
 
   if(!link) {
     int timeout = 50;
@@ -434,8 +454,8 @@ void debugll(int count)
 
 static int labx_eth_send_fifo(unsigned char *buffer, int length)
 {
-  unsigned int *buf = (unsigned int*) buffer;
-  unsigned int len, i, val;
+  uint32_t *buf = (uint32_t*) buffer;
+  uint32_t len, i, val;
 
   len = ((length + 3) / 4);
 
@@ -502,13 +522,13 @@ static const u8 MAC_ZERO[6] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
  * so this should not consume very much time at all.
  */
 static void wait_match_config(void) {
-  unsigned int addr;
+  uint32_t addr;
   uint32_t statusWord;
   uint32_t timeout = 10000;
 
   addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_CONTROL_REG);
   do {
-    statusWord = *((volatile unsigned int *) addr);
+    statusWord = *((volatile uint32_t *) addr);
     if (timeout-- == 0)
       {
         printf("labx_ethernet : wait_match_config timeout!\n");
@@ -521,7 +541,7 @@ static void wait_match_config(void) {
 typedef enum { SELECT_NONE, SELECT_SINGLE, SELECT_ALL } SelectionMode;
 static void select_matchers(SelectionMode selectionMode,
                             uint32_t matchUnit) {
-  unsigned int addr;
+  uint32_t addr;
 
   addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_SELECT_REG);
 
@@ -529,19 +549,19 @@ static void select_matchers(SelectionMode selectionMode,
   case SELECT_NONE:
     /* De-select all the match units */
     //printk("MAC SELECT %08X\n", 0);
-    *((volatile unsigned int *) addr) = 0x00000000;
+    *((volatile uint32_t *) addr) = 0x00000000;
     break;
 
   case SELECT_SINGLE:
     /* Select a single unit */
     //printk("MAC SELECT %08X\n", 1 << matchUnit);
-    *((volatile unsigned int *) addr) = (1 << matchUnit);
+    *((volatile uint32_t *) addr) = (1 << matchUnit);
     break;
 
   default:
     /* Select all match units at once */
     //printk("MAC SELECT %08X\n", 0xFFFFFFFF);
-    *((volatile unsigned int *) addr) = 0xFFFFFFFF;
+    *((volatile uint32_t *) addr) = 0xFFFFFFFF;
     break;
   }
 }
@@ -553,12 +573,12 @@ static void select_matchers(SelectionMode selectionMode,
  */
 typedef enum { LOADING_MORE_WORDS, LOADING_LAST_WORD } LoadingMode;
 static void set_matcher_loading_mode(LoadingMode loadingMode) {
-  unsigned int addr;
+  uint32_t addr;
   uint32_t controlWord;
 
   addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_CONTROL_REG);
 
-  controlWord = *((volatile unsigned int *) addr);
+  controlWord = *((volatile uint32_t *) addr);
 
   if(loadingMode == LOADING_MORE_WORDS) {
     /* Clear the "last word" bit to suppress false matches while the units are
@@ -573,12 +593,12 @@ static void set_matcher_loading_mode(LoadingMode loadingMode) {
   }
   //printk("CONTROL WORD %08X\n", controlWord);
 
-  *((volatile unsigned int *) addr) = controlWord;
+  *((volatile uint32_t *) addr) = controlWord;
 }
 
 /* Clears any selected match units, preventing them from matching any packets */
 static void clear_selected_matchers(void) {
-  unsigned int addr;
+  uint32_t addr;
   uint32_t wordIndex;
   
   /* Ensure the unit(s) disable as the first word is load to prevent erronous
@@ -596,7 +616,7 @@ static void clear_selected_matchers(void) {
 
     //printk("MAC LOAD %08X\n", 0);
     addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_LOAD_REG);
-    *((volatile unsigned int *) addr) = 0x00000000;
+    *((volatile uint32_t *) addr) = 0x00000000;
   }
 }
 
@@ -605,7 +625,7 @@ static void clear_selected_matchers(void) {
  * packing of these primitives into Xilinx LUT6-based architectures.
  */
 static void load_unified_matcher(const uint8_t matchMac[6]) {
-  unsigned int addr;
+  uint32_t addr;
   int32_t wordIndex;
   int32_t lutIndex;
   uint32_t configWord = 0x00000000;
@@ -634,7 +654,7 @@ static void load_unified_matcher(const uint8_t matchMac[6]) {
      */
     if(wordIndex == 0) set_matcher_loading_mode(LOADING_LAST_WORD);
     //printk("MAC LOAD %08X\n", configWord);
-    *((volatile unsigned int *) addr) = configWord;
+    *((volatile uint32_t *) addr) = configWord;
     wait_match_config();
   }
 }
@@ -664,7 +684,7 @@ static void configure_mac_filter(int unitNum, const u8 mac[6], int mode) {
 /* setup mac addr */
 static int labx_eth_addr_setup(struct labx_eth_private * lp)
 {
-  unsigned int addr;
+  uint32_t addr;
   uint32_t numMacFilters;
   char * env_p;
   char * end;
@@ -685,7 +705,7 @@ static int labx_eth_addr_setup(struct labx_eth_private * lp)
    * by a field within the revision register
    */
   addr = (LABX_PRIMARY_ETH_BASEADDR + REVISION_REG);
-  numMacFilters = ((*((volatile unsigned int *) addr) & REVISION_MATCH_MASK) >>
+  numMacFilters = ((*((volatile uint32_t *) addr) & REVISION_MATCH_MASK) >>
                    REVISION_MATCH_SHIFT);
   printf("Lab X Ethernet has %d MAC filters\n", numMacFilters);
   
