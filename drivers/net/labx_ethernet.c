@@ -66,11 +66,14 @@
 #  define MDIO_IRQ_MASK       (0x00000001)
 #  define PHY_IRQ_MASK        (0x00000002)
 #define VLAN_MASK_REG         (0x00000010)
-#define MAC_SELECT_REG        (0x00000014)
-#define MAC_CONTROL_REG       (0x00000018)
-#define   MAC_ADDRESS_LOAD_ACTIVE 0x00000100
-#define   MAC_ADDRESS_LOAD_LAST   0x00000200
-#define MAC_LOAD_REG          (0x0000001C)
+#define FILTER_SELECT_REG     (0x00000014)
+#define FILTER_CONTROL_REG    (0x00000018)
+#  define MATCH_ARCH_ID_SHIFT     24
+#    define MATCH_ARCH_XILINX_SRL16E (0x10)
+#    define MATCH_ARCH_DIRECT        (0x20)
+#  define MAC_ADDRESS_LOAD_ACTIVE 0x00000100
+#  define MAC_ADDRESS_LOAD_LAST   0x00000200
+#define FILTER_LOAD_REG       (0x0000001C)
 #define REVISION_REG          (0x0000003C)
 #  define REVISION_MINOR_MASK  0x0000000F
 #  define REVISION_MINOR_SHIFT 0
@@ -253,13 +256,23 @@ static struct eth_device *xps_ll_dev = NULL;
 #endif
 
 struct labx_eth_private {
-  int idx;
+  int           idx;
   unsigned char dev_addr[6];
+
+  /* Number of match units */
+  uint32_t numMatchUnits;
+
+  /* Number of words needed to fully load a match unit */
+  uint32_t matchLoadWords;
+
+  /* Device-specific hook function for loading match units */
+  void (*loadMatcher)(const uint8_t*);
 };
 
 static struct labx_eth_private priv_data = {
   .idx      = 0,
   .dev_addr = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
+  
 };
 
 /* Performs a register write to a PHY */
@@ -506,16 +519,14 @@ static int labx_eth_recv_fifo(void)
     return 0;
 }
 
-/* FOO */
-
+/* Constants for match unit loading */
 #define MAC_MATCH_NONE 0
-#define MAC_MATCH_ALL 1
+#define MAC_MATCH_ALL  1
 
-static const u8 MAC_BROADCAST[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-static const u8 MAC_ZERO[6] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-
-#define NUM_SRL16E_CONFIG_WORDS 8
-#define NUM_SRL16E_INSTANCES    12
+/* Common MAC addresses */
+#define MAC_ADDR_BYTES (6)
+static const u8 MAC_BROADCAST[MAC_ADDR_BYTES] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+static const u8 MAC_ZERO[MAC_ADDR_BYTES]      = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 /* Busy loops until the match unit configuration logic is idle.  The hardware goes 
  * idle very quickly and deterministically after a configuration word is written, 
@@ -526,7 +537,8 @@ static void wait_match_config(void) {
   uint32_t statusWord;
   uint32_t timeout = 10000;
 
-  addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_CONTROL_REG);
+
+  addr = (LABX_PRIMARY_ETH_BASEADDR + FILTER_CONTROL_REG);
   do {
     statusWord = *((volatile uint32_t *) addr);
     if (timeout-- == 0)
@@ -543,7 +555,7 @@ static void select_matchers(SelectionMode selectionMode,
                             uint32_t matchUnit) {
   uint32_t addr;
 
-  addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_SELECT_REG);
+  addr = (LABX_PRIMARY_ETH_BASEADDR + FILTER_SELECT_REG);
 
   switch(selectionMode) {
   case SELECT_NONE:
@@ -576,7 +588,7 @@ static void set_matcher_loading_mode(LoadingMode loadingMode) {
   uint32_t addr;
   uint32_t controlWord;
 
-  addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_CONTROL_REG);
+  addr = (LABX_PRIMARY_ETH_BASEADDR + FILTER_CONTROL_REG);
 
   controlWord = *((volatile uint32_t *) addr);
 
@@ -596,8 +608,10 @@ static void set_matcher_loading_mode(LoadingMode loadingMode) {
   *((volatile uint32_t *) addr) = controlWord;
 }
 
-/* Clears any selected match units, preventing them from matching any packets */
-static void clear_selected_matchers(void) {
+/**
+ * Clears any selected match units, preventing them from matching any packets 
+ */
+static void clear_selected_matchers(struct labx_eth_private *lp) {
   uint32_t addr;
   uint32_t wordIndex;
   
@@ -606,25 +620,32 @@ static void clear_selected_matchers(void) {
    */
   set_matcher_loading_mode(LOADING_MORE_WORDS);
 
-  for(wordIndex = 0; wordIndex < NUM_SRL16E_CONFIG_WORDS; wordIndex++) {
+  for(wordIndex = 0; wordIndex < lp->matchLoadWords; wordIndex++) {
     /* Assert the "last word" flag on the last word required to complete the clearing
      * of the selected unit(s).
      */
-    if(wordIndex == (NUM_SRL16E_CONFIG_WORDS - 1)) {
+    if(wordIndex == (lp->matchLoadWords - 1)) {
       set_matcher_loading_mode(LOADING_LAST_WORD);
     }
 
     //printk("MAC LOAD %08X\n", 0);
-    addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_LOAD_REG);
+    addr = (LABX_PRIMARY_ETH_BASEADDR + FILTER_LOAD_REG);
     *((volatile uint32_t *) addr) = 0x00000000;
   }
 }
 
-/* Loads truth tables into a match unit using the newest, "unified" match
+/* Constants common to all match architectures */
+#define MAC_ADDRESS_LOAD_SHIFT 8
+
+/* Constants for Xilinx SRL16E implementation */
+#define NUM_SRL16E_CONFIG_WORDS 8
+#define NUM_SRL16E_INSTANCES    12
+
+/* Loads truth tables into a match unit using the Xilinx "unified" match
  * architecture.  This is SRL16E based (not cascaded) due to the efficient
  * packing of these primitives into Xilinx LUT6-based architectures.
  */
-static void load_unified_matcher(const uint8_t matchMac[6]) {
+static void load_xilinx_matcher(const uint8_t matchMac[6]) {
   uint32_t addr;
   int32_t wordIndex;
   int32_t lutIndex;
@@ -632,7 +653,7 @@ static void load_unified_matcher(const uint8_t matchMac[6]) {
   uint32_t matchChunk;
   
   /* All local writes will be to the MAC filter load register */
-  addr = (LABX_PRIMARY_ETH_BASEADDR + MAC_LOAD_REG);
+  addr = (LABX_PRIMARY_ETH_BASEADDR + FILTER_LOAD_REG);
 
   /* In this architecture, all of the SRL16Es are loaded in parallel, with each
    * configuration word supplying two bits to each.  Only one of the two bits can
@@ -640,26 +661,89 @@ static void load_unified_matcher(const uint8_t matchMac[6]) {
    */
   for(wordIndex = (NUM_SRL16E_CONFIG_WORDS - 1); wordIndex >= 0; wordIndex--) {
     for(lutIndex = (NUM_SRL16E_INSTANCES - 1); lutIndex >= 0; lutIndex--) {
-      matchChunk = ((matchMac[5-(lutIndex/2)] >> ((lutIndex&1) << 2)) & 0x0F);
+      matchChunk = ((matchMac[5 - (lutIndex / 2)] >> ((lutIndex & 1) << 2)) & 0x0F);
       configWord <<= 2;
       if(matchChunk == (wordIndex << 1)) configWord |= 0x01;
       if(matchChunk == ((wordIndex << 1) + 1)) configWord |= 0x02;
     }
-    /* 12 nybbles are packed to the MSB */
-    configWord <<= 8;
+
+    /* 12 nybbles are packed to the most-significant bytes */
+    configWord <<= MAC_ADDRESS_LOAD_SHIFT;
 
     /* Two bits of truth table have been determined for each SRL16E, load the
      * word and wait for the configuration to occur.  Be sure to flag the last
      * word to automatically re-enable the match unit(s) as the last word completes.
      */
     if(wordIndex == 0) set_matcher_loading_mode(LOADING_LAST_WORD);
-    //printk("MAC LOAD %08X\n", configWord);
     *((volatile uint32_t *) addr) = configWord;
     wait_match_config();
   }
 }
 
-static void configure_mac_filter(int unitNum, const u8 mac[6], int mode) {
+/* Constants for Altera / direct match implementation */
+#define NUM_DIRECT_CONFIG_WORDS  2
+#define NUM_DIRECT_CHAINS       12
+
+static void load_direct_matcher(const uint8_t matchMac[6]) {
+  uint32_t addr;
+  int32_t wordIndex;
+  int32_t chainIndex;
+  uint32_t configWord;
+  uint32_t loadBits;
+  
+  /* All local writes will be to the MAC filter load register */
+  addr = (LABX_PRIMARY_ETH_BASEADDR + FILTER_LOAD_REG);
+
+  /* In the direct-matching scheme, the raw MAC address is loaded in parallel.
+   * The scan-in mechanism is identical to that used by the Xilinx architecture;
+   * the MAC address bits are loaded into twelve independent chains of four bits
+   * each.  Every word loaded supplies all twelve chains with two bits.
+   */
+  for(wordIndex = (NUM_DIRECT_CONFIG_WORDS - 1); wordIndex >= 0; wordIndex--) {
+    configWord = 0x00000000;
+
+    /* Iterate through each of the chains; all are partially loaded with each word */
+    for(chainIndex = (NUM_DIRECT_CHAINS - 1); chainIndex >= 0; chainIndex--) {
+      /* Resolve the byte of the MAC address the chain represents */
+      loadBits = matchMac[5 - (chainIndex / 2)];
+
+      /* Narrow down to which nybble of the byte */
+      if((chainIndex % 2) == 0) {
+        loadBits &= 0x0F;
+      } else {
+        loadBits >>= 4;
+      }
+
+      /* Resolve which dibit of the nybble; most-significant shifts in first,
+       * and the loop counts down
+       */
+      if(wordIndex == 1) {
+        loadBits >>= 2;
+      } else {
+        loadBits &= 0x03;
+      }
+
+      /* Shift the chain's bits into the word */
+      configWord = ((configWord << 2) | loadBits);
+    }
+
+    /* 24 bits are packed into the most-significant bytes */
+    configWord <<= MAC_ADDRESS_LOAD_SHIFT;
+
+    /* Two bits of raw MAC address have been sliced for each chain, load the
+     * word and wait for the configuration to occur.  Be sure to flag the last
+     * word to automatically re-enable the match unit(s) as the last word completes.
+     */
+    if(wordIndex == 0) set_matcher_loading_mode(LOADING_LAST_WORD);
+    *((volatile uint32_t *) addr) = configWord;
+    wait_match_config();
+  }
+}
+
+static void configure_mac_filter(struct labx_eth_private *lp,
+                                 int unitNum, 
+                                 const u8 mac[6], 
+                                 int mode) {
   //printk("CONFIGURE MAC MATCH %d (%d), %02X:%02X:%02X:%02X:%02X:%02X\n", unitNum, mode,
   //	mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 
@@ -668,13 +752,13 @@ static void configure_mac_filter(int unitNum, const u8 mac[6], int mode) {
   select_matchers(SELECT_SINGLE, unitNum);
 
   if (mode == MAC_MATCH_NONE) {
-    clear_selected_matchers();
+    clear_selected_matchers(lp);
   } else {
     /* Set the loading mode to disable as we load the first word */
     set_matcher_loading_mode(LOADING_MORE_WORDS);
-      
-    /* Calculate matching truth tables for the LUTs and load them */
-    load_unified_matcher(mac);
+
+    /* Call the platform-specific hook to load the selected match unit */
+    lp->loadMatcher(mac);
   }
 
   /* De-select the match unit */
@@ -682,10 +766,9 @@ static void configure_mac_filter(int unitNum, const u8 mac[6], int mode) {
 }
 
 /* setup mac addr */
-static int labx_eth_addr_setup(struct labx_eth_private * lp)
+static int labx_eth_addr_setup(struct labx_eth_private *lp)
 {
   uint32_t addr;
-  uint32_t numMacFilters;
   char * env_p;
   char * end;
   int i;
@@ -701,23 +784,15 @@ static int labx_eth_addr_setup(struct labx_eth_private * lp)
     if (env_p) env_p = (*end) ? end + 1 : end;
   }
 
-  /* Determine how many MAC address filters the instance supports, as reported
-   * by a field within the revision register
-   */
-  addr = (LABX_PRIMARY_ETH_BASEADDR + REVISION_REG);
-  numMacFilters = ((*((volatile uint32_t *) addr) & REVISION_MATCH_MASK) >>
-                   REVISION_MATCH_SHIFT);
-  printf("Lab X Ethernet has %d MAC filters\n", numMacFilters);
-  
   /* Configure for our unicast MAC address first, and the broadcast MAC
    * address second, provided there are enough MAC address filters.
    */
-  if(numMacFilters >= 1) {
-    configure_mac_filter(0, lp->dev_addr, MAC_MATCH_ALL);
+  if(lp->numMatchUnits >= 1) {
+    configure_mac_filter(lp, 0, lp->dev_addr, MAC_MATCH_ALL);
   }
 
-  if(numMacFilters >= 2) {
-    configure_mac_filter(1, MAC_BROADCAST, MAC_MATCH_ALL);
+  if(lp->numMatchUnits >= 2) {
+    configure_mac_filter(lp, 1, MAC_BROADCAST, MAC_MATCH_ALL);
   }
   
   return(0);
@@ -734,6 +809,8 @@ static void labx_eth_restart(void)
 static int labx_eth_init(struct eth_device *dev, bd_t *bis)
 {
   struct labx_eth_private *lp = (struct labx_eth_private *)dev->priv;
+  uint32_t addr;
+  uint32_t matchArchId;
 
   if(!first) {
     /* Short-circuit some of the setup; still return no error to permit
@@ -743,6 +820,40 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
     labx_eth_phy_ctrl();
     return(0);
   }
+
+  /* Determine how many MAC address filters the instance supports, as reported
+   * by a field within the revision register
+   */
+  addr = (LABX_PRIMARY_ETH_BASEADDR + REVISION_REG);
+  lp->numMatchUnits = ((*((volatile uint32_t *) addr) & REVISION_MATCH_MASK) >>
+                       REVISION_MATCH_SHIFT);
+  
+  /* Determine the proper loading function for the MAC match units
+   * based upon the match architecture reported by the filtering hardware 
+   * itself.
+   */
+  addr = (LABX_PRIMARY_ETH_BASEADDR + FILTER_CONTROL_REG);
+  matchArchId = (*((volatile uint32_t *) addr) >> MATCH_ARCH_ID_SHIFT);
+
+  printf("Lab X Ethernet has %d MAC filters, ", lp->numMatchUnits);
+  switch(matchArchId) {
+  case MATCH_ARCH_XILINX_SRL16E:
+    /* Xilinx architecture */
+    printf("SRL16E");
+    lp->loadMatcher = &load_xilinx_matcher;
+    break;
+
+  case MATCH_ARCH_DIRECT:
+    /* Altera or other direct matcher architecture */
+    printf("DIRECT");
+    lp->loadMatcher = &load_direct_matcher;
+    break;
+
+  default:
+    printf("UNRECOGNIZED-(0x%02X)\n", matchArchId);
+  }
+
+  printf(" architecture\n");
 
   /* Clear ISR flags and reset both transmit and receive FIFO logic */
   ll_fifo->isr = FIFO_ISR_ALL;
@@ -758,7 +869,7 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
    * communications! 
    */
   labx_eth_write_mdio_config((LABX_ETHERNET_MDIO_DIV & MDIO_DIVISOR_MASK) |
-			      MDIO_ENABLED);
+                             MDIO_ENABLED);
   
   /* Set up the MAC address in the hardware */
   labx_eth_addr_setup(lp);
