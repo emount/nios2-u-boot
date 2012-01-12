@@ -516,7 +516,7 @@ static int labx_eth_recv_fifo(void)
     ll_fifo->rdfr = FIFO_RESET_MAGIC;
   }
 
-    return 0;
+  return(0);
 }
 
 /* Constants for match unit loading */
@@ -768,7 +768,6 @@ static void configure_mac_filter(struct labx_eth_private *lp,
 /* setup mac addr */
 static int labx_eth_addr_setup(struct labx_eth_private *lp)
 {
-  uint32_t addr;
   char * env_p;
   char * end;
   int i;
