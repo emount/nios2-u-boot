@@ -43,6 +43,11 @@ set load_kernel 'tftp ${clobstart} ${kernelname}'
 set install_kernel 'protect off ${kernelstart} +${kernelsize};erase ${kernelstart} +${kernelsize};cp.b ${fileaddr} ${kernelstart} ${filesize}'
 set update_kernel run load_kernel install_kernel
 
+set rootfsname rootfs.squashfs
+set load_rootfs 'tftp ${clobstart} ${rootfsname}'
+set install_rootfs 'protect off ${rootfsstart} +${rootfssize};erase ${rootfsstart} +${rootfssize};cp.b ${fileaddr} ${rootfsstart} ${filesize}'
+set update_rootfs run load_rootfs install_rootfs
+
 echo Saving Configurations...
 saveenv
 
