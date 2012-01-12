@@ -8,7 +8,9 @@ set serverip 192.168.1.100
 
 echo ---------------------------------------------------
 echo Clobber DDR3 Configuration:
-set clobstart 0xC0000000
+echo Locate 1 MiB into DDR3 to avoid U-Boot exception
+echo trampoline code
+set clobstart 0xC0100000
 
 echo FPGA Configuration:
 set fpgastart 0xEC020000
