@@ -36,6 +36,13 @@ set bootcmd 'bootm ${kernelstart}'
 set bootargs 'console=ttyAL0,115200 root=/dev/mtdblock5 rootfstype=squashfs init=/bin/init'
 set bootdelay 3
 
+echo Flash update commands:
+
+set kernelname vmImage
+set load_kernel 'tftp ${clobstart} ${kernelname}'
+set install_kernel 'protect off ${kernelstart} +${kernelsize};erase ${kernelstart} +${kernelsize};cp.b ${fileaddr} ${kernelstart} ${filesize}'
+set update_kernel run load_kernel install_kernel
+
 echo Saving Configurations...
 saveenv
 
