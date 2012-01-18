@@ -214,9 +214,7 @@
 #define BCM5481_HIGH_PERFORMANCE_ENABLE      0x0040
 #define BCM5481_HPE_REGISTER_SELECT          0x0002
 
-/* As mentioned above, the Lab X Ethernet hardware mimics the
- * Xilinx LocalLink FIFO peripheral
- */
+/* Structure emulating the register file of the Cpu_Ethernet peripheral */
 typedef struct ll_fifo_s {
   int isr;  /* Interrupt Status Register 0x0 */
   int ier;  /* Interrupt Enable Register 0x4 */
@@ -228,6 +226,7 @@ typedef struct ll_fifo_s {
   int rdfo; /* Receive data FIFO Occupancy 0x1C */
   int rdfd; /* Read Receive data FIFO 32bit wide data read port 0x20 */
   int rlf;  /* Read Receive Length FIFO 0x24 */
+  int fctl; /* FIFO control 0x28 */
 } ll_fifo_s;
 
 /* Masks, etc. for use with the register file */
@@ -246,6 +245,10 @@ typedef struct ll_fifo_s {
 /* "Magic" value for FIFO reset operations, and timeout, in msec */
 #define FIFO_RESET_MAGIC    0x000000A5
 #define FIFO_RESET_TIMEOUT  500
+
+/* FIFO control register bits */
+#define FIFO_TX_ALIGN32  0x00000000
+#define FIFO_TX_ALIGN16  0x00000001
 
 /* Locate the FIFO structure offset from the Ethernet base address */
 ll_fifo_s *ll_fifo = (ll_fifo_s *) (LABX_PRIMARY_ETH_BASEADDR + LABX_FIFO_REGS_BASE);
@@ -470,16 +473,27 @@ static int labx_eth_send_fifo(unsigned char *buffer, int length)
   uint32_t *buf = (uint32_t*) buffer;
   uint32_t len, i, val;
 
+  /* U-Boot always provides buffer with 32-bit word alignment.  This still
+   * needs to be explicitly set in the peripheral to ensure it is in the
+   * correct alignment mode, or the first word may be dropped.
+   */
+  ll_fifo->fctl = FIFO_TX_ALIGN32;
+
+  /* Compute the word count needed to account for the full packet */
   len = ((length + 3) / 4);
 
+  /* Write to the data FIFO, enqueuing the packet's contents */
   for (i = 0; i < len; i++) {
     val = *buf++;
     ll_fifo->tdfd = val;
   }
 
+  /* Write the length, in bytes, to commence transmission, and then
+   * return the length transmitted.
+   */
   ll_fifo->tlf = length;
 
-  return length;
+  return(length);
 }
 
 static int labx_eth_recv_fifo(void)
