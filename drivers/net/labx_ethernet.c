@@ -65,6 +65,7 @@
 #define INT_FLAGS_REG         (0x0000000C)
 #  define MDIO_IRQ_MASK       (0x00000001)
 #  define PHY_IRQ_MASK        (0x00000002)
+#  define NO_IRQ_FLAGS        (0x00000000)
 #define VLAN_MASK_REG         (0x00000010)
 #define FILTER_SELECT_REG     (0x00000014)
 #define FILTER_CONTROL_REG    (0x00000018)
@@ -282,6 +283,12 @@ static struct labx_eth_private priv_data = {
 static void write_phy_register(int phy_addr, int reg_addr, int phy_data)
 {
   uint32_t addr;
+  uint32_t readValue;
+
+  /* Clear the MDIO IRQ flag in preparation */
+  addr = (LABX_MDIO_ETH_BASEADDR + INT_FLAGS_REG);
+  *((volatile uint32_t *) addr) = MDIO_IRQ_MASK;
+  readValue = *((volatile uint32_t *) addr);
 
   /* Write the data first, then the control register */
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_DATA_REG);
@@ -291,9 +298,9 @@ static void write_phy_register(int phy_addr, int reg_addr, int phy_data)
     (PHY_MDIO_WRITE | ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
      (reg_addr & PHY_REG_ADDR_MASK));
 
-  /* Wait for the MDIO unit to go busy, then idle again */
-  while((*((volatile uint32_t *) addr) & PHY_MDIO_BUSY) == 0);
-  while((*((volatile uint32_t *) addr) & PHY_MDIO_BUSY) != 0);
+  /* Wait for the MDIO completion flag to fire */
+  addr = (LABX_MDIO_ETH_BASEADDR + INT_FLAGS_REG);
+  while((*((volatile uint32_t *) addr) & MDIO_IRQ_MASK) == 0);
 }
 
 /* Performs a register read from a PHY */
@@ -302,25 +309,31 @@ static uint32_t read_phy_register(int phy_addr, int reg_addr)
   uint32_t addr;
   uint32_t readValue;
 
+  /* Clear the MDIO IRQ flag in preparation */
+  addr = (LABX_MDIO_ETH_BASEADDR + INT_FLAGS_REG);
+  *((volatile uint32_t *) addr) = MDIO_IRQ_MASK;
+
   /* Write to the MDIO control register to initiate the read */
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_CONTROL_REG);
   *((volatile uint32_t *) addr) = 
     (PHY_MDIO_READ | ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
      (reg_addr & PHY_REG_ADDR_MASK));
+  // CAUSES COALESCING OF WRITE & READ!!!  readValue = *((volatile uint32_t *) addr);
 
-  /* Wait for the MDIO unit to go busy, then idle again */
-  while((*((volatile uint32_t *) addr) & PHY_MDIO_BUSY) == 0);
-  while((*((volatile uint32_t *) addr) & PHY_MDIO_BUSY) != 0);
+  /* Wait for the MDIO completion flag to fire */
+  addr = (LABX_MDIO_ETH_BASEADDR + INT_FLAGS_REG);
+  while((*((volatile uint32_t *) addr) & MDIO_IRQ_MASK) == 0);
 
+  /* Read the captured register value */
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_DATA_REG);
   readValue = *((volatile uint32_t *) addr);
+
   return(readValue);
 }
 
 /* Writes a value to a MAC register */
 static void labx_eth_write_mac_reg(uint32_t reg_offset, uint32_t reg_data)
 {
-  //printf("REG %04X = %08X (was %08X)\n", reg_offset, reg_data, *(volatile uint32_t *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset));
   /* Apply the register offset to the base address */
   *(volatile uint32_t *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset) = reg_data;
 }
@@ -352,13 +365,20 @@ static int labx_eth_phy_ctrl(void)
   uint32_t result;
 
   if(first) {
+    uint32_t addr;
     uint32_t id_high;
     uint32_t id_low;
+
+    /* Make sure there are no interrupts enabled; we are going to be using
+     * the flags register to detect MDIO completion and don't want to
+     * inadvertently interrupt the CPU.
+     */
+    addr = (LABX_MDIO_ETH_BASEADDR + INT_MASK_REG);
+    *((volatile uint32_t *) addr) = NO_IRQ_FLAGS;
 
     /* Read and report the PHY */
     id_high = read_phy_register(phy_addr, 2);
     id_low = read_phy_register(phy_addr, 3);
-    printf("PHY ID at address 0x%02X: 0x%04X%04X\n", phy_addr, id_high, id_low);
 
     /* Perform RXC and TXC phase adjustment specific to some PHYs */
     if (id_high == BCM5481_ID_HIGH &&
@@ -872,7 +892,6 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
   ll_fifo->isr = FIFO_ISR_ALL;
   ll_fifo->tdfr = FIFO_RESET_MAGIC;
   ll_fifo->rdfr = FIFO_RESET_MAGIC;
-  // printf ("fifo isr 0x%08x, fifo_ier 0x%08x, fifo_tdfv 0x%08x, fifo_rdfo 0x%08x fifo_rlf 0x%08x\n", ll_fifo->isr, ll_fifo->ier, ll_fifo->tdfv, ll_fifo->rdfo,ll_fifo->rlf);
 
   /* Configure the MDIO divisor and enable the interface to the PHY.
    * XILINX_HARD_MAC Note: The hard MDIO controller must be configured or
