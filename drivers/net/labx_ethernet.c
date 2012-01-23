@@ -217,17 +217,18 @@
 
 /* Structure emulating the register file of the Cpu_Ethernet peripheral */
 typedef struct ll_fifo_s {
-  int isr;  /* Interrupt Status Register 0x0 */
-  int ier;  /* Interrupt Enable Register 0x4 */
-  int tdfr; /* Transmit data FIFO reset 0x8 */
-  int tdfv; /* Transmit data FIFO Vacancy 0xC */
-  int tdfd; /* Transmit data FIFO 32bit wide data write port 0x10 */
-  int tlf;  /* Write Transmit Length FIFO 0x14 */
-  int rdfr; /* Read Receive data FIFO reset 0x18 */
-  int rdfo; /* Receive data FIFO Occupancy 0x1C */
-  int rdfd; /* Read Receive data FIFO 32bit wide data read port 0x20 */
-  int rlf;  /* Read Receive Length FIFO 0x24 */
-  int fctl; /* FIFO control 0x28 */
+  int isr;   /* Interrupt Status Register 0x0 */
+  int ier;   /* Interrupt Enable Register 0x4 */
+  int tdfr;  /* Transmit data FIFO reset 0x8 */
+  int tdfv;  /* Transmit data FIFO Vacancy 0xC */
+  int tdfd;  /* Transmit data FIFO 32bit wide data write port 0x10 */
+  int tlf;   /* Write Transmit Length FIFO 0x14 */
+  int rdfr;  /* Read Receive data FIFO reset 0x18 */
+  int rdfo;  /* Receive data FIFO Occupancy 0x1C */
+  int rdfd;  /* Read Receive data FIFO 32bit wide data read port 0x20 */
+  int rlf;   /* Read Receive Length FIFO 0x24 */
+  int txctl; /* Tx FIFO control 0x28 */
+  int rxctl; /* Rx FIFO control 0x2C */
 } ll_fifo_s;
 
 /* Masks, etc. for use with the register file */
@@ -497,7 +498,7 @@ static int labx_eth_send_fifo(unsigned char *buffer, int length)
    * needs to be explicitly set in the peripheral to ensure it is in the
    * correct alignment mode, or the first word may be dropped.
    */
-  ll_fifo->fctl = FIFO_TX_ALIGN32;
+  ll_fifo->txctl = FIFO_TX_ALIGN32;
 
   /* Compute the word count needed to account for the full packet */
   len = ((length + 3) / 4);
@@ -528,6 +529,8 @@ static int labx_eth_recv_fifo(void)
     len = ll_fifo->rlf & RLF_MASK;
     len2 = ((len + 3) / 4);
 
+    /* U-Boot always expects a 32-bit aligned buffer */
+    ll_fifo->rxctl = FIFO_TX_ALIGN32;
     for (i = 0; i < len2; i++) {
       val = ll_fifo->rdfd;
       *buf++ = val ;
