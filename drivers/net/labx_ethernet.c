@@ -503,6 +503,12 @@ static int labx_eth_send_fifo(unsigned char *buffer, int length)
   /* Compute the word count needed to account for the full packet */
   len = ((length + 3) / 4);
 
+  /* Check the Tx FIFO vacancy to ensure there is room to enqueue */
+  if(ll_fifo->tdfv < length) {
+    printf("Insufficient Tx FIFO vacancy (%u bytes) to transmit %u-byte packet\n", (ll_fifo->tdfv * sizeof(uint32_t)), length);
+    return(-1);
+  }
+
   /* Write to the data FIFO, enqueuing the packet's contents */
   for (i = 0; i < len; i++) {
     val = *buf++;
@@ -876,13 +882,15 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
   case MATCH_ARCH_XILINX_SRL16E:
     /* Xilinx architecture */
     printf("SRL16E");
-    lp->loadMatcher = &load_xilinx_matcher;
+    lp->matchLoadWords = NUM_SRL16E_CONFIG_WORDS;
+    lp->loadMatcher    = &load_xilinx_matcher;
     break;
 
   case MATCH_ARCH_DIRECT:
     /* Altera or other direct matcher architecture */
     printf("DIRECT");
-    lp->loadMatcher = &load_direct_matcher;
+    lp->matchLoadWords = NUM_DIRECT_CONFIG_WORDS;
+    lp->loadMatcher    = &load_direct_matcher;
     break;
 
   default:
