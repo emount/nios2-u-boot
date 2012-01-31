@@ -56,6 +56,10 @@
 /* sysid_qsys_0.control_slave is a altera_avalon_sysid_qsys */
 #define CONFIG_SYS_SYSID_BASE	0xEB000000
 
+/* labx_ptp_0.host_interface is a labx_ptp */
+#define LABX_PTP_0_BASE	0xE8310000
+#define LABX_PTP_0_IRQ	2
+
 /* labx_ethernet_0.host_interface is a labx_ethernet */
 #define LABX_ETHERNET_0_BASE	0xE8300000
 #define LABX_ETHERNET_0_IRQ	3

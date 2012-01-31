@@ -894,7 +894,9 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
     break;
 
   default:
-    printf("UNRECOGNIZED-(0x%02X)\n", matchArchId);
+    printf("UNRECOGNIZED-(0x%02X)", matchArchId);
+    lp->matchLoadWords = 0;
+    lp->loadMatcher    = NULL;
   }
 
   printf(" architecture\n");
