@@ -77,8 +77,14 @@
 			rootfs@e60000 {
 				reg = < 0x00E60000 0x00300000 >;
 			};
-			toppad@1160000 {
-				reg = < 0x01160000 0x02EA0000 >;
+			romfs@1160000 {
+				reg = < 0x01160000 0x00A00000 >;
+			};
+			settingsfs@1b60000 {
+				reg = < 0x01B60000 0x00200000 >;
+			};
+			toppad@1d60000 {
+				reg = < 0x01D60000 0x022A0000 >;
 			};
 		}; //end flash (cfi_flash)
 
@@ -123,25 +129,19 @@
 
 		}; //end bridge (mm_clock_crossing_bridge_0)
 
-		labx_ptp_0: ethernet@0x8310000 {
+		labx_ptp_0: labx_ptp@0x8310000 {
 			compatible = "labx,labx_ptp-1.0";
 			reg = < 0x8310000 0x10000>;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 2 >;
-			address-bits = <48>;
-			max-frame-size = <1518>;
-			local-mac-address = [ 00 00 00 00 00 00 ];
-		}; //end ethernet (labx_ptp_0)
+		}; //end labx_ptp (labx_ptp_0)
 
-		labx_ethernet_0: ethernet@0x8300000 {
+		labx_ethernet_0: labx_ethernet@0x8300000 {
 			compatible = "labx,labx_ethernet-1.0";
 			reg = < 0x8300000 0x4000>;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 3 >;
-			address-bits = <48>;
-			max-frame-size = <1518>;
-			local-mac-address = [ 00 00 00 00 00 00 ];
-		}; //end ethernet (labx_ethernet_0)
+		}; //end labx_ethernet (labx_ethernet_0)
 
 	}; //sopc
 	chosen {

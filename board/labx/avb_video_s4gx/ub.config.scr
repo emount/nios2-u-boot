@@ -17,7 +17,7 @@ set fpgastart 0xEC020000
 set fpgasize 0x00C00000
 
 echo Bootloader Configuration:
-set bootstart 0xEC200000
+set bootstart 0xECC20000
 set bootsize 0x00040000
 set bootenvstart 0xEC000000
 set bootenvsize 0x00008000
@@ -31,12 +31,25 @@ echo Root Filesystem Configuration:
 set rootfsstart 0xECE60000
 set rootfssize 0x00300000
 
+echo Rom Filesystem Configuration
+set romfsstart 0xED160000
+set romfssize 0x00A00000
+
+echo Settings Filesystem Configuration
+set settingsfsstart 0xEDB60000
+set settingsfssize 0x00200000
+
 echo Boot Configuration:
 set bootcmd 'bootm ${kernelstart}'
 set bootargs 'console=ttyAL0,115200 root=/dev/mtdblock5 rootfstype=squashfs init=/bin/init'
 set bootdelay 3
 
 echo Flash update commands:
+
+
+set load_uboot 'tftp ${clobstart} u-boot.bin'
+set install_uboot 'protect off ${bootstart} +${bootsize};erase ${bootstart} +${bootsize};cp.b ${fileaddr} ${bootstart} ${filesize}'
+set update_uboot run load_uboot install_uboot
 
 set kernelname vmImage
 set load_kernel 'tftp ${clobstart} ${kernelname}'
@@ -47,6 +60,14 @@ set rootfsname rootfs.squashfs
 set load_rootfs 'tftp ${clobstart} ${rootfsname}'
 set install_rootfs 'protect off ${rootfsstart} +${rootfssize};erase ${rootfsstart} +${rootfssize};cp.b ${fileaddr} ${rootfsstart} ${filesize}'
 set update_rootfs run load_rootfs install_rootfs
+
+set load_romfs 'tftp ${clobstart} usr.romfs'
+set install_romfs 'protect off ${romfsstart} +${romfssize};erase ${romfsstart} +${romfssize};cp.b ${fileaddr} ${romfsstart} ${filesize}'
+set update_romfs run load_romfs install_romfs
+
+set load_settingsfs 'tftp ${clobstart} settings.jffs2'
+set install_settingsfs 'protect off ${settingsfsstart} +${settingsfssize};erase ${settingsfsstart} +${settingsfssize};cp.b ${fileaddr} ${settingsfsstart} ${filesize}'
+set update_settingsfs run load_settingsfs install_settingsfs
 
 echo Saving Configurations...
 saveenv
