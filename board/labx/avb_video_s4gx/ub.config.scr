@@ -32,8 +32,8 @@ set rootfsstart 0xECE60000
 set rootfssize 0x00300000
 
 echo Rom Filesystem Configuration
-set romfsstart 0xED160000
-set romfssize 0x00A00000
+set squashfsstart 0xED160000
+set squashfssize 0x00A00000
 
 echo Settings Filesystem Configuration
 set settingsfsstart 0xEDB60000
@@ -61,9 +61,9 @@ set load_rootfs 'tftp ${clobstart} ${rootfsname}'
 set install_rootfs 'protect off ${rootfsstart} +${rootfssize};erase ${rootfsstart} +${rootfssize};cp.b ${fileaddr} ${rootfsstart} ${filesize}'
 set update_rootfs run load_rootfs install_rootfs
 
-set load_romfs 'tftp ${clobstart} usr.romfs'
-set install_romfs 'protect off ${romfsstart} +${romfssize};erase ${romfsstart} +${romfssize};cp.b ${fileaddr} ${romfsstart} ${filesize}'
-set update_romfs run load_romfs install_romfs
+set load_squashfs 'tftp ${clobstart} usr.squashfs'
+set install_squashfs 'protect off ${squashfsstart} +${squashfssize};erase ${squashfsstart} +${squashfssize};cp.b ${fileaddr} ${squashfsstart} ${filesize}'
+set update_squashfs run load_squashfs install_squashfs
 
 set load_settingsfs 'tftp ${clobstart} settings.jffs2'
 set install_settingsfs 'protect off ${settingsfsstart} +${settingsfssize};erase ${settingsfsstart} +${settingsfssize};cp.b ${fileaddr} ${settingsfsstart} ${filesize}'

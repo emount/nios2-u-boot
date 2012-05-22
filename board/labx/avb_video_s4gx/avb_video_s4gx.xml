@@ -15,7 +15,7 @@
 		</Partition>
 		<Partition name="rootfs" address="0x00E60000" size="0x00300000">
 		</Partition>
-		<Partition name="romfs" address="0x01160000" size="0x00A00000">
+		<Partition name="appsfs" address="0x01160000" size="0x00A00000">
 		</Partition>
 		<Partition name="settingsfs" address="0x01B60000" size="0x00200000">
 		</Partition>
