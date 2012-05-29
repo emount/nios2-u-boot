@@ -15,9 +15,9 @@
 #define CONFIG_SYS_DCACHE_SIZE	2048
 #define CONFIG_SYS_DCACHELINE_SIZE	32
 #define CONFIG_SYS_ICACHELINE_SIZE	32
-#define CONFIG_SYS_EXCEPTION_ADDR	-1073741792
+#define CONFIG_SYS_EXCEPTION_ADDR	0xc0000020
 #define CONFIG_SYS_ICACHE_SIZE	4096
-#define CONFIG_SYS_RESET_ADDR	-859701248
+#define CONFIG_SYS_RESET_ADDR	0xccc20000
 #define IO_REGION_BASE	0xE0000000
 
 /* altpll_0.pll_slave is a altpll */
@@ -63,5 +63,13 @@
 /* labx_ethernet_0.host_interface is a labx_ethernet */
 #define LABX_ETHERNET_0_BASE	0xE8300000
 #define LABX_ETHERNET_0_IRQ	3
+
+/* video_input_0.avalon_slave_0 is a Video_Input */
+#define VIDEO_INPUT_0_BASE	0xE8320000
+#define VIDEO_INPUT_0_IRQ	4
+
+/* labx_multi_packetizer_0.host_interface is a labx_multi_packetizer */
+#define LABX_MULTI_PACKETIZER_0_BASE	0xE8330000
+#define LABX_MULTI_PACKETIZER_0_IRQ	5
 
 #endif	//CUSTOM_FPGA_H_

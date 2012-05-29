@@ -14,7 +14,7 @@
 		#size-cells = <0>;
 		nios2_qsys_0: cpu@0x0 {
 			device_type = "cpu";
-			compatible = "ALTR,nios2-11.0";
+			compatible = "ALTR,nios2-11.1";
 			reg = <0>;
 			interrupt-controller;
 			#interrupt-cells = <1>;
@@ -30,9 +30,9 @@
 			ALTR,tlb-ptr-sz = <8>;	//embeddedsw.CMacro.TLB_PTR_SZ type NUMBER
 			ALTR,has-mul;	//embeddedsw.CMacro.HARDWARE_MULTIPLY_PRESENT type NUMBER
 			ALTR,has-mulx;	//embeddedsw.CMacro.HARDWARE_MULX_PRESENT type NUMBER
-			ALTR,reset-addr = <0xCCC20000>;	//embeddedsw.CMacro.RESET_ADDR type STRING
-			ALTR,fast-tlb-miss-addr = <0xC9000000>;	//embeddedsw.CMacro.FAST_TLB_MISS_EXCEPTION_ADDR type STRING
-			ALTR,exception-addr = <0xC0000020>;	//embeddedsw.CMacro.EXCEPTION_ADDR type STRING
+			ALTR,reset-addr = <0xccc20000>;	//embeddedsw.CMacro.RESET_ADDR type NUMBER
+			ALTR,fast-tlb-miss-addr = <0xc9000000>;	//embeddedsw.CMacro.FAST_TLB_MISS_EXCEPTION_ADDR type NUMBER
+			ALTR,exception-addr = <0xc0000020>;	//embeddedsw.CMacro.EXCEPTION_ADDR type NUMBER
 		};
 	};
 	memory@0 {
@@ -48,7 +48,7 @@
 		compatible = "ALTR,avalon","simple-bus";
 		bus-frequency = < 100000000 >;
 		altpll_0: clock@0x82224c0 {
-			compatible = "ALTR,pll-11.0","ALTR,pll-1.0";
+			compatible = "ALTR,pll-11.1","ALTR,pll-1.0";
 			reg = < 0x82224c0 0x10>;
 		}; //end clock (altpll_0)
 
@@ -89,7 +89,7 @@
 		}; //end flash (cfi_flash)
 
 		mm_clock_crossing_bridge_0: bridge@0xb000000 {
-			compatible = "ALTR,avalon-11.0","simple-bus";
+			compatible = "ALTR,avalon-11.1","simple-bus";
 			reg = < 0xb000000 0x40000>;
 			#address-cells = <1>;
 			#size-cells = <1>;
@@ -99,7 +99,7 @@
 				0x00000000 0x0B000000 0x00000008>;
 
 			uart_0: serial@0x180 {
-				compatible = "ALTR,uart-11.0","ALTR,uart-1.0";
+				compatible = "ALTR,uart-11.1","ALTR,uart-1.0";
 				reg = < 0x180 0x20>;
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 1 >;
@@ -108,7 +108,7 @@
 			}; //end serial (uart_0)
 
 			timer: timer@0x20 {
-				compatible = "ALTR,timer-11.0","ALTR,timer-1.0";
+				compatible = "ALTR,timer-11.1","ALTR,timer-1.0";
 				reg = < 0x20 0x20>;
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 0 >;
@@ -116,14 +116,14 @@
 			}; //end timer (timer)
 
 			led_reg: gpio@0x40 {
-				compatible = "ALTR,pio-11.0","ALTR,pio-1.0";
+				compatible = "ALTR,pio-11.1","ALTR,pio-1.0";
 				reg = < 0x40 0x20>;
 				width = <16>;	//width type NUMBER
 				resetvalue = <0>;	//resetValue type NUMBER
 			}; //end gpio (led_reg)
 
 			sysid_qsys_0: sysid@0x0 {
-				compatible = "ALTR,sysid-11.0","ALTR,sysid-1.0";
+				compatible = "ALTR,sysid-11.1","ALTR,sysid-1.0";
 				reg = < 0x0 0x8>;
 			}; //end sysid (sysid_qsys_0)
 
@@ -142,6 +142,20 @@
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 3 >;
 		}; //end labx_ethernet (labx_ethernet_0)
+
+		video_input_0: unknown@0x8320000 {
+			compatible = "unknown,unknown-1.0";
+			reg = < 0x8320000 0x4000>;
+			interrupt-parent = < &nios2_qsys_0 >;
+			interrupts = < 4 >;
+		}; //end unknown (video_input_0)
+
+		labx_multi_packetizer_0: labx_multi_packetizer@0x8330000 {
+			compatible = "labx,labx_multi_packetizer-1.0";
+			reg = < 0x8330000 0x4000>;
+			interrupt-parent = < &nios2_qsys_0 >;
+			interrupts = < 5 >;
+		}; //end labx_multi_packetizer (labx_multi_packetizer_0)
 
 	}; //sopc
 	chosen {
