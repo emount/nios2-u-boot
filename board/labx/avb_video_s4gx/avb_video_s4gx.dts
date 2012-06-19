@@ -94,8 +94,8 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges = <0x00000180 0x0B000180 0x00000020
-				0x00000020 0x0B000020 0x00000020
-				0x00000040 0x0B000040 0x00000020
+				0x00000080 0x0B000080 0x00000020
+				0x00000100 0x0B000100 0x00000020
 				0x00000000 0x0B000000 0x00000008>;
 
 			uart_0: serial@0x180 {
@@ -107,17 +107,17 @@
 				clock-frequency = <50000000>;	//embeddedsw.CMacro.FREQ type NUMBER
 			}; //end serial (uart_0)
 
-			timer: timer@0x20 {
+			timer: timer@0x80 {
 				compatible = "ALTR,timer-11.1","ALTR,timer-1.0";
-				reg = < 0x20 0x20>;
+				reg = < 0x80 0x20>;
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 0 >;
 				clock-frequency = <50000000>;
 			}; //end timer (timer)
 
-			led_reg: gpio@0x40 {
+			led_reg: gpio@0x100 {
 				compatible = "ALTR,pio-11.1","ALTR,pio-1.0";
-				reg = < 0x40 0x20>;
+				reg = < 0x100 0x20>;
 				width = <16>;	//width type NUMBER
 				resetvalue = <0>;	//resetValue type NUMBER
 			}; //end gpio (led_reg)
@@ -143,12 +143,12 @@
 			interrupts = < 3 >;
 		}; //end labx_ethernet (labx_ethernet_0)
 
-		video_input_0: unknown@0x8320000 {
-			compatible = "unknown,unknown-1.0";
+		video_input_0: Video_Input@0x8320000 {
+			compatible = "axon,Video_Input-1.0";
 			reg = < 0x8320000 0x4000>;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 4 >;
-		}; //end unknown (video_input_0)
+		}; //end Video_Input (video_input_0)
 
 		labx_multi_packetizer_0: labx_multi_packetizer@0x8330000 {
 			compatible = "labx,labx_multi_packetizer-1.0";
@@ -156,6 +156,11 @@
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 5 >;
 		}; //end labx_multi_packetizer (labx_multi_packetizer_0)
+
+		labx_shaping_dma_0: labx_shaping_dma@0x8340000 {
+			compatible = "labx,labx_shaping_dma-1.0";
+			reg = < 0x8340000 0x1>;
+		}; //end labx_shaping_dma (labx_shaping_dma_0)
 
 	}; //sopc
 	chosen {
