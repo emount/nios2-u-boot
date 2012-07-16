@@ -48,10 +48,10 @@
 /* timer.s1 is a altera_avalon_timer */
 #define CONFIG_SYS_TIMER_IRQ	0
 #define CONFIG_SYS_TIMER_FREQ	50000000
-#define CONFIG_SYS_TIMER_BASE	0xEB000020
+#define CONFIG_SYS_TIMER_BASE	0xEB000080
 
 /* led_reg.s1 is a altera_avalon_pio */
-#define LED_REG_BASE	0xEB000040
+#define LED_REG_BASE	0xEB000100
 
 /* sysid_qsys_0.control_slave is a altera_avalon_sysid_qsys */
 #define CONFIG_SYS_SYSID_BASE	0xEB000000
@@ -71,5 +71,8 @@
 /* labx_multi_packetizer_0.host_interface is a labx_multi_packetizer */
 #define LABX_MULTI_PACKETIZER_0_BASE	0xE8330000
 #define LABX_MULTI_PACKETIZER_0_IRQ	5
+
+/* labx_shaping_dma_0.host_interface is a labx_shaping_dma */
+#define LABX_SHAPING_DMA_0_BASE	0xE8340000
 
 #endif	//CUSTOM_FPGA_H_
