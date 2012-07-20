@@ -1,25 +1,23 @@
 <BoardInfo pov="cpu">
 	<Chosen>
-		<Bootargs val="console=ttyAL0 root=mtd5 rootfstype=squashfs init=/bin/init"/>
+		<Bootargs val="console=ttyAL0 root=mtd4 rootfstype=squashfs init=/bin/init"/>
 	</Chosen>
 	<FlashPartitions>
-		<Partition name="bootenv" address="0x00000000" size="0x00008000">
+	  <Partition name="goldenfpga" address="0x00000000" size="0x01F00000">
 		</Partition>
-		<Partition name="bottompad" address="0x00008000" size="0x00018000">
+		<Partition name="bootenv" address="0x01F00000" size="0x00020000">
 		</Partition>
-		<Partition name="goldenfpga" address="0x00020000" size="0x00F00000">
+		<Partition name="uboot" address="0x01F20000" size="0x00040000">
 		</Partition>
-		<Partition name="uboot" address="0x00F20000" size="0x00040000">
+		<Partition name="kernel" address="0x01F60000" size="0x00600000">
 		</Partition>
-		<Partition name="kernel" address="0x00F60000" size="0x00200000">
+		<Partition name="rootfs" address="0x02560000" size="0x00300000">
 		</Partition>
-		<Partition name="rootfs" address="0x01160000" size="0x00300000">
+		<Partition name="romfs" address="0x02860000" size="0x00A00000">
 		</Partition>
-		<Partition name="romfs" address="0x01460000" size="0x00A00000">
+		<Partition name="settingsfs" address="0x03260000" size="0x00200000">
 		</Partition>
-		<Partition name="settingsfs" address="0x01E60000" size="0x00200000">
-		</Partition>
-		<Partition name="toppad" address="0x02060000" size="0x05FA0000">
+		<Partition name="toppad" address="0x03460000" size="0x04BA0000">
 		</Partition>
 	</FlashPartitions>
 </BoardInfo>

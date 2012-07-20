@@ -137,10 +137,10 @@
  *                sectors.
  */
 #define CONFIG_ENV_IS_IN_FLASH 1
-#define CONFIG_ENV_SECT_SIZE   0x8000
-#define CONFIG_ENV_SIZE		   0x8000  /* 32k, 1 bottom-boot sector */
+#define CONFIG_ENV_SECT_SIZE   0x20000
+#define CONFIG_ENV_SIZE		   0x20000  /* 128k, 1 sector */
 #define CONFIG_ENV_OVERWRITE           /* Serial change Ok	*/
-#define CONFIG_ENV_ADDR		   (CONFIG_SYS_FLASH_BASE + 0x00000000)
+#define CONFIG_ENV_ADDR		   (CONFIG_SYS_FLASH_BASE + 0x01F00000)
 
 /*
  * MEMORY ORGANIZATION
