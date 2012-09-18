@@ -93,7 +93,8 @@
 			ranges = <0x00000180 0x07000180 0x00000020
 				0x00000080 0x07000080 0x00000020
 				0x00000100 0x07000100 0x00000020
-				0x00000000 0x07000000 0x00000008>;
+				0x00000000 0x07000000 0x00000008
+				0x00010000 0x07010000 0x00001000>;
 
 			uart_0: serial@0x180 {
 				compatible = "ALTR,uart-12.0","ALTR,uart-1.0";
@@ -123,6 +124,11 @@
 				compatible = "ALTR,sysid-12.0","ALTR,sysid-1.0";
 				reg = < 0x0 0x8>;
 			}; //end sysid (sysid_qsys_0)
+
+			labx_video_depacketizer_0: labx_video_depacketizer@0x10000 {
+				compatible = "labx,labx_video_depacketizer-1.0";
+				reg = < 0x10000 0x1000>;
+			}; //end labx_video_depacketizer (labx_video_depacketizer_0)
 
 		}; //end bridge (mm_clock_crossing_bridge_0)
 

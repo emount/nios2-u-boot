@@ -56,6 +56,9 @@
 /* sysid_qsys_0.control_slave is a altera_avalon_sysid_qsys */
 #define CONFIG_SYS_SYSID_BASE	0xE7000000
 
+/* labx_video_depacketizer_0.Host_Interface is a labx_video_depacketizer */
+#define LABX_VIDEO_DEPACKETIZER_0_BASE	0xE7010000
+
 /* labx_ptp_0.host_interface is a labx_ptp */
 #define LABX_PTP_0_BASE	0xE4110000
 #define LABX_PTP_0_IRQ	2
