@@ -128,6 +128,8 @@
 			labx_video_depacketizer_0: labx_video_depacketizer@0x10000 {
 				compatible = "labx,labx_video_depacketizer-1.0";
 				reg = < 0x10000 0x1000>;
+				interrupt-parent = < &nios2_qsys_0 >;
+				interrupts = < 6 >;
 			}; //end labx_video_depacketizer (labx_video_depacketizer_0)
 
 		}; //end bridge (mm_clock_crossing_bridge_0)
