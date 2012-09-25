@@ -146,9 +146,9 @@
 			reg = < 0x4100000 0x4000>;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 3 >;
-            mdio-div = < 100 >;
-            mdio-phy-mask = < 0x2 >;
-            phy-addr = < 0x1 >;
+			mdio-div = <100>;	//MDIO_DIV type NUMBER
+			mdio-phy-mask = <2>;	//MDIO_PHY_MASK type NUMBER
+			phy-addr = <1>;	//PHY_ADDR type NUMBER
 		}; //end labx_ethernet (labx_ethernet_0)
 
 		video_input_0: Video_Input@0x4120000 {
