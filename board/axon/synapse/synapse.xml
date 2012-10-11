@@ -1,4 +1,8 @@
 <BoardInfo pov="cpu">
+	<Memory>
+		<Node chip="onchip_memory"/>
+		<Node chip="ddr3_bot"/>
+	</Memory>
 	<Chosen>
 		<Bootargs val="console=ttyAL0 root=mtd4 rootfstype=squashfs init=/bin/init"/>
 	</Chosen>

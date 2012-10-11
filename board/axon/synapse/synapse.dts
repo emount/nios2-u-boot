@@ -4,174 +4,189 @@
  * in cooperation with the nios2 community <Nios2-dev@sopc.et.ntust.edu.tw>
  */
 /dts-v1/;
+
 / {
 	model = "ALTR,q_sys";
 	compatible = "ALTR,q_sys";
-	#address-cells = <1>;
-	#size-cells = <1>;
+	#address-cells = < 1 >;
+	#size-cells = < 1 >;
+
 	cpus {
-		#address-cells = <1>;
-		#size-cells = <0>;
+		#address-cells = < 1 >;
+		#size-cells = < 0 >;
+
 		nios2_qsys_0: cpu@0x0 {
 			device_type = "cpu";
 			compatible = "ALTR,nios2-12.0";
-			reg = <0>;
+			reg = < 0x00000000 >;
 			interrupt-controller;
-			#interrupt-cells = <1>;
-			clock-frequency = <100000000>;	//embeddedsw.CMacro.CPU_FREQ type NUMBER
-			dcache-line-size = <32>;	//embeddedsw.CMacro.DCACHE_LINE_SIZE type NUMBER
-			icache-line-size = <32>;	//embeddedsw.CMacro.ICACHE_LINE_SIZE type NUMBER
-			dcache-size = <2048>;	//embeddedsw.CMacro.DCACHE_SIZE type NUMBER
-			icache-size = <4096>;	//embeddedsw.CMacro.ICACHE_SIZE type NUMBER
-			ALTR,implementation = "fast";	//embeddedsw.CMacro.CPU_IMPLEMENTATION type STRING
-			ALTR,pid-num-bits = <8>;	//embeddedsw.CMacro.PROCESS_ID_NUM_BITS type NUMBER
-			ALTR,tlb-num-ways = <16>;	//embeddedsw.CMacro.TLB_NUM_WAYS type NUMBER
-			ALTR,tlb-num-entries = <256>;	//embeddedsw.CMacro.TLB_NUM_ENTRIES type NUMBER
-			ALTR,tlb-ptr-sz = <8>;	//embeddedsw.CMacro.TLB_PTR_SZ type NUMBER
-			ALTR,has-mul;	//embeddedsw.CMacro.HARDWARE_MULTIPLY_PRESENT type NUMBER
-			ALTR,has-mulx;	//embeddedsw.CMacro.HARDWARE_MULX_PRESENT type NUMBER
-			ALTR,reset-addr = <0xc9f20000>;	//embeddedsw.CMacro.RESET_ADDR type NUMBER
-			ALTR,fast-tlb-miss-addr = <0xc6000000>;	//embeddedsw.CMacro.FAST_TLB_MISS_EXCEPTION_ADDR type NUMBER
-			ALTR,exception-addr = <0xc0000020>;	//embeddedsw.CMacro.EXCEPTION_ADDR type NUMBER
-		};
-	};
+			#interrupt-cells = < 1 >;
+			clock-frequency = < 100000000 >;	/* embeddedsw.CMacro.CPU_FREQ type NUMBER */
+			dcache-line-size = < 32 >;	/* embeddedsw.CMacro.DCACHE_LINE_SIZE type NUMBER */
+			icache-line-size = < 32 >;	/* embeddedsw.CMacro.ICACHE_LINE_SIZE type NUMBER */
+			dcache-size = < 2048 >;	/* embeddedsw.CMacro.DCACHE_SIZE type NUMBER */
+			icache-size = < 4096 >;	/* embeddedsw.CMacro.ICACHE_SIZE type NUMBER */
+			ALTR,implementation = "fast";	/* embeddedsw.CMacro.CPU_IMPLEMENTATION type STRING*/
+			ALTR,pid-num-bits = < 8 >;	/* embeddedsw.CMacro.PROCESS_ID_NUM_BITS type NUMBER */
+			ALTR,tlb-num-ways = < 16 >;	/* embeddedsw.CMacro.TLB_NUM_WAYS type NUMBER */
+			ALTR,tlb-num-entries = < 256 >;	/* embeddedsw.CMacro.TLB_NUM_ENTRIES type NUMBER */
+			ALTR,tlb-ptr-sz = < 8 >;	/* embeddedsw.CMacro.TLB_PTR_SZ type NUMBER */
+			ALTR,has-mul;	/* embeddedsw.CMacro.HARDWARE_MULTIPLY_PRESENT type NUMBER*/
+			ALTR,has-mulx;	/* embeddedsw.CMacro.HARDWARE_MULX_PRESENT type NUMBER*/
+			ALTR,reset-addr = < 0xc9f20000 >;	/* embeddedsw.CMacro.RESET_ADDR type NUMBER */
+			ALTR,fast-tlb-miss-addr = < 0xc6000000 >;	/* embeddedsw.CMacro.FAST_TLB_MISS_EXCEPTION_ADDR type NUMBER */
+			ALTR,exception-addr = < 0xc0000020 >;	/* embeddedsw.CMacro.EXCEPTION_ADDR type NUMBER */
+		}; //end cpu@0x0 (nios2_qsys_0)
+	}; //end cpus
+
 	memory@0 {
 		device_type = "memory";
-		reg = <0x00000000 0x04000000
-			0x06000000 0x00008000>;
-	};
+		reg = < 0x00000000 0x04000000
+			0x06000000 0x00008000 >;
+	}; //end memory@0
+
 	sopc@0 {
-		ranges ;
-		#address-cells = <1>;
-		#size-cells = <1>;
 		device_type = "soc";
-		compatible = "ALTR,avalon","simple-bus";
+		ranges;
+		#address-cells = < 1 >;
+		#size-cells = < 1 >;
+		compatible = "ALTR,avalon", "simple-bus";
 		bus-frequency = < 100000000 >;
+
 		altpll_0: clock@0x4000800 {
-			compatible = "ALTR,pll-12.0","ALTR,pll-1.0";
-			reg = < 0x4000800 0x10>;
-		}; //end clock (altpll_0)
+			compatible = "ALTR,pll-12.0", "ALTR,pll-1.0";
+			reg = < 0x04000800 0x00000010 >;
+		}; //end clock@0x4000800 (altpll_0)
 
 		cfi_flash: flash@0x8000000 {
-			#address-cells = <1>;
-			#size-cells = <1>;
-			compatible = "ALTR,cfi_flash-altera_generic_tristate_controller","cfi-flash";
-			reg = < 0x8000000 0x8000000>;
-			bank-width = <2>;
-			device-width = <1>;
+			compatible = "ALTR,cfi_flash-altera_generic_tristate_controller", "cfi-flash";
+			reg = < 0x08000000 0x08000000 >;
+			bank-width = < 2 >;
+			device-width = < 1 >;
+			#address-cells = < 1 >;
+			#size-cells = < 1 >;
+
 			goldenfpga@0 {
 				reg = < 0x00000000 0x01F00000 >;
-			};
+			}; //end goldenfpga@0
+
 			bootenv@1f00000 {
 				reg = < 0x01F00000 0x00020000 >;
-			};
+			}; //end bootenv@1f00000
+
 			uboot@1f20000 {
 				reg = < 0x01F20000 0x00040000 >;
-			};
+			}; //end uboot@1f20000
+
 			kernel@1f60000 {
 				reg = < 0x01F60000 0x00600000 >;
-			};
+			}; //end kernel@1f60000
+
 			rootfs@2560000 {
 				reg = < 0x02560000 0x00300000 >;
-			};
+			}; //end rootfs@2560000
+
 			romfs@2860000 {
 				reg = < 0x02860000 0x00A00000 >;
-			};
+			}; //end romfs@2860000
+
 			settingsfs@3260000 {
 				reg = < 0x03260000 0x00200000 >;
-			};
+			}; //end settingsfs@3260000
+
 			toppad@3460000 {
 				reg = < 0x03460000 0x04BA0000 >;
-			};
-		}; //end flash (cfi_flash)
+			}; //end toppad@3460000
+		}; //end flash@0x8000000 (cfi_flash)
 
 		mm_clock_crossing_bridge_0: bridge@0x7000000 {
-			compatible = "ALTR,avalon-12.0","simple-bus";
-			reg = < 0x7000000 0x40000>;
-			#address-cells = <1>;
-			#size-cells = <1>;
-			ranges = <0x00000180 0x07000180 0x00000020
+			compatible = "ALTR,avalon-12.0", "simple-bus";
+			reg = < 0x07000000 0x00040000 >;
+			#address-cells = < 1 >;
+			#size-cells = < 1 >;
+			ranges = < 0x00000180 0x07000180 0x00000020
 				0x00000080 0x07000080 0x00000020
 				0x00000100 0x07000100 0x00000020
 				0x00000000 0x07000000 0x00000008
-				0x00010000 0x07010000 0x00001000>;
+				0x00010000 0x07010000 0x00001000 >;
 
 			uart_0: serial@0x180 {
-				compatible = "ALTR,uart-12.0","ALTR,uart-1.0";
-				reg = < 0x180 0x20>;
+				compatible = "ALTR,uart-12.0", "ALTR,uart-1.0";
+				reg = < 0x00000180 0x00000020 >;
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 1 >;
-				current-speed = <115200>;	//embeddedsw.CMacro.BAUD type NUMBER
-				clock-frequency = <50000000>;	//embeddedsw.CMacro.FREQ type NUMBER
-			}; //end serial (uart_0)
+				current-speed = < 115200 >;	/* embeddedsw.CMacro.BAUD type NUMBER */
+				clock-frequency = < 50000000 >;	/* embeddedsw.CMacro.FREQ type NUMBER */
+			}; //end serial@0x180 (uart_0)
 
 			timer: timer@0x80 {
-				compatible = "ALTR,timer-12.0","ALTR,timer-1.0";
-				reg = < 0x80 0x20>;
+				compatible = "ALTR,timer-12.0", "ALTR,timer-1.0";
+				reg = < 0x00000080 0x00000020 >;
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 0 >;
-				clock-frequency = <50000000>;
-			}; //end timer (timer)
+				clock-frequency = < 50000000 >;
+			}; //end timer@0x80 (timer)
 
 			led_reg: gpio@0x100 {
-				compatible = "ALTR,pio-12.0","ALTR,pio-1.0";
-				reg = < 0x100 0x20>;
-				width = <16>;	//width type NUMBER
-				resetvalue = <0>;	//resetValue type NUMBER
-			}; //end gpio (led_reg)
+				compatible = "ALTR,pio-12.0", "ALTR,pio-1.0";
+				reg = < 0x00000100 0x00000020 >;
+				width = < 16 >;	/* width type NUMBER */
+				resetvalue = < 0 >;	/* resetValue type NUMBER */
+				#gpio-cells = < 2 >;
+				gpio-controller;
+			}; //end gpio@0x100 (led_reg)
 
 			sysid_qsys_0: sysid@0x0 {
-				compatible = "ALTR,sysid-12.0","ALTR,sysid-1.0";
-				reg = < 0x0 0x8>;
-			}; //end sysid (sysid_qsys_0)
+				compatible = "ALTR,sysid-12.0", "ALTR,sysid-1.0";
+				reg = < 0x00000000 0x00000008 >;
+			}; //end sysid@0x0 (sysid_qsys_0)
 
 			labx_video_depacketizer_0: labx_video_depacketizer@0x10000 {
 				compatible = "labx,labx_video_depacketizer-1.0";
-				reg = < 0x10000 0x1000>;
+				reg = < 0x00010000 0x00001000 >;
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 6 >;
-			}; //end labx_video_depacketizer (labx_video_depacketizer_0)
-
-		}; //end bridge (mm_clock_crossing_bridge_0)
+			}; //end labx_video_depacketizer@0x10000 (labx_video_depacketizer_0)
+		}; //end bridge@0x7000000 (mm_clock_crossing_bridge_0)
 
 		labx_ptp_0: labx_ptp@0x4110000 {
 			compatible = "labx,labx_ptp-1.0";
-			reg = < 0x4110000 0x10000>;
+			reg = < 0x04110000 0x00010000 >;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 2 >;
-		}; //end labx_ptp (labx_ptp_0)
+		}; //end labx_ptp@0x4110000 (labx_ptp_0)
 
 		labx_ethernet_0: labx_ethernet@0x4100000 {
 			compatible = "labx,labx_ethernet-1.0";
-			reg = < 0x4100000 0x4000>;
+			reg = < 0x04100000 0x00004000 >;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 3 >;
-			mdio-div = <100>;	//MDIO_DIV type NUMBER
-			mdio-phy-mask = <2>;	//MDIO_PHY_MASK type NUMBER
-			phy-addr = <1>;	//PHY_ADDR type NUMBER
-		}; //end labx_ethernet (labx_ethernet_0)
+			mdio-div = < 100 >;	/* MDIO_DIV type NUMBER */
+			mdio-phy-mask = < 2 >;	/* MDIO_PHY_MASK type NUMBER */
+			phy-addr = < 1 >;	/* PHY_ADDR type NUMBER */
+		}; //end labx_ethernet@0x4100000 (labx_ethernet_0)
 
 		video_input_0: Video_Input@0x4120000 {
 			compatible = "axon,Video_Input-1.0";
-			reg = < 0x4120000 0x4000>;
+			reg = < 0x04120000 0x00004000 >;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 4 >;
-		}; //end Video_Input (video_input_0)
+		}; //end Video_Input@0x4120000 (video_input_0)
 
 		labx_multi_packetizer_0: labx_multi_packetizer@0x4130000 {
 			compatible = "labx,labx_multi_packetizer-1.0";
-			reg = < 0x4130000 0x4000>;
+			reg = < 0x04130000 0x00004000 >;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 5 >;
-		}; //end labx_multi_packetizer (labx_multi_packetizer_0)
+		}; //end labx_multi_packetizer@0x4130000 (labx_multi_packetizer_0)
 
 		labx_shaping_dma_0: labx_shaping_dma@0x4140000 {
 			compatible = "labx,labx_shaping_dma-1.0";
-			reg = < 0x4140000 0x1>;
-		}; //end labx_shaping_dma (labx_shaping_dma_0)
+			reg = < 0x04140000 0x00000001 >;
+		}; //end labx_shaping_dma@0x4140000 (labx_shaping_dma_0)
+	}; //end sopc@0
 
-	}; //sopc
 	chosen {
 		bootargs = "console=ttyAL0 root=mtd4 rootfstype=squashfs init=/bin/init";
-	};
-};
+	}; //end chosen
+}; //end /
