@@ -85,6 +85,11 @@
 #define LABX_ETHERNET_PHY_ADDR     0x00
 #define WHICH_ETH_PORT             0
 
+/* Default MAC, IP address, and server IP */
+#define CONFIG_ETHADDR   00:03:41:00:50:F0
+#define CONFIG_IPADDR    192.168.1.1
+#define CONFIG_SERVERIP  192.168.1.100
+
 /*
  * STATUS LED
  */
