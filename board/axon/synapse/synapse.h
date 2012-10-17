@@ -23,7 +23,7 @@
 /* altpll_0.pll_slave is a altpll */
 #define ALTPLL_0_BASE	0xE4000800
 
-/* ddr3_bot.avl is a altera_mem_if_ddr3_emif */
+/* ddr3_1.avl is a altera_mem_if_ddr3_emif */
 #define CONFIG_SYS_SDRAM_BASE	0xC0000000
 #define CONFIG_SYS_SDRAM_SIZE	0x04000000
 
@@ -59,6 +59,9 @@
 /* labx_video_depacketizer_0.Host_Interface is a labx_video_depacketizer */
 #define LABX_VIDEO_DEPACKETIZER_0_BASE	0xE7010000
 #define LABX_VIDEO_DEPACKETIZER_0_IRQ	6
+
+/* labx_dma_coprocessor_0.Host_Interface is a labx_dma_coprocessor */
+#define LABX_DMA_COPROCESSOR_0_BASE	0xE7008000
 
 /* labx_ptp_0.host_interface is a labx_ptp */
 #define LABX_PTP_0_BASE	0xE4110000

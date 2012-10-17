@@ -41,8 +41,7 @@
 
 	memory@0 {
 		device_type = "memory";
-		reg = < 0x00000000 0x04000000
-			0x06000000 0x00008000 >;
+		reg = < 0x06000000 0x00008000 >;
 	}; //end memory@0
 
 	sopc@0 {
@@ -57,6 +56,12 @@
 			compatible = "ALTR,pll-12.0", "ALTR,pll-1.0";
 			reg = < 0x04000800 0x00000010 >;
 		}; //end clock@0x4000800 (altpll_0)
+
+		ddr3_1: memory@0x0 {
+			device_type = "memory";
+			compatible = "ALTR,altmemddr-12.0";
+			reg = < 0x00000000 0x04000000 >;
+		}; //end memory@0x0 (ddr3_1)
 
 		cfi_flash: flash@0x8000000 {
 			compatible = "ALTR,cfi_flash-altera_generic_tristate_controller", "cfi-flash";
@@ -108,7 +113,8 @@
 				0x00000080 0x07000080 0x00000020
 				0x00000100 0x07000100 0x00000020
 				0x00000000 0x07000000 0x00000008
-				0x00010000 0x07010000 0x00001000 >;
+				0x00010000 0x07010000 0x00001000
+				0x00008000 0x07008000 0x00002000 >;
 
 			uart_0: serial@0x180 {
 				compatible = "ALTR,uart-12.0", "ALTR,uart-1.0";
@@ -147,6 +153,11 @@
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 6 >;
 			}; //end labx_video_depacketizer@0x10000 (labx_video_depacketizer_0)
+
+			labx_dma_coprocessor_0: labx_dma_coprocessor@0x8000 {
+				compatible = "labx,labx_dma_coprocessor-1.0";
+				reg = < 0x00008000 0x00002000 >;
+			}; //end labx_dma_coprocessor@0x8000 (labx_dma_coprocessor_0)
 		}; //end bridge@0x7000000 (mm_clock_crossing_bridge_0)
 
 		labx_ptp_0: labx_ptp@0x4110000 {
@@ -182,7 +193,7 @@
 
 		labx_shaping_dma_0: labx_shaping_dma@0x4140000 {
 			compatible = "labx,labx_shaping_dma-1.0";
-			reg = < 0x04140000 0x00000001 >;
+			reg = < 0x04140000 0x00004000 >;
 		}; //end labx_shaping_dma@0x4140000 (labx_shaping_dma_0)
 	}; //end sopc@0
 
