@@ -157,6 +157,8 @@
 			labx_dma_coprocessor_0: labx_dma_coprocessor@0x8000 {
 				compatible = "labx,labx_dma_coprocessor-1.0";
 				reg = < 0x00008000 0x00002000 >;
+				interrupt-parent = < &nios2_qsys_0 >;
+				interrupts = < 7 >;
 			}; //end labx_dma_coprocessor@0x8000 (labx_dma_coprocessor_0)
 		}; //end bridge@0x7000000 (mm_clock_crossing_bridge_0)
 

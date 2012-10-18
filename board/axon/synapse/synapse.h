@@ -62,6 +62,7 @@
 
 /* labx_dma_coprocessor_0.Host_Interface is a labx_dma_coprocessor */
 #define LABX_DMA_COPROCESSOR_0_BASE	0xE7008000
+#define LABX_DMA_COPROCESSOR_0_IRQ	7
 
 /* labx_ptp_0.host_interface is a labx_ptp */
 #define LABX_PTP_0_BASE	0xE4110000
