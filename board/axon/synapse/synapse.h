@@ -60,9 +60,17 @@
 #define LABX_VIDEO_DEPACKETIZER_0_BASE	0xE7010000
 #define LABX_VIDEO_DEPACKETIZER_0_IRQ	6
 
-/* labx_dma_coprocessor_0.Host_Interface is a labx_dma_coprocessor */
-#define LABX_DMA_COPROCESSOR_0_BASE	0xE7008000
-#define LABX_DMA_COPROCESSOR_0_IRQ	7
+/* labx_presentation_dma.Host_Interface is a labx_dma_coprocessor */
+#define LABX_PRESENTATION_DMA_BASE	0xE7008000
+#define LABX_PRESENTATION_DMA_IRQ	7
+
+/* labx_serializer_dma.Host_Interface is a labx_dma_coprocessor */
+#define LABX_SERIALIZER_DMA_BASE	0xE700A000
+#define LABX_SERIALIZER_DMA_IRQ	8
+
+/* labx_video_clock_recovery_0.Host_Interface is a labx_video_clock_recovery */
+#define LABX_VIDEO_CLOCK_RECOVERY_0_BASE	0xE700C000
+#define LABX_VIDEO_CLOCK_RECOVERY_0_IRQ	9
 
 /* labx_ptp_0.host_interface is a labx_ptp */
 #define LABX_PTP_0_BASE	0xE4110000

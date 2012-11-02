@@ -114,7 +114,9 @@
 				0x00000100 0x07000100 0x00000020
 				0x00000000 0x07000000 0x00000008
 				0x00010000 0x07010000 0x00001000
-				0x00008000 0x07008000 0x00002000 >;
+				0x00008000 0x07008000 0x00002000
+				0x0000A000 0x0700A000 0x00002000
+				0x0000C000 0x0700C000 0x00000400 >;
 
 			uart_0: serial@0x180 {
 				compatible = "ALTR,uart-12.0", "ALTR,uart-1.0";
@@ -154,12 +156,26 @@
 				interrupts = < 6 >;
 			}; //end labx_video_depacketizer@0x10000 (labx_video_depacketizer_0)
 
-			labx_dma_coprocessor_0: labx_dma_coprocessor@0x8000 {
+			labx_presentation_dma: labx_dma_coprocessor@0x8000 {
 				compatible = "labx,labx_dma_coprocessor-1.0";
 				reg = < 0x00008000 0x00002000 >;
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 7 >;
-			}; //end labx_dma_coprocessor@0x8000 (labx_dma_coprocessor_0)
+			}; //end labx_dma_coprocessor@0x8000 (labx_presentation_dma)
+
+			labx_serializer_dma: labx_dma_coprocessor@0xa000 {
+				compatible = "labx,labx_dma_coprocessor-1.0";
+				reg = < 0x0000A000 0x00002000 >;
+				interrupt-parent = < &nios2_qsys_0 >;
+				interrupts = < 8 >;
+			}; //end labx_dma_coprocessor@0xa000 (labx_serializer_dma)
+
+			labx_video_clock_recovery_0: labx_video_clock_recovery@0xc000 {
+				compatible = "labx,labx_video_clock_recovery-1.0";
+				reg = < 0x0000C000 0x00000400 >;
+				interrupt-parent = < &nios2_qsys_0 >;
+				interrupts = < 9 >;
+			}; //end labx_video_clock_recovery@0xc000 (labx_video_clock_recovery_0)
 		}; //end bridge@0x7000000 (mm_clock_crossing_bridge_0)
 
 		labx_ptp_0: labx_ptp@0x4110000 {
