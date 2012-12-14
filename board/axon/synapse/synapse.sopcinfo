@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="q_sys" kind="q_sys" version="1.0" fabric="QSYS">
  <!-- Format version 12.0sp2 263 (Future versions may contain additional information.) -->
- <!-- 2012.11.02.11:15:36 -->
+ <!-- 2012.12.13.22:35:16 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1351869012</value>
+  <value>1355455740</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -22621,7 +22621,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.TIMESTAMP</name>
-   <value>1351869012</value>
+   <value>1355455740</value>
   </assignment>
   <parameter name="id">
    <type>int</type>
@@ -22633,7 +22633,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="timestamp">
    <type>int</type>
-   <value>1351869012</value>
+   <value>1355455740</value>
    <derived>false</derived>
    <enabled>false</enabled>
    <visible>false</visible>
@@ -24876,6 +24876,14 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
+  <parameter name="MAC_ADDRESS">
+   <type>java.lang.String</type>
+   <value>00:03:41:00:10:01</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
   <parameter name="AUTO_CORE_CLOCK_CLOCK_RATE">
    <type>java.lang.Long</type>
    <value>125000000</value>
@@ -25807,6 +25815,22 @@ the requested settings for a module instance. -->
   <parameter name="NUM_RTC_CLIENTS">
    <type>int</type>
    <value>3</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="PHY_MAC_RX_DELAY">
+   <type>int</type>
+   <value>1</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="PHY_MAC_TX_DELAY">
+   <type>int</type>
+   <value>1</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -32249,6 +32273,14 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
+  <parameter name="HOST_CLOCK_RATE">
+   <type>int</type>
+   <value>50000000</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
   <parameter name="HAS_LOOPBACK">
    <type>int</type>
    <value>1</value>
@@ -32332,14 +32364,6 @@ the requested settings for a module instance. -->
   <parameter name="AUTO_CACHE_CLOCK_CLOCK_RATE">
    <type>java.lang.Long</type>
    <value>125000000</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="AUTO_HOST_CLOCK_CLOCK_RATE">
-   <type>java.lang.Long</type>
-   <value>50000000</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -33360,51 +33384,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>1</width>
     <role>irq</role>
-   </port>
-  </interface>
-  <interface name="Shaping_Pulse" kind="conduit_end" version="12.0">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="associatedClock">
-    <type>java.lang.String</type>
-    <value>Core_Clock</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="associatedReset">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>conduit</type>
-   <isStart>false</isStart>
-   <port>
-    <name>Shaping_Pulse</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>export</role>
    </port>
   </interface>
   <interface name="Host_Reset" kind="reset_sink" version="12.0">
@@ -45939,7 +45918,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="CACHE_DATA_WIDTH">
    <type>int</type>
-   <value>32</value>
+   <value>128</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -46373,7 +46352,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>Ser_Cache_Write_Data</name>
     <direction>Input</direction>
-    <width>32</width>
+    <width>128</width>
     <role>export</role>
    </port>
   </interface>
@@ -46434,6 +46413,24 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
+    <name>Output_Cache_Address</name>
+    <direction>Output</direction>
+    <width>10</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Output_Cache_Write_Enable</name>
+    <direction>Output</direction>
+    <width>1</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Output_Cache_Write_Data</name>
+    <direction>Output</direction>
+    <width>128</width>
+    <role>export</role>
+   </port>
+   <port>
     <name>Output_Ts_Write_Enable</name>
     <direction>Input</direction>
     <width>1</width>
@@ -46473,24 +46470,6 @@ parameters are a RESULT of the module parameters. -->
     <name>Output_Dma_Active</name>
     <direction>Output</direction>
     <width>1</width>
-    <role>export</role>
-   </port>
-   <port>
-    <name>Output_Cache_Address</name>
-    <direction>Output</direction>
-    <width>10</width>
-    <role>export</role>
-   </port>
-   <port>
-    <name>Output_Cache_Write_Enable</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>export</role>
-   </port>
-   <port>
-    <name>Output_Cache_Write_Data</name>
-    <direction>Output</direction>
-    <width>32</width>
     <role>export</role>
    </port>
   </interface>
@@ -48062,61 +48041,61 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Dma_Cache_Address</name>
+    <name>Output_Cache_Address</name>
     <direction>Input</direction>
     <width>8</width>
     <role>export</role>
    </port>
    <port>
-    <name>Dma_Cache_Write_Enable</name>
+    <name>Output_Cache_Write_Enable</name>
     <direction>Input</direction>
     <width>1</width>
     <role>export</role>
    </port>
    <port>
-    <name>Dma_Cache_Write_Data</name>
+    <name>Output_Cache_Write_Data</name>
     <direction>Input</direction>
     <width>128</width>
     <role>export</role>
    </port>
    <port>
-    <name>Ts_Write_Enable</name>
+    <name>Output_Ts_Write_Enable</name>
     <direction>Output</direction>
     <width>1</width>
     <role>export</role>
    </port>
    <port>
-    <name>Ts_Write_Data</name>
+    <name>Output_Ts_Write_Data</name>
     <direction>Output</direction>
     <width>32</width>
     <role>export</role>
    </port>
    <port>
-    <name>Ts_Write_Accepted</name>
+    <name>Output_Ts_Write_Accepted</name>
     <direction>Input</direction>
     <width>1</width>
     <role>export</role>
    </port>
    <port>
-    <name>Channel_Enabled</name>
+    <name>Output_Channel_Enabled</name>
     <direction>Input</direction>
     <width>1</width>
     <role>export</role>
    </port>
    <port>
-    <name>Dma_Request</name>
+    <name>Output_Dma_Request</name>
     <direction>Output</direction>
     <width>1</width>
     <role>export</role>
    </port>
    <port>
-    <name>Dma_Ack</name>
+    <name>Output_Dma_Ack</name>
     <direction>Input</direction>
     <width>1</width>
     <role>export</role>
    </port>
    <port>
-    <name>Dma_Active</name>
+    <name>Output_Dma_Active</name>
     <direction>Input</direction>
     <width>1</width>
     <role>export</role>
@@ -55468,99 +55447,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>Vco_Sync</endConnectionPoint>
  </connection>
  <plugin>
-  <instanceCount>9</instanceCount>
-  <name>clock_sink</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Input</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>tristate_conduit_master</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Tristate Conduit Master</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_video_clock_recovery</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_video_clock_recovery</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>Video_Input</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>SDI to Media Port</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
   <instanceCount>2</instanceCount>
-  <name>conduit</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Conduit Endpoint</displayName>
-  <version>7.1</version>
- </plugin>
- <plugin>
-  <instanceCount>9</instanceCount>
-  <name>avalon_master</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Avalon Memory Mapped Master</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>Video_Output</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Media Port to SDI</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_tristate_conduit_bridge</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Tri-State Conduit Bridge</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_ethernet</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_ethernet</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>9</instanceCount>
   <name>interrupt_sender</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
   <displayName>Interrupt Sender</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_video_depacketizer</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_video_depacketizer</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>52</instanceCount>
-  <name>clock</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Clock Connection</displayName>
   <version>12.0</version>
  </plugin>
  <plugin>
@@ -55572,14 +55463,6 @@ parameters are a RESULT of the module parameters. -->
   <version>12.0</version>
  </plugin>
  <plugin>
-  <instanceCount>28</instanceCount>
-  <name>avalon</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Avalon Memory Mapped Connection</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
   <instanceCount>47</instanceCount>
   <name>clock_sink</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
@@ -55588,87 +55471,7 @@ parameters are a RESULT of the module parameters. -->
   <version>12.0</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_clock_bridge</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Clock Bridge</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>4</instanceCount>
-  <name>reset_source</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Reset Output</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_ptp</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_ptp</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>16</instanceCount>
-  <name>avalon_slave</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Avalon Memory Mapped Slave</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>4</instanceCount>
-  <name>reset_source</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Reset Output</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>36</instanceCount>
-  <name>reset</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Reset Connection</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>5</instanceCount>
-  <name>avalon_slave</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Avalon Memory Mapped Slave</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>4</instanceCount>
-  <name>clock_source</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Clock Source</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>10</instanceCount>
-  <name>interrupt</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Interrupt Connection</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_uart</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>UART (RS-232 Serial Port)</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
+  <instanceCount>9</instanceCount>
   <name>interrupt_sender</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -55676,35 +55479,35 @@ parameters are a RESULT of the module parameters. -->
   <version>12.0</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>tristate_conduit</name>
+  <instanceCount>4</instanceCount>
+  <name>reset_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Tristate Conduit Connection</displayName>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Reset Output</displayName>
   <version>12.0</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altpll</name>
+  <name>labx_multi_packetizer</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Avalon ALTPLL</displayName>
-  <version>12.0</version>
+  <displayName>labx_multi_packetizer</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_avalon_pio</name>
+  <name>labx_shaping_dma</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>PIO (Parallel I/O)</displayName>
-  <version>12.0</version>
+  <displayName>labx_shaping_dma</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_avalon_mm_clock_crossing_bridge</name>
+  <name>interrupt_receiver</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Avalon-MM Clock Crossing Bridge</displayName>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Interrupt Receiver</displayName>
   <version>12.0</version>
  </plugin>
  <plugin>
@@ -55717,22 +55520,6 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_avalon_timer</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Interval Timer</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>labx_dma_coprocessor</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_dma_coprocessor</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
   <name>tristate_conduit_slave</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -55741,34 +55528,18 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_generic_tristate_controller</name>
+  <name>Video_Output</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Generic Tri-State Controller</displayName>
-  <version>12.0</version>
+  <displayName>Media Port to SDI</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_nios2_qsys</name>
+  <name>altera_avalon_timer</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Nios II Processor</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>72</instanceCount>
-  <name>conduit_end</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Conduit</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_sysid_qsys</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>System ID Peripheral</displayName>
+  <displayName>Interval Timer</displayName>
   <version>12.0</version>
  </plugin>
  <plugin>
@@ -55780,43 +55551,35 @@ parameters are a RESULT of the module parameters. -->
   <version>12.0</version>
  </plugin>
  <plugin>
-  <instanceCount>27</instanceCount>
-  <name>conduit</name>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_mm_clock_crossing_bridge</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Conduit Connection</displayName>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Avalon-MM Clock Crossing Bridge</displayName>
   <version>12.0</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>interrupt_receiver</name>
+  <instanceCount>4</instanceCount>
+  <name>reset_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Interrupt Receiver</displayName>
+  <displayName>Reset Output</displayName>
   <version>12.0</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_video_dma_glue</name>
+  <instanceCount>2</instanceCount>
+  <name>altera_mem_if_ddr3_emif</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_video_dma_glue</displayName>
-  <version>1.0</version>
+  <displayName>DDR3 SDRAM Controller with UniPHY</displayName>
+  <version>12.0</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_eth_tx_arbiter</name>
+  <instanceCount>4</instanceCount>
+  <name>clock_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_tx_arbiter</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>nios_custom_instruction_master</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Custom Instruction Master</displayName>
+  <displayName>Clock Source</displayName>
   <version>12.0</version>
  </plugin>
  <plugin>
@@ -55829,11 +55592,203 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_shaping_dma</name>
+  <name>tristate_conduit_master</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Tristate Conduit Master</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_generic_tristate_controller</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_shaping_dma</displayName>
+  <displayName>Generic Tri-State Controller</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>10</instanceCount>
+  <name>interrupt</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Interrupt Connection</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_sysid_qsys</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>System ID Peripheral</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>24</instanceCount>
+  <name>reset_sink</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Reset Input</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>9</instanceCount>
+  <name>avalon_master</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Avalon Memory Mapped Master</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altpll</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Avalon ALTPLL</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_clock_bridge</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Clock Bridge</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>52</instanceCount>
+  <name>clock</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Clock Connection</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_video_dma_glue</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_video_dma_glue</displayName>
   <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>27</instanceCount>
+  <name>conduit</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Conduit Connection</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>tristate_conduit</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Tristate Conduit Connection</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>71</instanceCount>
+  <name>conduit_end</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Conduit</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>labx_dma_coprocessor</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_dma_coprocessor</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>nios_custom_instruction_master</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Custom Instruction Master</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_video_clock_recovery</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_video_clock_recovery</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_tristate_conduit_bridge</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Tri-State Conduit Bridge</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>9</instanceCount>
+  <name>clock_sink</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Clock Input</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_eth_mac</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_eth_mac</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>Video_Input</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>SDI to Media Port</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_video_depacketizer</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_video_depacketizer</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_ptp</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_ptp</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_eth_tx_arbiter</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_eth_tx_arbiter</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_ethernet</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_ethernet</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_pio</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>PIO (Parallel I/O)</displayName>
+  <version>12.0</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
@@ -55845,22 +55800,6 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_eth_mac</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_mac</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>altera_mem_if_ddr3_emif</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>DDR3 SDRAM Controller with UniPHY</displayName>
-  <version>12.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
   <name>labx_eth_rx_cross_fifo</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
@@ -55868,19 +55807,59 @@ parameters are a RESULT of the module parameters. -->
   <version>1.0</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_multi_packetizer</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_multi_packetizer</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>24</instanceCount>
-  <name>reset_sink</name>
+  <instanceCount>5</instanceCount>
+  <name>avalon_slave</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Reset Input</displayName>
+  <displayName>Avalon Memory Mapped Slave</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_uart</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>UART (RS-232 Serial Port)</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_nios2_qsys</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Nios II Processor</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>16</instanceCount>
+  <name>avalon_slave</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Avalon Memory Mapped Slave</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>28</instanceCount>
+  <name>avalon</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Avalon Memory Mapped Connection</displayName>
+  <version>12.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>conduit</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Conduit Endpoint</displayName>
+  <version>7.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>36</instanceCount>
+  <name>reset</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Reset Connection</displayName>
   <version>12.0</version>
  </plugin>
  <reportVersion>12.0sp2 263</reportVersion>

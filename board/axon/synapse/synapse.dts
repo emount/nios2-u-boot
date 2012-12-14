@@ -183,6 +183,8 @@
 			reg = < 0x04110000 0x00010000 >;
 			interrupt-parent = < &nios2_qsys_0 >;
 			interrupts = < 2 >;
+			phy-mac-rx-delay = < 1 >;	/* PHY_MAC_RX_DELAY type NUMBER */
+			phy-mac-tx-delay = < 1 >;	/* PHY_MAC_TX_DELAY type NUMBER */
 		}; //end labx_ptp@0x4110000 (labx_ptp_0)
 
 		labx_ethernet_0: labx_ethernet@0x4100000 {
@@ -193,6 +195,7 @@
 			mdio-div = < 100 >;	/* MDIO_DIV type NUMBER */
 			mdio-phy-mask = < 2 >;	/* MDIO_PHY_MASK type NUMBER */
 			phy-addr = < 1 >;	/* PHY_ADDR type NUMBER */
+			mac-address = "00:03:41:00:10:01"; /* HAND-ENTERED!!! */
 		}; //end labx_ethernet@0x4100000 (labx_ethernet_0)
 
 		video_input_0: Video_Input@0x4120000 {
