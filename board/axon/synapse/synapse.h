@@ -91,4 +91,8 @@
 /* labx_shaping_dma_0.host_interface is a labx_shaping_dma */
 #define LABX_SHAPING_DMA_0_BASE	0xE4140000
 
+/* video_input_1.avalon_slave_0 is a Video_Input */
+#define VIDEO_INPUT_1_BASE	0xE4124000
+#define VIDEO_INPUT_1_IRQ	10
+
 #endif	//CUSTOM_FPGA_H_
