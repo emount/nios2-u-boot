@@ -57,7 +57,7 @@ set bootdelay 3
 
 echo Flash update commands:
 
-set fpganame Avb_Video_Fpga.rbf
+set fpganame Avb_Video_Fpga.bin
 set load_fpga 'tftp ${clobstart} ${fpganame}'
 set install_fpga 'protect off ${fpgastart} +${fpgasize};erase ${fpgastart} +${fpgasize};cp.b ${fileaddr} ${fpgastart} ${filesize}'
 set update_fpga run load_fpga install_fpga

@@ -106,7 +106,7 @@
 
 		mm_clock_crossing_bridge_0: bridge@0x7000000 {
 			compatible = "ALTR,avalon-12.1", "simple-bus";
-			reg = < 0x07000000 0x00040000 >;
+			reg = < 0x07000000 0x00080000 >;
 			#address-cells = < 1 >;
 			#size-cells = < 1 >;
 			ranges = < 0x00000180 0x07000180 0x00000020
@@ -116,7 +116,8 @@
 				0x00010000 0x07010000 0x00001000
 				0x00008000 0x07008000 0x00002000
 				0x0000A000 0x0700A000 0x00002000
-				0x0000C000 0x0700C000 0x00000800 >;
+				0x0000C000 0x0700C000 0x00000800
+				0x00040000 0x07040000 0x00040000 >;
 
 			uart_0: serial@0x180 {
 				compatible = "ALTR,uart-12.1", "ALTR,uart-1.0";
@@ -176,6 +177,17 @@
 				interrupt-parent = < &nios2_qsys_0 >;
 				interrupts = < 9 >;
 			}; //end labx_video_clock_recovery@0xc000 (labx_video_clock_recovery_0)
+
+			labx_ethernet_1: labx_ethernet@0x40000 {
+				compatible = "labx,labx_ethernet-1.0";
+				reg = < 0x00040000 0x00040000 >;
+				interrupt-parent = < &nios2_qsys_0 >;
+				interrupts = < 11 >;
+				mdio-div = < 100 >;	/* MDIO_DIV type NUMBER */
+				mdio-phy-mask = < 0 >;	/* MDIO_PHY_MASK type NUMBER */
+				phy-addr = < 0 >;	/* PHY_ADDR type NUMBER */
+				mac-address = "00:03:41:00:20:00";	/* HAND-ENTERED!!! */
+			}; //end labx_ethernet@0x40000 (labx_ethernet_1)
 		}; //end bridge@0x7000000 (mm_clock_crossing_bridge_0)
 
 		labx_ptp_0: labx_ptp@0x4110000 {
@@ -195,7 +207,7 @@
 			mdio-div = < 100 >;	/* MDIO_DIV type NUMBER */
 			mdio-phy-mask = < 2 >;	/* MDIO_PHY_MASK type NUMBER */
 			phy-addr = < 1 >;	/* PHY_ADDR type NUMBER */
-			mac-address = "00:03:41:00:10:01"; /* HAND-ENTERED!!! */
+			mac-address = "00:03:41:00:10:00";	/* HAND-ENTERED!!! */
 		}; //end labx_ethernet@0x4100000 (labx_ethernet_0)
 
 		video_input_0: Video_Input@0x4120000 {

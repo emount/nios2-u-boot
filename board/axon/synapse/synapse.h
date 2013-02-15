@@ -72,11 +72,15 @@
 #define LABX_VIDEO_CLOCK_RECOVERY_0_BASE	0xE700C000
 #define LABX_VIDEO_CLOCK_RECOVERY_0_IRQ	9
 
+/* labx_ethernet_1.Host_Interface is a labx_ethernet */
+#define LABX_ETHERNET_1_BASE	0xE7040000
+#define LABX_ETHERNET_1_IRQ	11
+
 /* labx_ptp_0.host_interface is a labx_ptp */
 #define LABX_PTP_0_BASE	0xE4110000
 #define LABX_PTP_0_IRQ	2
 
-/* labx_ethernet_0.host_interface is a labx_ethernet */
+/* labx_ethernet_0.Host_Interface is a labx_ethernet */
 #define LABX_ETHERNET_0_BASE	0xE4100000
 #define LABX_ETHERNET_0_IRQ	3
 
