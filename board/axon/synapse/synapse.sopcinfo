@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="q_sys" kind="q_sys" version="1.0" fabric="QSYS">
- <!-- Format version 12.1sp1 243 (Future versions may contain additional information.) -->
- <!-- 2013.02.14.22:07:07 -->
+ <!-- Format version 12.1 177 (Future versions may contain additional information.) -->
+ <!-- 2013.02.15.19:06:40 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1360897626</value>
+  <value>1360973200</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -1469,16 +1469,8 @@ the requested settings for a module instance. -->
    <value>1</value>
   </assignment>
   <assignment>
-   <name>testbench.partner.mem_model.parameter.CTL_RD_TO_RD_EXTRA_CLK</name>
-   <value>0</value>
-  </assignment>
-  <assignment>
    <name>testbench.partner.mem_model.parameter.CTL_WR_TO_WR_DIFF_CHIP_EXTRA_CLK</name>
    <value>1</value>
-  </assignment>
-  <assignment>
-   <name>testbench.partner.mem_model.parameter.CTL_WR_TO_WR_EXTRA_CLK</name>
-   <value>0</value>
   </assignment>
   <assignment>
    <name>testbench.partner.mem_model.parameter.CUT_NEW_FAMILY_TIMING</name>
@@ -2047,10 +2039,6 @@ the requested settings for a module instance. -->
   <assignment>
    <name>testbench.partner.mem_model.parameter.MR3_MPR_RF</name>
    <value>0</value>
-  </assignment>
-  <assignment>
-   <name>testbench.partner.mem_model.parameter.MRS_MIRROR_PING_PONG_ATSO</name>
-   <value>false</value>
   </assignment>
   <assignment>
    <name>testbench.partner.mem_model.parameter.NEXTGEN</name>
@@ -2833,22 +2821,6 @@ the requested settings for a module instance. -->
    <valid>true</valid>
   </parameter>
   <parameter name="CTL_RD_TO_PCH_EXTRA_CLK">
-   <type>int</type>
-   <value>0</value>
-   <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="CTL_RD_TO_RD_EXTRA_CLK">
-   <type>int</type>
-   <value>0</value>
-   <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="CTL_WR_TO_WR_EXTRA_CLK">
    <type>int</type>
    <value>0</value>
    <derived>true</derived>
@@ -3724,14 +3696,6 @@ the requested settings for a module instance. -->
    <type>int</type>
    <value>1</value>
    <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="MRS_MIRROR_PING_PONG_ATSO">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
    <valid>true</valid>
@@ -7456,14 +7420,6 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="CTL_ZQCAL_EN">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
   <parameter name="ADDR_ORDER">
    <type>int</type>
    <value>0</value>
@@ -7619,22 +7575,6 @@ the requested settings for a module instance. -->
   <parameter name="WRBUFFER_ADDR_WIDTH">
    <type>int</type>
    <value>6</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="MAX_PENDING_WR_CMD">
-   <type>int</type>
-   <value>8</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="MAX_PENDING_RD_CMD">
-   <type>int</type>
-   <value>16</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -10648,14 +10588,6 @@ the requested settings for a module instance. -->
    <visible>false</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="PERFORM_READ_AFTER_WRITE_CALIBRATION">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
   <parameter name="SEQ_BURST_COUNT_WIDTH">
    <type>int</type>
    <value>1</value>
@@ -10682,7 +10614,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DQS_DELAY_CHAIN_PHASE_SETTING">
    <type>int</type>
-   <value>2</value>
+   <value>3</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -10690,7 +10622,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DQS_PHASE_SHIFT">
    <type>int</type>
-   <value>7200</value>
+   <value>9000</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -10706,7 +10638,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="IO_DQS_IN_RESERVE">
    <type>int</type>
-   <value>3</value>
+   <value>6</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -10714,7 +10646,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="IO_DQS_OUT_RESERVE">
    <type>int</type>
-   <value>3</value>
+   <value>6</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -10746,7 +10678,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="IO_DQS_EN_PHASE_MAX">
    <type>int</type>
-   <value>9</value>
+   <value>11</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -10754,7 +10686,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="IO_DQDQS_OUT_PHASE_MAX">
    <type>int</type>
-   <value>17</value>
+   <value>21</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -10802,7 +10734,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DELAY_PER_OPA_TAP">
    <type>int</type>
-   <value>333</value>
+   <value>277</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -11610,7 +11542,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DELAY_CHAIN_LENGTH">
    <type>int</type>
-   <value>10</value>
+   <value>12</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -14099,30 +14031,6 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="regfile_ramBlockType">
-   <type>java.lang.String</type>
-   <value>Automatic</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="mmu_ramBlockType">
-   <type>java.lang.String</type>
-   <value>Automatic</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="bht_ramBlockType">
-   <type>java.lang.String</type>
-   <value>Automatic</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
   <parameter name="resetAbsoluteAddr">
    <type>int</type>
    <value>166854656</value>
@@ -14301,7 +14209,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="deviceFeaturesSystemInfo">
    <type>java.lang.String</type>
-   <value>NOT_LISTED 0 INSTALLED 1 IS_DEFAULT_FAMILY 0 ADDRESS_STALL 1 CELL_LEVEL_BACK_ANNOTATION_DISABLED 0 COMPILER_SUPPORT 1 DSP 1 DSP_SHIFTER_BLOCK 1 DUMP_ASM_LAB_BITS_FOR_POWER 1 EMUL 0 ENABLE_ADVANCED_IO_ANALYSIS_GUI_FEATURES 1 EPCS 1 ESB 0 FAKE1 0 FAKE2 0 FAKE3 0 FITTER_USE_FALLING_EDGE_DELAY 1 GENERATE_DC_ON_CURRENT_WARNING_FOR_INTERNAL_CLAMPING_DIODE 1 HARDCOPY 0 HAS_18_BIT_MULTS 1 HAS_ACE_SUPPORT 1 HAS_ADJUSTABLE_OUTPUT_IO_TIMING_MEAS_POINT 1 HAS_ADVANCED_IO_INVERTED_CORNER 1 HAS_ADVANCED_IO_POWER_SUPPORT 1 HAS_ADVANCED_IO_TIMING_SUPPORT 1 HAS_ALM_SUPPORT 1 HAS_ATOM_AND_ROUTING_POWER_MODELED_TOGETHER 0 HAS_AUTO_DERIVE_CLOCK_UNCERTAINTY_SUPPORT 1 HAS_AUTO_FIT_SUPPORT 1 HAS_BALANCED_OPT_TECHNIQUE_SUPPORT 1 HAS_BENEFICIAL_SKEW_SUPPORT 1 HAS_BITLEVEL_DRIVE_STRENGTH_CONTROL 1 HAS_BSDL_FILE_GENERATION 1 HAS_CGA_SUPPORT 1 HAS_CHECK_NETLIST_SUPPORT 1 HAS_CLOCK_REGION_CHECKER_ENABLED 1 HAS_CORE_JUNCTION_TEMP_DERATING 0 HAS_CROSSTALK_SUPPORT 0 HAS_CUSTOM_REGION_SUPPORT 1 HAS_DAP_JTAG_FROM_HPS 0 HAS_DATA_DRIVEN_ACVQ_HSSI_SUPPORT 0 HAS_DDB_FDI_SUPPORT 0 HAS_DESIGN_ANALYZER_SUPPORT 1 HAS_DETAILED_IO_RAIL_POWER_MODEL 1 HAS_DETAILED_LEIM_STATIC_POWER_MODEL 0 HAS_DETAILED_LE_POWER_MODEL 1 HAS_DETAILED_ROUTING_MUX_STATIC_POWER_MODEL 0 HAS_DETAILED_THERMAL_CIRCUIT_PARAMETER_SUPPORT 1 HAS_DEVICE_MIGRATION_SUPPORT 1 HAS_DIAGONAL_MIGRATION_SUPPORT 0 HAS_EMIF_TOOLKIT_SUPPORT 1 HAS_ERROR_DETECTION_SUPPORT 0 HAS_FAMILY_VARIANT_MIGRATION_SUPPORT 0 HAS_FANOUT_FREE_NODE_SUPPORT 1 HAS_FAST_FIT_SUPPORT 1 HAS_FITTER_EARLY_TIMING_ESTIMATE_SUPPORT 1 HAS_FITTER_ECO_SUPPORT 1 HAS_FIT_NETLIST_OPT_RETIME_SUPPORT 1 HAS_FIT_NETLIST_OPT_SUPPORT 1 HAS_FORMAL_VERIFICATION_SUPPORT 1 HAS_FPGA_XCHANGE_SUPPORT 1 HAS_FSAC_LUTRAM_REGISTER_PACKING_SUPPORT 0 HAS_FULL_DAT_MIN_TIMING_SUPPORT 1 HAS_FULL_INCREMENTAL_DESIGN_SUPPORT 1 HAS_FUNCTIONAL_SIMULATION_SUPPORT 1 HAS_FUNCTIONAL_VERILOG_SIMULATION_SUPPORT 0 HAS_FUNCTIONAL_VHDL_SIMULATION_SUPPORT 0 HAS_GLITCH_FILTERING_SUPPORT 1 HAS_HC_READY_SUPPORT 1 HAS_HIGH_SPEED_LOW_POWER_TILE_SUPPORT 1 HAS_HOLD_TIME_AVOIDANCE_ACROSS_CLOCK_SPINE_SUPPORT 1 HAS_HSPICE_WRITER_SUPPORT 1 HAS_HSSI_POWER_CALCULATOR 1 HAS_IBISO_WRITER_SUPPORT 0 HAS_INCREMENTAL_DAT_SUPPORT 1 HAS_INCREMENTAL_SYNTHESIS_SUPPORT 1 HAS_IO_ASSIGNMENT_ANALYSIS_SUPPORT 1 HAS_IO_DECODER 1 HAS_IO_PLACEMENT_OPTIMIZATION_SUPPORT 1 HAS_IO_SMART_RECOMPILE_SUPPORT 0 HAS_JITTER_SUPPORT 1 HAS_JTAG_SLD_HUB_SUPPORT 1 HAS_LOGIC_LOCK_SUPPORT 1 HAS_MICROPROCESSOR 0 HAS_MIF_SMART_COMPILE_SUPPORT 1 HAS_MINMAX_TIMING_MODELING_SUPPORT 1 HAS_MIN_TIMING_ANALYSIS_SUPPORT 1 HAS_MUX_RESTRUCTURE_SUPPORT 1 HAS_NEW_HC_FLOW_SUPPORT 0 HAS_NEW_SERDES_MAX_RESOURCE_COUNT_REPORTING_SUPPORT 1 HAS_NEW_VPR_SUPPORT 1 HAS_NONSOCKET_TECHNOLOGY_MIGRATION_SUPPORT 1 HAS_NO_JTAG_USERCODE_SUPPORT 0 HAS_OPERATING_SETTINGS_AND_CONDITIONS_REPORTING_SUPPORT 1 HAS_PAD_LOCATION_ASSIGNMENT_SUPPORT 0 HAS_PARTIAL_RECONFIG_SUPPORT 0 HAS_PHYSICAL_NETLIST_OUTPUT 0 HAS_PHYSICAL_ROUTING_SUPPORT 1 HAS_PIN_SPECIFIC_VOLTAGE_SUPPORT 1 HAS_PLDM_REF_SUPPORT 1 HAS_POWER_ESTIMATION_SUPPORT 1 HAS_PRELIMINARY_CLOCK_UNCERTAINTY_NUMBERS 0 HAS_PRE_FITTER_FPP_SUPPORT 0 HAS_PRE_FITTER_LUTRAM_NETLIST_CHECKER_ENABLED 1 HAS_PVA_SUPPORT 1 HAS_RCF_SUPPORT 1 HAS_RCF_SUPPORT_FOR_DEBUGGING 0 HAS_RED_BLACK_SEPARATION_SUPPORT 0 HAS_RE_LEVEL_TIMING_GRAPH_SUPPORT 1 HAS_RISEFALL_DELAY_SUPPORT 1 HAS_SIGNAL_PROBE_SUPPORT 1 HAS_SIGNAL_TAP_SUPPORT 1 HAS_SIMULATOR_SUPPORT 0 HAS_SPLIT_IO_SUPPORT 1 HAS_SPLIT_LC_SUPPORT 1 HAS_SYNTH_FSYN_NETLIST_OPT_SUPPORT 1 HAS_SYNTH_NETLIST_OPT_RETIME_SUPPORT 1 HAS_SYNTH_NETLIST_OPT_SUPPORT 1 HAS_TECHNOLOGY_MIGRATION_SUPPORT 1 HAS_TEMPLATED_REGISTER_PACKING_SUPPORT 1 HAS_TIME_BORROWING_SUPPORT 0 HAS_TIMING_DRIVEN_SYNTHESIS_SUPPORT 1 HAS_TIMING_INFO_SUPPORT 1 HAS_TIMING_OPERATING_CONDITIONS 1 HAS_TIMING_SIMULATION_SUPPORT 1 HAS_TITAN_BASED_MAC_REGISTER_PACKER_SUPPORT 1 HAS_USER_HIGH_SPEED_LOW_POWER_TILE_SUPPORT 1 HAS_USE_FITTER_INFO_SUPPORT 0 HAS_VCCPD_POWER_RAIL 1 HAS_VERTICAL_MIGRATION_SUPPORT 1 HAS_VIEWDRAW_SYMBOL_SUPPORT 0 HAS_VIO_SUPPORT 1 HAS_VIRTUAL_DEVICES 0 HAS_WYSIWYG_DFFEAS_SUPPORT 1 HAS_XIBISO_WRITER_SUPPORT 1 INCREMENTAL_DESIGN_SUPPORTS_COMPATIBLE_CONSTRAINTS 1 IS_CONFIG_ROM 0 IS_HARDCOPY_FAMILY 0 LVDS_IO 1 M10K_MEMORY 0 M144K_MEMORY 1 M20K_MEMORY 0 M4K_MEMORY 0 M512_MEMORY 0 M9K_MEMORY 1 MLAB_MEMORY 1 MRAM_MEMORY 0 NO_RPE_SUPPORT 0 NO_SUPPORT_FOR_LOGICLOCK_CONTENT_BACK_ANNOTATION 1 NO_SUPPORT_FOR_STA_CLOCK_UNCERTAINTY_CHECK 0 NO_TDC_SUPPORT 0 POSTFIT_BAK_DATABASE_EXPORT_ENABLED 1 POSTMAP_BAK_DATABASE_EXPORT_ENABLED 1 PROGRAMMER_SUPPORT 1 QFIT_IN_DEVELOPMENT 0 QMAP_IN_DEVELOPMENT 0 RAM_LOGICAL_NAME_CHECKING_IN_CUT_ENABLED 1 REPORTS_METASTABILITY_MTBF 1 REQUIRES_INSTALLATION_PATCH 0 REQUIRES_LIST_OF_TEMPERATURE_AND_VOLTAGE_OPERATING_CONDITIONS 1 RESERVES_SIGNAL_PROBE_PINS 0 RESOLVE_MAX_FANOUT_EARLY 1 RESOLVE_MAX_FANOUT_LATE 0 RESPECTS_FIXED_SIZED_LOCKED_LOCATION_LOGICLOCK 1 RESTRICTED_USER_SELECTION 0 RISEFALL_SUPPORT_IS_HIDDEN 0 STRICT_TIMING_DB_CHECKS 0 SUPPORTS_ADDITIONAL_OPTIONS_FOR_UNUSED_IO 1 SUPPORTS_CRC 1 SUPPORTS_DIFFERENTIAL_AIOT_BOARD_TRACE_MODEL 1 SUPPORTS_DSP_BALANCING_BACK_ANNOTATION 0 SUPPORTS_GENERATION_OF_EARLY_POWER_ESTIMATOR_FILE 1 SUPPORTS_GLOBAL_SIGNAL_BACK_ANNOTATION 1 SUPPORTS_MAC_CHAIN_OUT_ADDER 1 SUPPORTS_RAM_PACKING_BACK_ANNOTATION 0 SUPPORTS_REG_PACKING_BACK_ANNOTATION 0 SUPPORTS_SIGNALPROBE_REGISTER_PIPELINING 1 SUPPORTS_SINGLE_ENDED_AIOT_BOARD_TRACE_MODEL 1 SUPPORTS_USER_MANUAL_LOGIC_DUPLICATION 1 TMV_RUN_CUSTOMIZABLE_VIEWER 1 TMV_RUN_INTERNAL_DETAILS 1 TMV_RUN_INTERNAL_DETAILS_ON_IO 0 TMV_RUN_INTERNAL_DETAILS_ON_IOBUF 1 TMV_RUN_INTERNAL_DETAILS_ON_LCELL 0 TMV_RUN_INTERNAL_DETAILS_ON_LRAM 0 TRANSCEIVER_3G_BLOCK 1 TRANSCEIVER_6G_BLOCK 1 USES_ACV_FOR_FLED 1 USES_ADB_FOR_BACK_ANNOTATION 1 USES_ALTERA_LNSIM 0 USES_ASIC_ROUTING_POWER_CALCULATOR 0 USES_DATA_DRIVEN_PLL_COMPUTATION_UTIL 1 USES_DEV 1 USES_ICP_FOR_ECO_FITTER 0 USES_LIBERTY_TIMING 0 USES_POWER_SIGNAL_ACTIVITIES 1 USES_THIRD_GENERATION_TIMING_MODELS_TIS 1 USE_ADVANCED_IO_POWER_BY_DEFAULT 1 USE_ADVANCED_IO_TIMING_BY_DEFAULT 1 USE_BASE_FAMILY_DDB_PATH 0 USE_OCT_AUTO_CALIBRATION 0 USE_RELAX_IO_ASSIGNMENT_RULES 0 USE_RISEFALL_ONLY 1 USE_SEPARATE_LIST_FOR_TECH_MIGRATION 1 USE_SINGLE_COMPILER_PASS_PLL_MIF_FILE_WRITER 1 USE_TITAN_IO_BASED_IO_REGISTER_PACKER_UTIL 1 WYSIWYG_BUS_WIDTH_CHECKING_IN_CUT_ENABLED 1</value>
+   <value>NOT_LISTED 0 INSTALLED 1 IS_DEFAULT_FAMILY 0 ADDRESS_STALL 1 CELL_LEVEL_BACK_ANNOTATION_DISABLED 0 COMPILER_SUPPORT 1 DSP 1 DSP_SHIFTER_BLOCK 1 DUMP_ASM_LAB_BITS_FOR_POWER 1 EMUL 0 ENABLE_ADVANCED_IO_ANALYSIS_GUI_FEATURES 1 EPCS 1 ESB 0 FAKE1 0 FAKE2 0 FAKE3 0 FITTER_USE_FALLING_EDGE_DELAY 1 GENERATE_DC_ON_CURRENT_WARNING_FOR_INTERNAL_CLAMPING_DIODE 1 HARDCOPY 0 HAS_18_BIT_MULTS 1 HAS_ACE_SUPPORT 1 HAS_ADJUSTABLE_OUTPUT_IO_TIMING_MEAS_POINT 1 HAS_ADVANCED_IO_INVERTED_CORNER 1 HAS_ADVANCED_IO_POWER_SUPPORT 1 HAS_ADVANCED_IO_TIMING_SUPPORT 1 HAS_ALM_SUPPORT 1 HAS_ATOM_AND_ROUTING_POWER_MODELED_TOGETHER 0 HAS_AUTO_DERIVE_CLOCK_UNCERTAINTY_SUPPORT 1 HAS_AUTO_FIT_SUPPORT 1 HAS_BALANCED_OPT_TECHNIQUE_SUPPORT 1 HAS_BENEFICIAL_SKEW_SUPPORT 1 HAS_BITLEVEL_DRIVE_STRENGTH_CONTROL 1 HAS_BSDL_FILE_GENERATION 1 HAS_CGA_SUPPORT 1 HAS_CHECK_NETLIST_SUPPORT 1 HAS_CLOCK_REGION_CHECKER_ENABLED 1 HAS_CORE_JUNCTION_TEMP_DERATING 0 HAS_CROSSTALK_SUPPORT 0 HAS_CUSTOM_REGION_SUPPORT 1 HAS_DATA_DRIVEN_ACVQ_HSSI_SUPPORT 0 HAS_DDB_FDI_SUPPORT 0 HAS_DESIGN_ANALYZER_SUPPORT 1 HAS_DETAILED_IO_RAIL_POWER_MODEL 1 HAS_DETAILED_LEIM_STATIC_POWER_MODEL 0 HAS_DETAILED_LE_POWER_MODEL 1 HAS_DETAILED_ROUTING_MUX_STATIC_POWER_MODEL 0 HAS_DETAILED_THERMAL_CIRCUIT_PARAMETER_SUPPORT 1 HAS_DEVICE_MIGRATION_SUPPORT 1 HAS_DIAGONAL_MIGRATION_SUPPORT 0 HAS_EMIF_TOOLKIT_SUPPORT 1 HAS_ERROR_DETECTION_SUPPORT 0 HAS_FAMILY_VARIANT_MIGRATION_SUPPORT 0 HAS_FANOUT_FREE_NODE_SUPPORT 1 HAS_FAST_FIT_SUPPORT 1 HAS_FITTER_EARLY_TIMING_ESTIMATE_SUPPORT 1 HAS_FITTER_ECO_SUPPORT 1 HAS_FIT_NETLIST_OPT_RETIME_SUPPORT 1 HAS_FIT_NETLIST_OPT_SUPPORT 1 HAS_FORMAL_VERIFICATION_SUPPORT 1 HAS_FPGA_XCHANGE_SUPPORT 1 HAS_FSAC_LUTRAM_REGISTER_PACKING_SUPPORT 0 HAS_FULL_DAT_MIN_TIMING_SUPPORT 1 HAS_FULL_INCREMENTAL_DESIGN_SUPPORT 1 HAS_FUNCTIONAL_SIMULATION_SUPPORT 1 HAS_FUNCTIONAL_VERILOG_SIMULATION_SUPPORT 0 HAS_FUNCTIONAL_VHDL_SIMULATION_SUPPORT 0 HAS_GLITCH_FILTERING_SUPPORT 1 HAS_HC_READY_SUPPORT 1 HAS_HIGH_SPEED_LOW_POWER_TILE_SUPPORT 1 HAS_HOLD_TIME_AVOIDANCE_ACROSS_CLOCK_SPINE_SUPPORT 1 HAS_HSPICE_WRITER_SUPPORT 1 HAS_HSSI_POWER_CALCULATOR 1 HAS_IBISO_WRITER_SUPPORT 0 HAS_INCREMENTAL_DAT_SUPPORT 1 HAS_INCREMENTAL_SYNTHESIS_SUPPORT 1 HAS_IO_ASSIGNMENT_ANALYSIS_SUPPORT 1 HAS_IO_DECODER 1 HAS_IO_PLACEMENT_OPTIMIZATION_SUPPORT 1 HAS_IO_SMART_RECOMPILE_SUPPORT 0 HAS_JITTER_SUPPORT 1 HAS_JTAG_SLD_HUB_SUPPORT 1 HAS_LOGIC_LOCK_SUPPORT 1 HAS_MICROPROCESSOR 0 HAS_MIF_SMART_COMPILE_SUPPORT 1 HAS_MINMAX_TIMING_MODELING_SUPPORT 1 HAS_MIN_TIMING_ANALYSIS_SUPPORT 1 HAS_MUX_RESTRUCTURE_SUPPORT 1 HAS_NEW_HC_FLOW_SUPPORT 0 HAS_NEW_SERDES_MAX_RESOURCE_COUNT_REPORTING_SUPPORT 1 HAS_NEW_VPR_SUPPORT 1 HAS_NONSOCKET_TECHNOLOGY_MIGRATION_SUPPORT 1 HAS_NO_JTAG_USERCODE_SUPPORT 0 HAS_OPERATING_SETTINGS_AND_CONDITIONS_REPORTING_SUPPORT 1 HAS_PAD_LOCATION_ASSIGNMENT_SUPPORT 0 HAS_PARTIAL_RECONFIG_SUPPORT 0 HAS_PHYSICAL_NETLIST_OUTPUT 0 HAS_PHYSICAL_ROUTING_SUPPORT 1 HAS_PIN_SPECIFIC_VOLTAGE_SUPPORT 1 HAS_PLDM_REF_SUPPORT 1 HAS_POWER_ESTIMATION_SUPPORT 1 HAS_PRELIMINARY_CLOCK_UNCERTAINTY_NUMBERS 0 HAS_PRE_FITTER_FPP_SUPPORT 0 HAS_PRE_FITTER_LUTRAM_NETLIST_CHECKER_ENABLED 1 HAS_PVA_SUPPORT 1 HAS_RCF_SUPPORT 1 HAS_RCF_SUPPORT_FOR_DEBUGGING 0 HAS_RED_BLACK_SEPARATION_SUPPORT 0 HAS_RE_LEVEL_TIMING_GRAPH_SUPPORT 1 HAS_RISEFALL_DELAY_SUPPORT 1 HAS_SIGNAL_PROBE_SUPPORT 1 HAS_SIGNAL_TAP_SUPPORT 1 HAS_SIMULATOR_SUPPORT 0 HAS_SPLIT_IO_SUPPORT 1 HAS_SPLIT_LC_SUPPORT 1 HAS_SYNTH_FSYN_NETLIST_OPT_SUPPORT 1 HAS_SYNTH_NETLIST_OPT_RETIME_SUPPORT 1 HAS_SYNTH_NETLIST_OPT_SUPPORT 1 HAS_TECHNOLOGY_MIGRATION_SUPPORT 1 HAS_TEMPLATED_REGISTER_PACKING_SUPPORT 1 HAS_TIME_BORROWING_SUPPORT 0 HAS_TIMING_DRIVEN_SYNTHESIS_SUPPORT 1 HAS_TIMING_INFO_SUPPORT 1 HAS_TIMING_OPERATING_CONDITIONS 1 HAS_TIMING_SIMULATION_SUPPORT 1 HAS_TITAN_BASED_MAC_REGISTER_PACKER_SUPPORT 1 HAS_USER_HIGH_SPEED_LOW_POWER_TILE_SUPPORT 1 HAS_USE_FITTER_INFO_SUPPORT 0 HAS_VCCPD_POWER_RAIL 1 HAS_VERTICAL_MIGRATION_SUPPORT 1 HAS_VIEWDRAW_SYMBOL_SUPPORT 0 HAS_VIO_SUPPORT 1 HAS_VIRTUAL_DEVICES 0 HAS_WYSIWYG_DFFEAS_SUPPORT 1 HAS_XIBISO_WRITER_SUPPORT 1 INCREMENTAL_DESIGN_SUPPORTS_COMPATIBLE_CONSTRAINTS 1 IS_CONFIG_ROM 0 IS_HARDCOPY_FAMILY 0 LVDS_IO 1 M10K_MEMORY 0 M144K_MEMORY 1 M20K_MEMORY 0 M4K_MEMORY 0 M512_MEMORY 0 M9K_MEMORY 1 MLAB_MEMORY 1 MRAM_MEMORY 0 NO_RPE_SUPPORT 0 NO_SUPPORT_FOR_LOGICLOCK_CONTENT_BACK_ANNOTATION 1 NO_SUPPORT_FOR_STA_CLOCK_UNCERTAINTY_CHECK 0 NO_TDC_SUPPORT 0 POSTFIT_BAK_DATABASE_EXPORT_ENABLED 1 POSTMAP_BAK_DATABASE_EXPORT_ENABLED 1 PROGRAMMER_SUPPORT 1 QFIT_IN_DEVELOPMENT 0 QMAP_IN_DEVELOPMENT 0 RAM_LOGICAL_NAME_CHECKING_IN_CUT_ENABLED 1 REPORTS_METASTABILITY_MTBF 1 REQUIRES_INSTALLATION_PATCH 0 REQUIRES_LIST_OF_TEMPERATURE_AND_VOLTAGE_OPERATING_CONDITIONS 1 RESERVES_SIGNAL_PROBE_PINS 0 RESOLVE_MAX_FANOUT_EARLY 1 RESOLVE_MAX_FANOUT_LATE 0 RESPECTS_FIXED_SIZED_LOCKED_LOCATION_LOGICLOCK 1 RESTRICTED_USER_SELECTION 0 RISEFALL_SUPPORT_IS_HIDDEN 0 STRICT_TIMING_DB_CHECKS 0 SUPPORTS_ADDITIONAL_OPTIONS_FOR_UNUSED_IO 1 SUPPORTS_CRC 1 SUPPORTS_DIFFERENTIAL_AIOT_BOARD_TRACE_MODEL 1 SUPPORTS_DSP_BALANCING_BACK_ANNOTATION 0 SUPPORTS_GENERATION_OF_EARLY_POWER_ESTIMATOR_FILE 1 SUPPORTS_GLOBAL_SIGNAL_BACK_ANNOTATION 1 SUPPORTS_MAC_CHAIN_OUT_ADDER 1 SUPPORTS_RAM_PACKING_BACK_ANNOTATION 0 SUPPORTS_REG_PACKING_BACK_ANNOTATION 0 SUPPORTS_SIGNALPROBE_REGISTER_PIPELINING 1 SUPPORTS_SINGLE_ENDED_AIOT_BOARD_TRACE_MODEL 1 SUPPORTS_USER_MANUAL_LOGIC_DUPLICATION 1 TMV_RUN_CUSTOMIZABLE_VIEWER 1 TMV_RUN_INTERNAL_DETAILS 1 TMV_RUN_INTERNAL_DETAILS_ON_IO 0 TMV_RUN_INTERNAL_DETAILS_ON_IOBUF 1 TMV_RUN_INTERNAL_DETAILS_ON_LCELL 0 TMV_RUN_INTERNAL_DETAILS_ON_LRAM 0 TRANSCEIVER_3G_BLOCK 1 TRANSCEIVER_6G_BLOCK 1 USES_ACV_FOR_FLED 1 USES_ADB_FOR_BACK_ANNOTATION 1 USES_ALTERA_LNSIM 0 USES_ASIC_ROUTING_POWER_CALCULATOR 0 USES_DATA_DRIVEN_PLL_COMPUTATION_UTIL 1 USES_DEV 1 USES_ICP_FOR_ECO_FITTER 0 USES_LIBERTY_TIMING 0 USES_POWER_SIGNAL_ACTIVITIES 1 USES_THIRD_GENERATION_TIMING_MODELS_TIS 1 USE_ADVANCED_IO_POWER_BY_DEFAULT 1 USE_ADVANCED_IO_TIMING_BY_DEFAULT 1 USE_BASE_FAMILY_DDB_PATH 0 USE_OCT_AUTO_CALIBRATION 0 USE_RELAX_IO_ASSIGNMENT_RULES 0 USE_RISEFALL_ONLY 1 USE_SEPARATE_LIST_FOR_TECH_MIGRATION 1 USE_SINGLE_COMPILER_PASS_PLL_MIF_FILE_WRITER 1 USE_TITAN_IO_BASED_IO_REGISTER_PACKER_UTIL 1 WYSIWYG_BUS_WIDTH_CHECKING_IN_CUT_ENABLED 1</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -23661,7 +23569,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.TIMESTAMP</name>
-   <value>1360897626</value>
+   <value>1360973200</value>
   </assignment>
   <parameter name="id">
    <type>int</type>
@@ -23673,7 +23581,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="timestamp">
    <type>int</type>
-   <value>1360897626</value>
+   <value>1360973200</value>
    <derived>false</derived>
    <enabled>false</enabled>
    <visible>false</visible>
@@ -25960,7 +25868,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PHY_ADDR">
    <type>int</type>
-   <value>0</value>
+   <value>1</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -25968,7 +25876,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MDIO_PHY_MASK">
    <type>int</type>
-   <value>0</value>
+   <value>2</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -25976,7 +25884,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MAC_ADDRESS">
    <type>java.lang.String</type>
-   <value></value>
+   <value>00:03:41:00:10:00</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36406,16 +36314,8 @@ the requested settings for a module instance. -->
    <value>1</value>
   </assignment>
   <assignment>
-   <name>testbench.partner.mem_model.parameter.CTL_RD_TO_RD_EXTRA_CLK</name>
-   <value>0</value>
-  </assignment>
-  <assignment>
    <name>testbench.partner.mem_model.parameter.CTL_WR_TO_WR_DIFF_CHIP_EXTRA_CLK</name>
    <value>1</value>
-  </assignment>
-  <assignment>
-   <name>testbench.partner.mem_model.parameter.CTL_WR_TO_WR_EXTRA_CLK</name>
-   <value>0</value>
   </assignment>
   <assignment>
    <name>testbench.partner.mem_model.parameter.CUT_NEW_FAMILY_TIMING</name>
@@ -36984,10 +36884,6 @@ the requested settings for a module instance. -->
   <assignment>
    <name>testbench.partner.mem_model.parameter.MR3_MPR_RF</name>
    <value>0</value>
-  </assignment>
-  <assignment>
-   <name>testbench.partner.mem_model.parameter.MRS_MIRROR_PING_PONG_ATSO</name>
-   <value>false</value>
   </assignment>
   <assignment>
    <name>testbench.partner.mem_model.parameter.NEXTGEN</name>
@@ -37770,22 +37666,6 @@ the requested settings for a module instance. -->
    <valid>true</valid>
   </parameter>
   <parameter name="CTL_RD_TO_PCH_EXTRA_CLK">
-   <type>int</type>
-   <value>0</value>
-   <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="CTL_RD_TO_RD_EXTRA_CLK">
-   <type>int</type>
-   <value>0</value>
-   <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="CTL_WR_TO_WR_EXTRA_CLK">
    <type>int</type>
    <value>0</value>
    <derived>true</derived>
@@ -38661,14 +38541,6 @@ the requested settings for a module instance. -->
    <type>int</type>
    <value>1</value>
    <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="MRS_MIRROR_PING_PONG_ATSO">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
    <valid>true</valid>
@@ -42393,14 +42265,6 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="CTL_ZQCAL_EN">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
   <parameter name="ADDR_ORDER">
    <type>int</type>
    <value>0</value>
@@ -42556,22 +42420,6 @@ the requested settings for a module instance. -->
   <parameter name="WRBUFFER_ADDR_WIDTH">
    <type>int</type>
    <value>6</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="MAX_PENDING_WR_CMD">
-   <type>int</type>
-   <value>8</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="MAX_PENDING_RD_CMD">
-   <type>int</type>
-   <value>16</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -45585,14 +45433,6 @@ the requested settings for a module instance. -->
    <visible>false</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="PERFORM_READ_AFTER_WRITE_CALIBRATION">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
   <parameter name="SEQ_BURST_COUNT_WIDTH">
    <type>int</type>
    <value>1</value>
@@ -45619,7 +45459,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DQS_DELAY_CHAIN_PHASE_SETTING">
    <type>int</type>
-   <value>2</value>
+   <value>3</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -45627,7 +45467,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DQS_PHASE_SHIFT">
    <type>int</type>
-   <value>7200</value>
+   <value>9000</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -45643,7 +45483,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="IO_DQS_IN_RESERVE">
    <type>int</type>
-   <value>3</value>
+   <value>6</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -45651,7 +45491,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="IO_DQS_OUT_RESERVE">
    <type>int</type>
-   <value>3</value>
+   <value>6</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -45683,7 +45523,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="IO_DQS_EN_PHASE_MAX">
    <type>int</type>
-   <value>9</value>
+   <value>11</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -45691,7 +45531,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="IO_DQDQS_OUT_PHASE_MAX">
    <type>int</type>
-   <value>17</value>
+   <value>21</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -45739,7 +45579,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DELAY_PER_OPA_TAP">
    <type>int</type>
-   <value>333</value>
+   <value>277</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -46547,7 +46387,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DELAY_CHAIN_LENGTH">
    <type>int</type>
-   <value>10</value>
+   <value>12</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -57601,7 +57441,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MAC_ADDRESS">
    <type>java.lang.String</type>
-   <value>00:03:31:00:20:00</value>
+   <value>00:03:41:00:20:00</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -68249,58 +68089,18 @@ parameters are a RESULT of the module parameters. -->
  </connection>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_clock_bridge</name>
+  <name>altera_avalon_sysid_qsys</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Clock Bridge</displayName>
+  <displayName>System ID Peripheral</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>5</instanceCount>
-  <name>avalon_slave</name>
+  <instanceCount>30</instanceCount>
+  <name>avalon</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Avalon Memory Mapped Slave</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>11</instanceCount>
-  <name>interrupt_sender</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Interrupt Sender</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>18</instanceCount>
-  <name>avalon_slave</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Avalon Memory Mapped Slave</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>labx_dma_coprocessor</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_dma_coprocessor</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_tristate_conduit_bridge</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Tri-State Conduit Bridge</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_uart</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>UART (RS-232 Serial Port)</displayName>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Avalon Memory Mapped Connection</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
@@ -68312,28 +68112,68 @@ parameters are a RESULT of the module parameters. -->
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>48</instanceCount>
-  <name>conduit</name>
+  <instanceCount>2</instanceCount>
+  <name>Video_Output</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Media Port to SDI</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>51</instanceCount>
+  <name>reset</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Conduit Connection</displayName>
+  <displayName>Reset Connection</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_avalon_mm_clock_crossing_bridge</name>
+  <name>labx_10g_eth_mac</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Avalon-MM Clock Crossing Bridge</displayName>
+  <displayName>labx_10g_eth_mac</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_generic_tristate_controller</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Generic Tri-State Controller</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>4</instanceCount>
-  <name>clock_source</name>
+  <instanceCount>1</instanceCount>
+  <name>tristate_conduit</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Tristate Conduit Connection</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>tristate_conduit_slave</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Tristate Conduit Slave</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>5</instanceCount>
+  <name>avalon_slave</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Avalon Memory Mapped Slave</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>Video_Input</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Clock Source</displayName>
-  <version>12.1</version>
+  <displayName>SDI to Media Port</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
@@ -68345,42 +68185,26 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_video_clock_recovery</name>
+  <name>tristate_conduit_master</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_video_clock_recovery</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>12</instanceCount>
-  <name>interrupt</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Interrupt Connection</displayName>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Tristate Conduit Master</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_video_depacketizer</name>
+  <instanceCount>11</instanceCount>
+  <name>avalon_master</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_video_depacketizer</displayName>
-  <version>1.0</version>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Avalon Memory Mapped Master</displayName>
+  <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>2</instanceCount>
-  <name>Video_Output</name>
+  <instanceCount>11</instanceCount>
+  <name>interrupt_sender</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Media Port to SDI</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>80</instanceCount>
-  <name>clock</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Clock Connection</displayName>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Interrupt Sender</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
@@ -68393,50 +68217,10 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>4</instanceCount>
-  <name>clock_source</name>
+  <name>reset_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Output</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>tristate_conduit_master</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Tristate Conduit Master</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_timer</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Interval Timer</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_10g_eth_mac</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_10g_eth_mac</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>19</instanceCount>
-  <name>clock_source</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Output</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>30</instanceCount>
-  <name>avalon</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Avalon Memory Mapped Connection</displayName>
+  <displayName>Reset Output</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
@@ -68449,19 +68233,19 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_ptp</name>
+  <name>labx_shaping_dma</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_ptp</displayName>
+  <displayName>labx_shaping_dma</displayName>
   <version>1.0</version>
  </plugin>
  <plugin>
-  <instanceCount>2</instanceCount>
-  <name>altera_mem_if_ddr3_emif</name>
+  <instanceCount>1</instanceCount>
+  <name>labx_multi_packetizer</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>DDR3 SDRAM Controller with UniPHY</displayName>
-  <version>12.1</version>
+  <displayName>labx_multi_packetizer</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>2</instanceCount>
@@ -68472,27 +68256,27 @@ parameters are a RESULT of the module parameters. -->
   <version>100.99.98.97</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_sdi_reconfig_quad</name>
+  <instanceCount>48</instanceCount>
+  <name>conduit</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_sdi_reconfig_quad</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>interrupt_receiver</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Interrupt Receiver</displayName>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Conduit Connection</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>tristate_conduit_slave</name>
+  <instanceCount>2</instanceCount>
+  <name>labx_eth_rx_cross_fifo</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_eth_rx_cross_fifo</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>117</instanceCount>
+  <name>conduit_end</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Tristate Conduit Slave</displayName>
+  <displayName>Conduit</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
@@ -68505,6 +68289,30 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
+  <name>altera_tristate_conduit_bridge</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Tri-State Conduit Bridge</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>interrupt_receiver</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Interrupt Receiver</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_video_clock_recovery</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_video_clock_recovery</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
   <name>altpll</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
@@ -68512,35 +68320,67 @@ parameters are a RESULT of the module parameters. -->
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>2</instanceCount>
-  <name>Video_Input</name>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_pio</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>SDI to Media Port</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>77</instanceCount>
-  <name>clock_sink</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Input</displayName>
+  <displayName>PIO (Parallel I/O)</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>4</instanceCount>
-  <name>labx_sdi</name>
+  <instanceCount>1</instanceCount>
+  <name>altera_clock_bridge</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_sdi</displayName>
+  <displayName>Clock Bridge</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_eth_mac</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_eth_mac</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>18</instanceCount>
+  <name>avalon_slave</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Avalon Memory Mapped Slave</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>12</instanceCount>
+  <name>interrupt</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Interrupt Connection</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>labx_eth_tx_arbiter</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_eth_tx_arbiter</displayName>
   <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_multi_packetizer</name>
+  <name>labx_sdi_reconfig_quad</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_multi_packetizer</displayName>
+  <displayName>labx_sdi_reconfig_quad</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_ptp</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_ptp</displayName>
   <version>1.0</version>
  </plugin>
  <plugin>
@@ -68552,12 +68392,108 @@ parameters are a RESULT of the module parameters. -->
   <version>12.1</version>
  </plugin>
  <plugin>
+  <instanceCount>2</instanceCount>
+  <name>labx_eth_rx_bus</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_eth_rx_bus</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>9</instanceCount>
+  <name>clock_sink</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Clock Input</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
   <instanceCount>1</instanceCount>
-  <name>tristate_conduit</name>
+  <name>labx_video_dma_glue</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_video_dma_glue</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_onchip_memory2</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>On-Chip Memory (RAM or ROM)</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>77</instanceCount>
+  <name>clock_sink</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Clock Input</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_mm_clock_crossing_bridge</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Avalon-MM Clock Crossing Bridge</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>19</instanceCount>
+  <name>clock_source</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Clock Output</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>4</instanceCount>
+  <name>clock_source</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Clock Source</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>80</instanceCount>
+  <name>clock</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Tristate Conduit Connection</displayName>
+  <displayName>Clock Connection</displayName>
   <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_video_depacketizer</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_video_depacketizer</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>altera_mem_if_ddr3_emif</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>DDR3 SDRAM Controller with UniPHY</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>labx_dma_coprocessor</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_dma_coprocessor</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>4</instanceCount>
+  <name>labx_sdi</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_sdi</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>2</instanceCount>
@@ -68569,42 +68505,10 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_generic_tristate_controller</name>
+  <name>altera_avalon_uart</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Generic Tri-State Controller</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>4</instanceCount>
-  <name>reset_source</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Reset Output</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>11</instanceCount>
-  <name>avalon_master</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Avalon Memory Mapped Master</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>labx_eth_rx_bus</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_rx_bus</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_onchip_memory2</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>On-Chip Memory (RAM or ROM)</displayName>
+  <displayName>UART (RS-232 Serial Port)</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
@@ -68617,84 +68521,20 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_video_dma_glue</name>
+  <name>altera_avalon_timer</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_video_dma_glue</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>51</instanceCount>
-  <name>reset</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Reset Connection</displayName>
+  <displayName>Interval Timer</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>9</instanceCount>
-  <name>clock_sink</name>
+  <instanceCount>4</instanceCount>
+  <name>clock_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Input</displayName>
+  <displayName>Clock Output</displayName>
   <version>12.1</version>
  </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_sysid_qsys</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>System ID Peripheral</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_shaping_dma</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_shaping_dma</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_eth_mac</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_mac</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>labx_eth_tx_arbiter</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_tx_arbiter</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>labx_eth_rx_cross_fifo</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_rx_cross_fifo</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_pio</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>PIO (Parallel I/O)</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>117</instanceCount>
-  <name>conduit_end</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Conduit</displayName>
-  <version>12.1</version>
- </plugin>
- <reportVersion>12.1sp1 243</reportVersion>
+ <reportVersion>12.1 177</reportVersion>
  <uniqueIdentifier></uniqueIdentifier>
 </EnsembleReport>
