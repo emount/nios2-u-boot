@@ -24,4 +24,8 @@
 		<Partition name="toppad" address="0x03460000" size="0x04BA0000">
 		</Partition>
 	</FlashPartitions>
+  <Ethernet name="labx_ethernet_0" mac="00:03:41:00:10:00">
+  </Ethernet>
+  <Ethernet name="labx_ethernet_1" mac="00:03:41:00:20:00">
+  </Ethernet>
 </BoardInfo>
