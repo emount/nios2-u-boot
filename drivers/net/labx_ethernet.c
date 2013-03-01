@@ -55,8 +55,14 @@
 #  define PHY_REG_ADDR_MASK   (0x01F)
 #  define PHY_ADDR_MASK       (0x01F)
 #  define PHY_ADDR_SHIFT      (5)
-#  define PHY_MDIO_READ       (0x0400)
-#  define PHY_MDIO_WRITE      (0x0000)
+#  define PHY_C22_OP_READ     (0x0800)
+#  define PHY_C22_OP_WRITE    (0x0400)
+#  define PHY_C45_OP_WRITE    (0x0400)
+#  define PHY_C45_OP_READ     (0x0C00)
+#  define PHY_C45_OP_ADDR     (0x0000)
+#  define PHY_C45_OP_RINC     (0x0800)
+#  define PHY_MODE_C22        (0x1000)
+#  define PHY_MODE_C45        (0x0000)
 #define MDIO_DATA_REG         (0x00000004)
 #  define PHY_DATA_MASK       (0x0000FFFF)
 #define INT_MASK_REG          (0x00000008)
@@ -291,12 +297,15 @@ static void write_phy_register(int phy_addr, int reg_addr, int phy_data)
   *((volatile uint32_t *) addr) = MDIO_IRQ_MASK;
   readValue = *((volatile uint32_t *) addr);
 
+  /* NOTE - For now, only Clause 22 PHYs are supported */
+
   /* Write the data first, then the control register */
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_DATA_REG);
   *((volatile uint32_t *) addr) = phy_data;
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_CONTROL_REG);
   *((volatile uint32_t *) addr) = 
-    (PHY_MDIO_WRITE | ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
+    (PHY_MODE_C22 | PHY_C22_OP_WRITE | 
+     ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
      (reg_addr & PHY_REG_ADDR_MASK));
 
   /* Wait for the MDIO completion flag to fire */
@@ -310,6 +319,8 @@ static uint32_t read_phy_register(int phy_addr, int reg_addr)
   uint32_t addr;
   uint32_t readValue;
 
+  /* NOTE - For now, only Clause 22 PHYs are supported */
+
   /* Clear the MDIO IRQ flag in preparation */
   addr = (LABX_MDIO_ETH_BASEADDR + INT_FLAGS_REG);
   *((volatile uint32_t *) addr) = MDIO_IRQ_MASK;
@@ -317,9 +328,9 @@ static uint32_t read_phy_register(int phy_addr, int reg_addr)
   /* Write to the MDIO control register to initiate the read */
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_CONTROL_REG);
   *((volatile uint32_t *) addr) = 
-    (PHY_MDIO_READ | ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
+    (PHY_MODE_C22 | PHY_C22_OP_READ | 
+     ((phy_addr & PHY_ADDR_MASK) << PHY_ADDR_SHIFT) |
      (reg_addr & PHY_REG_ADDR_MASK));
-  // CAUSES COALESCING OF WRITE & READ!!!  readValue = *((volatile uint32_t *) addr);
 
   /* Wait for the MDIO completion flag to fire */
   addr = (LABX_MDIO_ETH_BASEADDR + INT_FLAGS_REG);
