@@ -222,6 +222,10 @@
 			port-7-width = < 8 >;	/* PORT_7_WIDTH type NUMBER */
 			phy-mac-rx-delay = < 1 >;	/* PHY_MAC_RX_DELAY type NUMBER */
 			phy-mac-tx-delay = < 1 >;	/* PHY_MAC_TX_DELAY type NUMBER */
+
+      // HAND-ENTERED!  Need to generate this...
+      port-interface-0 = <&labx_ethernet_0>;
+      port-interface-1 = <&labx_ethernet_1>;
 		}; //end labx_ptp@0x4110000 (labx_ptp_0)
 
 		labx_ethernet_0: ethernet@0x4100000 {
