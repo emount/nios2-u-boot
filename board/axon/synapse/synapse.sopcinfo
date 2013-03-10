@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="q_sys" kind="q_sys" version="1.0" fabric="QSYS">
  <!-- Format version 12.1 177 (Future versions may contain additional information.) -->
- <!-- 2013.03.01.00:05:29 -->
+ <!-- 2013.03.09.15:03:49 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1362114328</value>
+  <value>1362859428</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -14169,7 +14169,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="dataSlaveMapParam">
    <type>java.lang.String</type>
-   <value><![CDATA[<address-map><slave name='ddr3_1.avl' start='0x0' end='0x4000000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x4000000' end='0x4000800' /><slave name='altpll_0.pll_slave' start='0x4000800' end='0x4000810' /><slave name='labx_ethernet_0.Host_Interface' start='0x4100000' end='0x4104000' /><slave name='labx_ptp_0.Host_Interface' start='0x4110000' end='0x4120000' /><slave name='video_input_0.avalon_slave_0' start='0x4120000' end='0x4124000' /><slave name='video_input_1.avalon_slave_0' start='0x4124000' end='0x4128000' /><slave name='labx_multi_packetizer_0.host_interface' start='0x4130000' end='0x4134000' /><slave name='labx_shaping_dma_0.host_interface' start='0x4140000' end='0x4144000' /><slave name='sysid_qsys_0.control_slave' start='0x7000000' end='0x7000008' /><slave name='timer.s1' start='0x7000080' end='0x7000100' /><slave name='led_reg.s1' start='0x7000100' end='0x7000180' /><slave name='uart_0.s1' start='0x7000180' end='0x7000200' /><slave name='labx_presentation_dma.Host_Interface' start='0x7008000' end='0x700A000' /><slave name='labx_serializer_dma.Host_Interface' start='0x700A000' end='0x700C000' /><slave name='labx_video_clock_recovery_0.Host_Interface' start='0x700C000' end='0x700C800' /><slave name='labx_video_depacketizer_0.Host_Interface' start='0x7010000' end='0x7011000' /><slave name='labx_ethernet_1.Host_Interface' start='0x7040000' end='0x7080000' /><slave name='cfi_flash.uas' start='0x8000000' end='0x10000000' /></address-map>]]></value>
+   <value><![CDATA[<address-map><slave name='ddr3_1.avl' start='0x0' end='0x4000000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x4000000' end='0x4000800' /><slave name='altpll_0.pll_slave' start='0x4000800' end='0x4000810' /><slave name='labx_ethernet_0.Host_Interface' start='0x4100000' end='0x4104000' /><slave name='labx_ptp_0.Host_Interface' start='0x4110000' end='0x4120000' /><slave name='video_input_0.avalon_slave_0' start='0x4120000' end='0x4124000' /><slave name='video_input_1.avalon_slave_0' start='0x4124000' end='0x4128000' /><slave name='labx_multi_packetizer_0.host_interface' start='0x4130000' end='0x4134000' /><slave name='labx_shaping_dma_0.Host_Interface' start='0x4140000' end='0x4144000' /><slave name='sysid_qsys_0.control_slave' start='0x7000000' end='0x7000008' /><slave name='timer.s1' start='0x7000080' end='0x7000100' /><slave name='led_reg.s1' start='0x7000100' end='0x7000180' /><slave name='uart_0.s1' start='0x7000180' end='0x7000200' /><slave name='labx_presentation_dma.Host_Interface' start='0x7008000' end='0x700A000' /><slave name='labx_serializer_dma.Host_Interface' start='0x700A000' end='0x700C000' /><slave name='labx_video_clock_recovery_0.Host_Interface' start='0x700C000' end='0x700C800' /><slave name='labx_video_depacketizer_0.Host_Interface' start='0x7010000' end='0x7011000' /><slave name='labx_ethernet_1.Host_Interface' start='0x7040000' end='0x7080000' /><slave name='cfi_flash.uas' start='0x8000000' end='0x10000000' /></address-map>]]></value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -14193,7 +14193,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="internalIrqMaskSystemInfo">
    <type>long</type>
-   <value>4095</value>
+   <value>8191</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -14860,8 +14860,8 @@ parameters are a RESULT of the module parameters. -->
    <memoryBlock>
     <isBridge>false</isBridge>
     <moduleName>labx_shaping_dma_0</moduleName>
-    <slaveName>host_interface</slaveName>
-    <name>labx_shaping_dma_0.host_interface</name>
+    <slaveName>Host_Interface</slaveName>
+    <name>labx_shaping_dma_0.Host_Interface</name>
     <baseAddress>68419584</baseAddress>
     <span>16384</span>
    </memoryBlock>
@@ -16028,6 +16028,13 @@ parameters are a RESULT of the module parameters. -->
     <slaveName>Host_Irq</slaveName>
     <name>labx_ethernet_1.Host_Irq</name>
     <interruptNumber>11</interruptNumber>
+   </interrupt>
+   <interrupt>
+    <isBridge>false</isBridge>
+    <moduleName>labx_shaping_dma_0</moduleName>
+    <slaveName>Host_Irq</slaveName>
+    <name>labx_shaping_dma_0.Host_Irq</name>
+    <interruptNumber>12</interruptNumber>
    </interrupt>
   </interface>
   <interface name="jtag_debug_module_reset" kind="reset_source" version="12.1">
@@ -18492,20 +18499,20 @@ parameters are a RESULT of the module parameters. -->
    <clockDomainMember>
     <isBridge>false</isBridge>
     <moduleName>labx_shaping_dma_0</moduleName>
-    <slaveName>host_clock</slaveName>
-    <name>labx_shaping_dma_0.host_clock</name>
+    <slaveName>Host_Clock</slaveName>
+    <name>labx_shaping_dma_0.Host_Clock</name>
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
     <moduleName>labx_shaping_dma_0</moduleName>
-    <slaveName>ingress_clock</slaveName>
-    <name>labx_shaping_dma_0.ingress_clock</name>
+    <slaveName>Ingress_Clock</slaveName>
+    <name>labx_shaping_dma_0.Ingress_Clock</name>
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
     <moduleName>labx_shaping_dma_0</moduleName>
-    <slaveName>memory_clock</slaveName>
-    <name>labx_shaping_dma_0.memory_clock</name>
+    <slaveName>Memory_Clock</slaveName>
+    <name>labx_shaping_dma_0.Memory_Clock</name>
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
@@ -23569,7 +23576,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.TIMESTAMP</name>
-   <value>1362114328</value>
+   <value>1362859428</value>
   </assignment>
   <parameter name="id">
    <type>int</type>
@@ -23581,7 +23588,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="timestamp">
    <type>int</type>
-   <value>1362114328</value>
+   <value>1362859428</value>
    <derived>false</derived>
    <enabled>false</enabled>
    <visible>false</visible>
@@ -24503,8 +24510,8 @@ parameters are a RESULT of the module parameters. -->
    <clockDomainMember>
     <isBridge>false</isBridge>
     <moduleName>labx_shaping_dma_0</moduleName>
-    <slaveName>egress_clock</slaveName>
-    <name>labx_shaping_dma_0.egress_clock</name>
+    <slaveName>Egress_Clock</slaveName>
+    <name>labx_shaping_dma_0.Egress_Clock</name>
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
@@ -24521,8 +24528,8 @@ parameters are a RESULT of the module parameters. -->
    <clockDomainMember>
     <isBridge>false</isBridge>
     <moduleName>labx_shaping_dma_0</moduleName>
-    <slaveName>tx_clock</slaveName>
-    <name>labx_shaping_dma_0.tx_clock</name>
+    <slaveName>Tx_Clock</slaveName>
+    <name>labx_shaping_dma_0.Tx_Clock</name>
    </clockDomainMember>
   </interface>
   <interface name="Mac_Tx" kind="conduit_end" version="12.1">
@@ -24576,15 +24583,15 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Mac_Tx_Data</name>
-    <direction>Input</direction>
-    <width>8</width>
-    <role>export</role>
-   </port>
-   <port>
     <name>Mac_Tx_Valid</name>
     <direction>Input</direction>
     <width>1</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Mac_Tx_Data</name>
+    <direction>Input</direction>
+    <width>8</width>
     <role>export</role>
    </port>
    <port>
@@ -24714,15 +24721,21 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Mac_Rx_Data</name>
+    <name>Mac_Rx_Start</name>
     <direction>Output</direction>
-    <width>8</width>
+    <width>1</width>
     <role>export</role>
    </port>
    <port>
     <name>Mac_Rx_Valid</name>
     <direction>Output</direction>
     <width>1</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Mac_Rx_Data</name>
+    <direction>Output</direction>
+    <width>8</width>
     <role>export</role>
    </port>
    <port>
@@ -25743,15 +25756,21 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Mac_Rx_Data</name>
+    <name>Mac_Rx_Start</name>
     <direction>Input</direction>
-    <width>8</width>
+    <width>1</width>
     <role>export</role>
    </port>
    <port>
     <name>Mac_Rx_Valid</name>
     <direction>Input</direction>
     <width>1</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Mac_Rx_Data</name>
+    <direction>Input</direction>
+    <width>8</width>
     <role>export</role>
    </port>
    <port>
@@ -29280,15 +29299,15 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Mac_Tx_Data</name>
-    <direction>Output</direction>
-    <width>8</width>
-    <role>export</role>
-   </port>
-   <port>
     <name>Mac_Tx_Valid</name>
     <direction>Output</direction>
     <width>1</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Mac_Tx_Data</name>
+    <direction>Output</direction>
+    <width>8</width>
     <role>export</role>
    </port>
    <port>
@@ -31649,6 +31668,14 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
+  <parameter name="NUM_STREAMS">
+   <type>int</type>
+   <value>2</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
   <parameter name="INGRESS_DATA_WIDTH">
    <type>int</type>
    <value>128</value>
@@ -31657,10 +31684,18 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
+  <parameter name="MAC_SPEED">
+   <type>java.lang.String</type>
+   <value>100M/1G</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
   <parameter name="EGRESS_DATA_WIDTH">
    <type>int</type>
    <value>8</value>
-   <derived>false</derived>
+   <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
    <valid>true</valid>
@@ -31668,14 +31703,6 @@ the requested settings for a module instance. -->
   <parameter name="MEMORY_DATA_WIDTH">
    <type>int</type>
    <value>128</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="NUM_STREAMS">
-   <type>int</type>
-   <value>2</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -31737,7 +31764,113 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <interface name="host_interface" kind="avalon_slave" version="12.1">
+  <interface name="Host_Reset" kind="reset_sink" version="12.1">
+   <!-- The connection points exposed by a module instance for the
+particular module parameters. Connection points and their
+parameters are a RESULT of the module parameters. -->
+   <parameter name="associatedClock">
+    <type>java.lang.String</type>
+    <value>Host_Clock</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="synchronousEdges">
+    <type>com.altera.sopcmodel.reset.Reset$Edges</type>
+    <value>DEASSERT</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="deviceFamily">
+    <type>java.lang.String</type>
+    <value>UNKNOWN</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="generateLegacySim">
+    <type>boolean</type>
+    <value>false</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <type>reset</type>
+   <isStart>false</isStart>
+   <port>
+    <name>Host_Reset</name>
+    <direction>Input</direction>
+    <width>1</width>
+    <role>reset</role>
+   </port>
+  </interface>
+  <interface name="Host_Clock" kind="clock_sink" version="12.1">
+   <!-- The connection points exposed by a module instance for the
+particular module parameters. Connection points and their
+parameters are a RESULT of the module parameters. -->
+   <parameter name="externallyDriven">
+    <type>boolean</type>
+    <value>false</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="ptfSchematicName">
+    <type>java.lang.String</type>
+    <value></value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="deviceFamily">
+    <type>java.lang.String</type>
+    <value>UNKNOWN</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="generateLegacySim">
+    <type>boolean</type>
+    <value>false</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="clockRateKnown">
+    <type>java.lang.Boolean</type>
+    <value>true</value>
+    <derived>true</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="clockRate">
+    <type>java.lang.Long</type>
+    <value>100000000</value>
+    <derived>true</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <type>clock</type>
+   <isStart>false</isStart>
+   <port>
+    <name>Host_Clock</name>
+    <direction>Input</direction>
+    <width>1</width>
+    <role>clk</role>
+   </port>
+  </interface>
+  <interface name="Host_Interface" kind="avalon_slave" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -31799,7 +31932,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>host_clock</value>
+    <value>Host_Clock</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -31807,7 +31940,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedReset">
     <type>java.lang.String</type>
-    <value>host_reset</value>
+    <value>Host_Reset</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -32104,74 +32237,13 @@ parameters are a RESULT of the module parameters. -->
     <role>read</role>
    </port>
   </interface>
-  <interface name="host_clock" kind="clock_sink" version="12.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="externallyDriven">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="ptfSchematicName">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="clockRateKnown">
-    <type>java.lang.Boolean</type>
-    <value>true</value>
-    <derived>true</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="clockRate">
-    <type>java.lang.Long</type>
-    <value>100000000</value>
-    <derived>true</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>clock</type>
-   <isStart>false</isStart>
-   <port>
-    <name>Host_Clock</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>clk</role>
-   </port>
-  </interface>
-  <interface name="host_irq" kind="interrupt_sender" version="12.1">
+  <interface name="Host_Irq" kind="interrupt_sender" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
    <parameter name="associatedAddressablePoint">
     <type>com.altera.entityinterfaces.IConnectionPoint</type>
-    <value>labx_shaping_dma_0.host_interface</value>
+    <value>labx_shaping_dma_0.Host_Interface</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -32179,7 +32251,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>host_clock</value>
+    <value>Host_Clock</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -32187,7 +32259,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedReset">
     <type>java.lang.String</type>
-    <value>host_reset</value>
+    <value>Host_Reset</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -32226,7 +32298,7 @@ parameters are a RESULT of the module parameters. -->
     <role>irq</role>
    </port>
   </interface>
-  <interface name="memory_clock" kind="clock_sink" version="12.1">
+  <interface name="Memory_Clock" kind="clock_sink" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -32287,13 +32359,13 @@ parameters are a RESULT of the module parameters. -->
     <role>clk</role>
    </port>
   </interface>
-  <interface name="memory_reset" kind="reset_source" version="12.1">
+  <interface name="Memory_Reset" kind="reset_source" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>memory_clock</value>
+    <value>Memory_Clock</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -32348,7 +32420,7 @@ parameters are a RESULT of the module parameters. -->
     <role>reset</role>
    </port>
   </interface>
-  <interface name="ingress_clock" kind="clock_sink" version="12.1">
+  <interface name="Ingress_Clock" kind="clock_sink" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -32409,7 +32481,7 @@ parameters are a RESULT of the module parameters. -->
     <role>clk</role>
    </port>
   </interface>
-  <interface name="ingress_interface" kind="conduit_end" version="12.1">
+  <interface name="Ingress_Interface" kind="conduit_end" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -32490,7 +32562,7 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
   </interface>
-  <interface name="avalon_write_bus" kind="avalon_master" version="12.1">
+  <interface name="Avalon_Write_Bus" kind="avalon_master" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -32528,7 +32600,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>memory_clock</value>
+    <value>Memory_Clock</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -32536,7 +32608,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedReset">
     <type>java.lang.String</type>
-    <value>memory_reset</value>
+    <value>Memory_Reset</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -32789,7 +32861,7 @@ parameters are a RESULT of the module parameters. -->
     <span>67108864</span>
    </memoryBlock>
   </interface>
-  <interface name="avalon_read_bus" kind="avalon_master" version="12.1">
+  <interface name="Avalon_Read_Bus" kind="avalon_master" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -32827,7 +32899,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>memory_clock</value>
+    <value>Memory_Clock</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -32835,7 +32907,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedReset">
     <type>java.lang.String</type>
-    <value>memory_reset</value>
+    <value>Memory_Reset</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -33094,7 +33166,7 @@ parameters are a RESULT of the module parameters. -->
     <span>67108864</span>
    </memoryBlock>
   </interface>
-  <interface name="egress_clock" kind="clock_sink" version="12.1">
+  <interface name="Egress_Clock" kind="clock_sink" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -33132,7 +33204,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="clockRateKnown">
     <type>java.lang.Boolean</type>
-    <value>false</value>
+    <value>true</value>
     <derived>true</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -33140,7 +33212,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="clockRate">
     <type>java.lang.Long</type>
-    <value>0</value>
+    <value>125000000</value>
     <derived>true</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -33155,7 +33227,7 @@ parameters are a RESULT of the module parameters. -->
     <role>clk</role>
    </port>
   </interface>
-  <interface name="tx_clock" kind="clock_sink" version="12.1">
+  <interface name="Tx_Clock" kind="clock_sink" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -33216,7 +33288,7 @@ parameters are a RESULT of the module parameters. -->
     <role>clk</role>
    </port>
   </interface>
-  <interface name="egress_interface" kind="conduit_end" version="12.1">
+  <interface name="Egress_Interface" kind="conduit_end" version="12.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -33289,51 +33361,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Input</direction>
     <width>1</width>
     <role>export</role>
-   </port>
-  </interface>
-  <interface name="host_reset" kind="reset_sink" version="12.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="associatedClock">
-    <type>java.lang.String</type>
-    <value>host_clock</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="synchronousEdges">
-    <type>com.altera.sopcmodel.reset.Reset$Edges</type>
-    <value>DEASSERT</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>reset</type>
-   <isStart>false</isStart>
-   <port>
-    <name>Host_Reset</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>reset</role>
    </port>
   </interface>
  </module>
@@ -48537,7 +48564,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DMA_CACHE_ADDRESS_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>10</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -48561,7 +48588,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="OUTPUT_CACHE_ADDRESS_WIDTH">
    <type>int</type>
-   <value>8</value>
+   <value>9</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -48975,7 +49002,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>Ser_Cache_Address</name>
     <direction>Input</direction>
-    <width>9</width>
+    <width>10</width>
     <role>export</role>
    </port>
    <port>
@@ -49062,7 +49089,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>Output_0_Cache_Address</name>
     <direction>Output</direction>
-    <width>8</width>
+    <width>9</width>
     <role>export</role>
    </port>
    <port>
@@ -49179,7 +49206,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>Output_1_Cache_Address</name>
     <direction>Output</direction>
-    <width>8</width>
+    <width>9</width>
     <role>export</role>
    </port>
    <port>
@@ -49287,7 +49314,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="CACHE_ADDRESS_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>10</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50059,7 +50086,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>Cache_Address</name>
     <direction>Output</direction>
-    <width>9</width>
+    <width>10</width>
     <role>export</role>
    </port>
    <port>
@@ -50530,7 +50557,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MAX_HORIZ_RES">
    <type>int</type>
-   <value>1080</value>
+   <value>2640</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50554,7 +50581,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="CACHE_ADDRESS_WIDTH">
    <type>int</type>
-   <value>8</value>
+   <value>9</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50931,7 +50958,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>Output_Cache_Address</name>
     <direction>Input</direction>
-    <width>8</width>
+    <width>9</width>
     <role>export</role>
    </port>
    <port>
@@ -55948,7 +55975,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MAX_HORIZ_RES">
    <type>int</type>
-   <value>1080</value>
+   <value>2640</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -55972,7 +55999,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="CACHE_ADDRESS_WIDTH">
    <type>int</type>
-   <value>8</value>
+   <value>9</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -56349,7 +56376,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>Output_Cache_Address</name>
     <direction>Input</direction>
-    <width>8</width>
+    <width>9</width>
     <role>export</role>
    </port>
    <port>
@@ -57740,15 +57767,15 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Mac_Tx_Data</name>
-    <direction>Input</direction>
-    <width>64</width>
-    <role>export</role>
-   </port>
-   <port>
     <name>Mac_Tx_Valid</name>
     <direction>Input</direction>
     <width>8</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Mac_Tx_Data</name>
+    <direction>Input</direction>
+    <width>64</width>
     <role>export</role>
    </port>
    <port>
@@ -57884,15 +57911,15 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Mac_Rx_Data</name>
-    <direction>Output</direction>
-    <width>64</width>
-    <role>export</role>
-   </port>
-   <port>
     <name>Mac_Rx_Valid</name>
     <direction>Output</direction>
     <width>8</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Mac_Rx_Data</name>
+    <direction>Output</direction>
+    <width>64</width>
     <role>export</role>
    </port>
    <port>
@@ -59272,15 +59299,15 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Mac_Tx_Data</name>
-    <direction>Output</direction>
-    <width>64</width>
-    <role>export</role>
-   </port>
-   <port>
     <name>Mac_Tx_Valid</name>
     <direction>Output</direction>
     <width>8</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Mac_Tx_Data</name>
+    <direction>Output</direction>
+    <width>64</width>
     <role>export</role>
    </port>
    <port>
@@ -59716,15 +59743,21 @@ parameters are a RESULT of the module parameters. -->
     <role>export</role>
    </port>
    <port>
-    <name>Mac_Rx_Data</name>
+    <name>Mac_Rx_Start</name>
     <direction>Input</direction>
-    <width>64</width>
+    <width>1</width>
     <role>export</role>
    </port>
    <port>
     <name>Mac_Rx_Valid</name>
     <direction>Input</direction>
     <width>8</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>Mac_Rx_Data</name>
+    <direction>Input</direction>
+    <width>64</width>
     <role>export</role>
    </port>
    <port>
@@ -63012,11 +63045,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>media_clock_0</endConnectionPoint>
  </connection>
  <connection
-   name="nios2_qsys_0.data_master/labx_shaping_dma_0.host_interface"
+   name="nios2_qsys_0.data_master/labx_shaping_dma_0.Host_Interface"
    kind="avalon"
    version="12.1"
    start="nios2_qsys_0.data_master"
-   end="labx_shaping_dma_0.host_interface">
+   end="labx_shaping_dma_0.Host_Interface">
   <parameter name="arbitrationPriority">
    <type>int</type>
    <value>1</value>
@@ -63052,14 +63085,14 @@ parameters are a RESULT of the module parameters. -->
   <startModule>nios2_qsys_0</startModule>
   <startConnectionPoint>data_master</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>host_interface</endConnectionPoint>
+  <endConnectionPoint>Host_Interface</endConnectionPoint>
  </connection>
  <connection
-   name="altpll_0.c0/labx_shaping_dma_0.host_clock"
+   name="altpll_0.c0/labx_shaping_dma_0.Host_Clock"
    kind="clock"
    version="12.1"
    start="altpll_0.c0"
-   end="labx_shaping_dma_0.host_clock">
+   end="labx_shaping_dma_0.Host_Clock">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -63079,14 +63112,14 @@ parameters are a RESULT of the module parameters. -->
   <startModule>altpll_0</startModule>
   <startConnectionPoint>c0</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>host_clock</endConnectionPoint>
+  <endConnectionPoint>Host_Clock</endConnectionPoint>
  </connection>
  <connection
-   name="altpll_0.c0/labx_shaping_dma_0.ingress_clock"
+   name="altpll_0.c0/labx_shaping_dma_0.Ingress_Clock"
    kind="clock"
    version="12.1"
    start="altpll_0.c0"
-   end="labx_shaping_dma_0.ingress_clock">
+   end="labx_shaping_dma_0.Ingress_Clock">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -63106,14 +63139,14 @@ parameters are a RESULT of the module parameters. -->
   <startModule>altpll_0</startModule>
   <startConnectionPoint>c0</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>ingress_clock</endConnectionPoint>
+  <endConnectionPoint>Ingress_Clock</endConnectionPoint>
  </connection>
  <connection
-   name="altpll_0.c0/labx_shaping_dma_0.memory_clock"
+   name="altpll_0.c0/labx_shaping_dma_0.Memory_Clock"
    kind="clock"
    version="12.1"
    start="altpll_0.c0"
-   end="labx_shaping_dma_0.memory_clock">
+   end="labx_shaping_dma_0.Memory_Clock">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -63133,14 +63166,14 @@ parameters are a RESULT of the module parameters. -->
   <startModule>altpll_0</startModule>
   <startConnectionPoint>c0</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>memory_clock</endConnectionPoint>
+  <endConnectionPoint>Memory_Clock</endConnectionPoint>
  </connection>
  <connection
-   name="labx_multi_packetizer_0.stream_shaper/labx_shaping_dma_0.ingress_interface"
+   name="labx_multi_packetizer_0.stream_shaper/labx_shaping_dma_0.Ingress_Interface"
    kind="conduit"
    version="12.1"
    start="labx_multi_packetizer_0.stream_shaper"
-   end="labx_shaping_dma_0.ingress_interface">
+   end="labx_shaping_dma_0.Ingress_Interface">
   <parameter name="endPort">
    <type>com.altera.entityinterfaces.IPort</type>
    <value></value>
@@ -63200,7 +63233,7 @@ parameters are a RESULT of the module parameters. -->
   <startModule>labx_multi_packetizer_0</startModule>
   <startConnectionPoint>stream_shaper</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>ingress_interface</endConnectionPoint>
+  <endConnectionPoint>Ingress_Interface</endConnectionPoint>
  </connection>
  <connection
    name="nios2_qsys_0.jtag_debug_module_reset/labx_multi_packetizer_0.host_reset"
@@ -63230,11 +63263,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>host_reset</endConnectionPoint>
  </connection>
  <connection
-   name="nios2_qsys_0.jtag_debug_module_reset/labx_shaping_dma_0.host_reset"
+   name="nios2_qsys_0.jtag_debug_module_reset/labx_shaping_dma_0.Host_Reset"
    kind="reset"
    version="12.1"
    start="nios2_qsys_0.jtag_debug_module_reset"
-   end="labx_shaping_dma_0.host_reset">
+   end="labx_shaping_dma_0.Host_Reset">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -63254,13 +63287,13 @@ parameters are a RESULT of the module parameters. -->
   <startModule>nios2_qsys_0</startModule>
   <startConnectionPoint>jtag_debug_module_reset</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>host_reset</endConnectionPoint>
+  <endConnectionPoint>Host_Reset</endConnectionPoint>
  </connection>
  <connection
-   name="labx_shaping_dma_0.avalon_write_bus/ddr3_1.avl"
+   name="labx_shaping_dma_0.Avalon_Write_Bus/ddr3_1.avl"
    kind="avalon"
    version="12.1"
-   start="labx_shaping_dma_0.avalon_write_bus"
+   start="labx_shaping_dma_0.Avalon_Write_Bus"
    end="ddr3_1.avl">
   <parameter name="arbitrationPriority">
    <type>int</type>
@@ -63295,15 +63328,15 @@ parameters are a RESULT of the module parameters. -->
    <valid>true</valid>
   </parameter>
   <startModule>labx_shaping_dma_0</startModule>
-  <startConnectionPoint>avalon_write_bus</startConnectionPoint>
+  <startConnectionPoint>Avalon_Write_Bus</startConnectionPoint>
   <endModule>ddr3_1</endModule>
   <endConnectionPoint>avl</endConnectionPoint>
  </connection>
  <connection
-   name="labx_shaping_dma_0.avalon_read_bus/ddr3_1.avl"
+   name="labx_shaping_dma_0.Avalon_Read_Bus/ddr3_1.avl"
    kind="avalon"
    version="12.1"
-   start="labx_shaping_dma_0.avalon_read_bus"
+   start="labx_shaping_dma_0.Avalon_Read_Bus"
    end="ddr3_1.avl">
   <parameter name="arbitrationPriority">
    <type>int</type>
@@ -63338,16 +63371,16 @@ parameters are a RESULT of the module parameters. -->
    <valid>true</valid>
   </parameter>
   <startModule>labx_shaping_dma_0</startModule>
-  <startConnectionPoint>avalon_read_bus</startConnectionPoint>
+  <startConnectionPoint>Avalon_Read_Bus</startConnectionPoint>
   <endModule>ddr3_1</endModule>
   <endConnectionPoint>avl</endConnectionPoint>
  </connection>
  <connection
-   name="labx_eth_tx_arbiter_0.Client_2_Tx/labx_shaping_dma_0.egress_interface"
+   name="labx_eth_tx_arbiter_0.Client_2_Tx/labx_shaping_dma_0.Egress_Interface"
    kind="conduit"
    version="12.1"
    start="labx_eth_tx_arbiter_0.Client_2_Tx"
-   end="labx_shaping_dma_0.egress_interface">
+   end="labx_shaping_dma_0.Egress_Interface">
   <parameter name="endPort">
    <type>com.altera.entityinterfaces.IPort</type>
    <value></value>
@@ -63407,7 +63440,7 @@ parameters are a RESULT of the module parameters. -->
   <startModule>labx_eth_tx_arbiter_0</startModule>
   <startConnectionPoint>Client_2_Tx</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>egress_interface</endConnectionPoint>
+  <endConnectionPoint>Egress_Interface</endConnectionPoint>
  </connection>
  <connection
    name="clkin_125.clk_reset/altpll_0.inclk_interface_reset"
@@ -63950,11 +63983,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>pll_ref_clk</endConnectionPoint>
  </connection>
  <connection
-   name="labx_eth_mac_0.Tx_Clock/labx_shaping_dma_0.egress_clock"
+   name="labx_eth_mac_0.Tx_Clock/labx_shaping_dma_0.Egress_Clock"
    kind="clock"
    version="12.1"
    start="labx_eth_mac_0.Tx_Clock"
-   end="labx_shaping_dma_0.egress_clock">
+   end="labx_shaping_dma_0.Egress_Clock">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -63974,7 +64007,7 @@ parameters are a RESULT of the module parameters. -->
   <startModule>labx_eth_mac_0</startModule>
   <startConnectionPoint>Tx_Clock</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>egress_clock</endConnectionPoint>
+  <endConnectionPoint>Egress_Clock</endConnectionPoint>
  </connection>
  <connection
    name="clkin_125.clk/labx_multi_packetizer_0.rtc_clock"
@@ -67907,11 +67940,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>Mac_Tx_Clock</endConnectionPoint>
  </connection>
  <connection
-   name="labx_eth_mac_0.Tx_Clock/labx_shaping_dma_0.tx_clock"
+   name="labx_eth_mac_0.Tx_Clock/labx_shaping_dma_0.Tx_Clock"
    kind="clock"
    version="12.1"
    start="labx_eth_mac_0.Tx_Clock"
-   end="labx_shaping_dma_0.tx_clock">
+   end="labx_shaping_dma_0.Tx_Clock">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -67931,7 +67964,7 @@ parameters are a RESULT of the module parameters. -->
   <startModule>labx_eth_mac_0</startModule>
   <startConnectionPoint>Tx_Clock</startConnectionPoint>
   <endModule>labx_shaping_dma_0</endModule>
-  <endConnectionPoint>tx_clock</endConnectionPoint>
+  <endConnectionPoint>Tx_Clock</endConnectionPoint>
  </connection>
  <connection
    name="nios2_qsys_0.jtag_debug_module_reset/labx_10g_eth_mac_0.Host_Reset"
@@ -69168,92 +69201,47 @@ parameters are a RESULT of the module parameters. -->
   <endModule>labx_ptp_0</endModule>
   <endConnectionPoint>Packet_Transmission_1</endConnectionPoint>
  </connection>
+ <connection
+   name="nios2_qsys_0.d_irq/labx_shaping_dma_0.Host_Irq"
+   kind="interrupt"
+   version="12.1"
+   start="nios2_qsys_0.d_irq"
+   end="labx_shaping_dma_0.Host_Irq">
+  <parameter name="irqNumber">
+   <type>int</type>
+   <value>12</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>nios2_qsys_0</startModule>
+  <startConnectionPoint>d_irq</startConnectionPoint>
+  <endModule>labx_shaping_dma_0</endModule>
+  <endConnectionPoint>Host_Irq</endConnectionPoint>
+ </connection>
  <plugin>
-  <instanceCount>9</instanceCount>
-  <name>reset_sink</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Reset Input</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>4</instanceCount>
-  <name>clock_source</name>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_sysid_qsys</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Clock Source</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_10g_eth_mac</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_10g_eth_mac</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>tristate_conduit_master</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Tristate Conduit Master</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>44</instanceCount>
-  <name>reset_sink</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Reset Input</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_pio</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>PIO (Parallel I/O)</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>4</instanceCount>
-  <name>clock_source</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Output</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>50</instanceCount>
-  <name>conduit</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Conduit Connection</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_generic_tristate_controller</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Generic Tri-State Controller</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>4</instanceCount>
-  <name>reset_source</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Reset Output</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>nios_custom_instruction_master</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Custom Instruction Master</displayName>
+  <displayName>System ID Peripheral</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
@@ -69265,36 +69253,92 @@ parameters are a RESULT of the module parameters. -->
   <version>1.0</version>
  </plugin>
  <plugin>
-  <instanceCount>18</instanceCount>
-  <name>avalon_slave</name>
+  <instanceCount>1</instanceCount>
+  <name>labx_ptp</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_ptp</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>4</instanceCount>
+  <name>clock_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Avalon Memory Mapped Slave</displayName>
+  <displayName>Clock Output</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_multi_packetizer</name>
+  <name>labx_video_clock_recovery</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_multi_packetizer</displayName>
+  <displayName>labx_video_clock_recovery</displayName>
   <version>1.0</version>
  </plugin>
  <plugin>
-  <instanceCount>79</instanceCount>
-  <name>clock_sink</name>
+  <instanceCount>1</instanceCount>
+  <name>tristate_conduit_master</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Input</displayName>
+  <displayName>Tristate Conduit Master</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_eth_mac</name>
+  <name>altera_avalon_onchip_memory2</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_mac</displayName>
-  <version>1.0</version>
+  <displayName>On-Chip Memory (RAM or ROM)</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_clock_bridge</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Clock Bridge</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>interrupt_receiver</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Interrupt Receiver</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>13</instanceCount>
+  <name>interrupt</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Interrupt Connection</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>interrupt_sender</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Interrupt Sender</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>nios_custom_instruction_master</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Custom Instruction Master</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>9</instanceCount>
+  <name>reset_sink</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Reset Input</displayName>
+  <version>12.1</version>
  </plugin>
  <plugin>
   <instanceCount>2</instanceCount>
@@ -69314,11 +69358,147 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>labx_video_clock_recovery</name>
+  <name>labx_eth_mac</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_video_clock_recovery</displayName>
+  <displayName>labx_eth_mac</displayName>
   <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>9</instanceCount>
+  <name>clock_sink</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Clock Input</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>122</instanceCount>
+  <name>conduit_end</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Conduit</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>labx_dma_coprocessor</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_dma_coprocessor</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altpll</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Avalon ALTPLL</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_timer</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Interval Timer</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_shaping_dma</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_shaping_dma</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_sdi_reconfig_quad</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_sdi_reconfig_quad</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>labx_eth_tx_arbiter</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_eth_tx_arbiter</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>tristate_conduit</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Tristate Conduit Connection</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>altera_mem_if_ddr3_emif</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>DDR3 SDRAM Controller with UniPHY</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_pio</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>PIO (Parallel I/O)</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>conduit</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Conduit Endpoint</displayName>
+  <version>7.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>8</instanceCount>
+  <name>reset_source</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Reset Output</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_avalon_mm_clock_crossing_bridge</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Avalon-MM Clock Crossing Bridge</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_generic_tristate_controller</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Generic Tri-State Controller</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>altera_nios2_qsys</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>Nios II Processor</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>19</instanceCount>
+  <name>clock_source</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Clock Output</displayName>
+  <version>12.1</version>
  </plugin>
  <plugin>
   <instanceCount>2</instanceCount>
@@ -69326,6 +69506,14 @@ parameters are a RESULT of the module parameters. -->
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
   <displayName>labx_eth_rx_cross_fifo</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>Video_Input</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>SDI to Media Port</displayName>
   <version>1.0</version>
  </plugin>
  <plugin>
@@ -69337,19 +69525,35 @@ parameters are a RESULT of the module parameters. -->
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altpll</name>
+  <instanceCount>50</instanceCount>
+  <name>conduit</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Avalon ALTPLL</displayName>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Conduit Connection</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>122</instanceCount>
-  <name>conduit_end</name>
+  <instanceCount>11</instanceCount>
+  <name>interrupt_sender</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Conduit</displayName>
+  <displayName>Interrupt Sender</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>18</instanceCount>
+  <name>avalon_slave</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Avalon Memory Mapped Slave</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>44</instanceCount>
+  <name>reset_sink</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
+  <displayName>Reset Input</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
@@ -69369,84 +69573,12 @@ parameters are a RESULT of the module parameters. -->
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>11</instanceCount>
-  <name>interrupt_sender</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Interrupt Sender</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>labx_eth_tx_arbiter</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_tx_arbiter</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>30</instanceCount>
-  <name>avalon</name>
+  <instanceCount>82</instanceCount>
+  <name>clock</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Avalon Memory Mapped Connection</displayName>
+  <displayName>Clock Connection</displayName>
   <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_onchip_memory2</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>On-Chip Memory (RAM or ROM)</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_sdi_reconfig_quad</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_sdi_reconfig_quad</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>alt_mem_if_jtag_master</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>alt_mem_if JTAG to Avalon Master Bridge</displayName>
-  <version>100.99.98.97</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_clock_bridge</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Clock Bridge</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>interrupt_receiver</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Interrupt Receiver</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>12</instanceCount>
-  <name>interrupt</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Interrupt Connection</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_video_dma_glue</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_video_dma_glue</displayName>
-  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
@@ -69458,83 +69590,27 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_avalon_mm_clock_crossing_bridge</name>
+  <name>labx_10g_eth_mac</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Avalon-MM Clock Crossing Bridge</displayName>
-  <version>12.1</version>
+  <displayName>labx_10g_eth_mac</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
-  <instanceCount>82</instanceCount>
-  <name>clock</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Clock Connection</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>19</instanceCount>
-  <name>clock_source</name>
+  <instanceCount>79</instanceCount>
+  <name>clock_sink</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Output</displayName>
+  <displayName>Clock Input</displayName>
   <version>12.1</version>
  </plugin>
  <plugin>
-  <instanceCount>2</instanceCount>
-  <name>interrupt_sender</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Interrupt Sender</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>altera_mem_if_ddr3_emif</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>DDR3 SDRAM Controller with UniPHY</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_avalon_timer</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Interval Timer</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>tristate_conduit</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IConnection</subtype>
-  <displayName>Tristate Conduit Connection</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>8</instanceCount>
+  <instanceCount>4</instanceCount>
   <name>reset_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
   <displayName>Reset Output</displayName>
   <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>labx_eth_rx_bus</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_eth_rx_bus</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_shaping_dma</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_shaping_dma</displayName>
-  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>4</instanceCount>
@@ -69545,36 +69621,12 @@ parameters are a RESULT of the module parameters. -->
   <version>1.0</version>
  </plugin>
  <plugin>
-  <instanceCount>9</instanceCount>
-  <name>clock_sink</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Clock Input</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>altera_nios2_qsys</name>
+  <instanceCount>4</instanceCount>
+  <name>clock_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>Nios II Processor</displayName>
+  <displayName>Clock Source</displayName>
   <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>conduit</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
-  <displayName>Conduit Endpoint</displayName>
-  <version>7.1</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>labx_dma_coprocessor</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_dma_coprocessor</displayName>
-  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>5</instanceCount>
@@ -69583,6 +69635,38 @@ parameters are a RESULT of the module parameters. -->
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
   <displayName>Avalon Memory Mapped Slave</displayName>
   <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>1</instanceCount>
+  <name>labx_multi_packetizer</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_multi_packetizer</displayName>
+  <version>1.0</version>
+ </plugin>
+ <plugin>
+  <instanceCount>30</instanceCount>
+  <name>avalon</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IConnection</subtype>
+  <displayName>Avalon Memory Mapped Connection</displayName>
+  <version>12.1</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>alt_mem_if_jtag_master</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>alt_mem_if JTAG to Avalon Master Bridge</displayName>
+  <version>100.99.98.97</version>
+ </plugin>
+ <plugin>
+  <instanceCount>2</instanceCount>
+  <name>labx_eth_rx_bus</name>
+  <type>com.altera.entityinterfaces.IElementClass</type>
+  <subtype>com.altera.entityinterfaces.IModule</subtype>
+  <displayName>labx_eth_rx_bus</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>54</instanceCount>
@@ -69594,26 +69678,10 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_avalon_sysid_qsys</name>
+  <name>labx_video_dma_glue</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>System ID Peripheral</displayName>
-  <version>12.1</version>
- </plugin>
- <plugin>
-  <instanceCount>2</instanceCount>
-  <name>Video_Input</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>SDI to Media Port</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
-  <name>labx_ptp</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>labx_ptp</displayName>
+  <displayName>labx_video_dma_glue</displayName>
   <version>1.0</version>
  </plugin>
  <reportVersion>12.1 177</reportVersion>
