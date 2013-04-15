@@ -2,7 +2,7 @@ echo  Setting up AVB Video Stratix-IV GX environment...
 echo -----------------------------------
 echo Network Configuration:
 set autoload no
-set ethaddr 00:0a:35:00:60:00
+set ethaddr 00:03:41:00:50:00
 set ipaddr 192.168.1.1
 set serverip 192.168.1.100
 
@@ -31,7 +31,7 @@ echo Root Filesystem Configuration:
 set rootfsstart 0xECE60000
 set rootfssize 0x00300000
 
-echo Rom Filesystem Configuration
+echo Applications Filesystem Configuration
 set squashfsstart 0xED160000
 set squashfssize 0x00A00000
 
@@ -46,6 +46,10 @@ set bootdelay 3
 
 echo Flash update commands:
 
+set fpganame Avb_Video_Fpga.bin
+set load_fpga 'tftp ${clobstart} ${fpganame}'
+set install_fpga 'protect off ${fpgastart} +${fpgasize};erase ${fpgastart} +${fpgasize};cp.b ${fileaddr} ${fpgastart} ${filesize}'
+set update_fpga run load_fpga install_fpga
 
 set load_uboot 'tftp ${clobstart} u-boot.bin'
 set install_uboot 'protect off ${bootstart} +${bootsize};erase ${bootstart} +${bootsize};cp.b ${fileaddr} ${bootstart} ${filesize}'

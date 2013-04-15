@@ -1,4 +1,8 @@
 <BoardInfo pov="cpu">
+	<Memory>
+		<Node chip="onchip_memory"/>
+		<Node chip="ddr3_bot"/>
+	</Memory>
 	<Chosen>
 		<Bootargs val="console=ttyAL0 root=mtd5 rootfstype=squashfs init=/bin/init"/>
 	</Chosen>
@@ -22,4 +26,6 @@
 		<Partition name="toppad" address="0x01D60000" size="0x022A0000">
 		</Partition>
 	</FlashPartitions>
+  <Ethernet name="labx_ethernet_0" mac="00:03:41:00:50:00">
+  </Ethernet>
 </BoardInfo>
