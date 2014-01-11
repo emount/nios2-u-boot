@@ -7,3 +7,4 @@ java -jar ../../../../nios2-tools/sopc2dts/sopc2dts.jar --type u-boot --pov-type
 
 echo 'Generating environment script for U-Boot...'
 ../../../tools/mkimage -T script -C none -n "U-Boot Env Script" -d ./ub.config.scr ./ub.config.img
+../../../tools/mkimage -T script -C none -n "U-Boot Env Script" -d ./ub.config-yocto.scr ./ub.config-yocto.img

@@ -1,0 +1,104 @@
+echo  Setting up Axon Synapse board environment...
+echo -----------------------------------
+echo Network Configuration:
+set autoload no
+
+set ethaddr 00:0a:35:00:60:00
+
+set ipaddr 192.168.1.1
+
+set serverip 192.168.1.100
+
+
+echo ---------------------------------------------------
+echo Clobber DDR3 Configuration:
+echo Locate 1 MiB into DDR3 to avoid U-Boot exception
+echo trampoline code
+
+set clobstart 0xC0100000
+
+echo FPGA Configuration:
+set fpgastart 0xE8020000
+set fpgasize 0x01EE0000
+
+
+echo Bootloader Configuration:
+set bootstart 0xE9F20000
+set bootsize 0x00040000
+set bootenvstart 0xE9F00000
+set bootenvsize 0x00020000
+set eraseenv 'protect off ${bootenvstart} +${bootenvsize}; erase ${bootenvstart} +${bootenvsize}'
+
+
+echo Kernel Configuration:
+set kernelstart 0xE9F60000
+set kernelsize 0x00600000
+
+
+echo Root Filesystem Configuration:
+set rootfsstart 0xEA560000
+set rootfssize 0x00300000
+
+
+echo squash Filesystem Configuration
+set squashfsstart 0xEA860000
+set squashfssize 0x00A00000
+
+
+echo Settings Filesystem Configuration
+set settingsfsstart 0xEB260000
+set settingsfssize 0x00200000
+
+echo Boot Configuration:
+set bootcmd 'bootm ${kernelstart}'
+set bootargs 'console=ttyAL0,115200 root=/dev/mtdblock4 rootfstype=squashfs init=/bin/init'
+set bootdelay 3
+
+echo Yocto-specific:
+set yocto_size 0x00A00000
+set yocto_start 0xEB460000
+set yoctoname avbcore-image-avbcore.jffs2
+set boot_yocto 'set bootargs console=ttyJ0 root=/dev/mtdblock7 rootfstype=jffs2 init=/etc/init; bootm ${kernelstart}'
+set install_yocto 'protect off ${yocto_start} +${yocto_size};erase ${yocto_start} +${yocto_size};cp.b ${fileaddr} ${yocto_start} ${filesize}'
+set bootcmd 'run boot_yocto'
+set load_yocto 'tftp ${clobstart} ${yoctoname}'
+set update_yocto 'run load_yocto install_yocto'
+
+echo Flash update commands:
+
+set fpganame Avb_Video_Fpga.bin
+set load_fpga 'tftp ${clobstart} ${fpganame}'
+set install_fpga 'protect off ${fpgastart} +${fpgasize};erase ${fpgastart} +${fpgasize};cp.b ${fileaddr} ${fpgastart} ${filesize}'
+set update_fpga run load_fpga install_fpga
+
+set load_uboot 'tftp ${clobstart} u-boot.bin'
+set install_uboot 'protect off ${bootstart} +${bootsize};erase ${bootstart} +${bootsize};cp.b ${fileaddr} ${bootstart} ${filesize}'
+set update_uboot run load_uboot install_uboot
+
+
+set kernelname vmImage
+set load_kernel 'tftp ${clobstart} ${kernelname}'
+set install_kernel 'protect off ${kernelstart} +${kernelsize};erase ${kernelstart} +${kernelsize};cp.b ${fileaddr} ${kernelstart} ${filesize}'
+set update_kernel run load_kernel install_kernel
+
+
+set rootfsname rootfs.squashfs
+set load_rootfs 'tftp ${clobstart} ${rootfsname}'
+set install_rootfs 'protect off ${rootfsstart} +${rootfssize};erase ${rootfsstart} +${rootfssize};cp.b ${fileaddr} ${rootfsstart} ${filesize}'
+set update_rootfs run load_rootfs install_rootfs
+
+
+set load_squashfs 'tftp ${clobstart} usr.squashfs'
+set install_squashfs 'protect off ${squashfsstart} +${squashfssize};erase ${squashfsstart} +${squashfssize};cp.b ${fileaddr} ${squashfsstart} ${filesize}'
+set update_squashfs run load_squashfs install_squashfs
+
+
+set load_settingsfs 'tftp ${clobstart} settings.jffs2'
+set install_settingsfs 'protect off ${settingsfsstart} +${settingsfssize};erase ${settingsfsstart} +${settingsfssize};cp.b ${fileaddr} ${settingsfsstart} ${filesize}'
+set update_settingsfs run load_settingsfs install_settingsfs
+
+
+echo Saving Configurations...
+saveenv
+
+echo Configuration Completed
