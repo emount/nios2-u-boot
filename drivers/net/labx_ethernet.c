@@ -32,6 +32,8 @@
 #include <malloc.h>
 #include <asm/processor.h>
 
+#define DRIVER_NAME "labx_ethernet"
+
 #ifndef LABX_PRIMARY_ETH_BASEADDR
 #  error "Missing board definition for Ethernet peripheral base address"
 #endif
@@ -72,28 +74,16 @@
 #  define MDIO_IRQ_MASK       (0x00000001)
 #  define PHY_IRQ_MASK        (0x00000002)
 #  define NO_IRQ_FLAGS        (0x00000000)
-#define VLAN_MASK_REG         (0x00000010)
-#define FILTER_SELECT_REG     (0x00000014)
-#define FILTER_CONTROL_REG    (0x00000018)
-#  define MATCH_ARCH_ID_SHIFT     24
-#    define MATCH_ARCH_XILINX_SRL16E (0x10)
-#    define MATCH_ARCH_DIRECT        (0x20)
-#  define MAC_ADDRESS_LOAD_ACTIVE 0x00000100
-#  define MAC_ADDRESS_LOAD_LAST   0x00000200
-#define FILTER_LOAD_REG       (0x0000001C)
+
 #define REVISION_REG          (0x0000003C)
-#  define REVISION_MINOR_MASK  0x0000000F
+#  define REVISION_MASK        0x0000000F
 #  define REVISION_MINOR_SHIFT 0
-#  define REVISION_MAJOR_MASK  0x000000F0
 #  define REVISION_MAJOR_SHIFT 4
 #  define REVISION_MATCH_MASK  0x0000FF00
 #  define REVISION_MATCH_SHIFT 8
 
 /* Base address for registers internal to the MAC */
-#define LABX_MAC_REGS_BASE    (0x00001000)
-
-/* Base address for the Tx & Rx FIFOs */
-#define LABX_FIFO_REGS_BASE   (0x00002000)
+#define LABX_MAC_REGS_BASE     (0x00001000)
 
 /* Note - Many of the Rx and Tx config register bits are read-only, and simply
  *        represent the fixed behavior of the simple MAC.  In the future, these
@@ -240,6 +230,9 @@ typedef struct ll_fifo_s {
 /* Masks, etc. for use with the register file */
 #define RLF_MASK 0x000007FF
 
+/* Base address for the Tx & Rx FIFOs */
+#define LABX_FIFO_REGS_BASE    (0x00002000)
+
 /* Interrupt status register mnemonics */
 #define FIFO_ISR_RPURE  0x80000000
 #define FIFO_ISR_RPORE  0x40000000
@@ -258,9 +251,30 @@ typedef struct ll_fifo_s {
 #define FIFO_TX_ALIGN32  0x00000000
 #define FIFO_TX_ALIGN16  0x00000001
 
+/* Base address for the Rx filter registers */
+#define LABX_FILTER_REGS_BASE  (0x00003000)
+
+/* Filter register definitions */
+#define VLAN_MASK_REG         (LABX_FILTER_REGS_BASE + 0x00000000)
+#define FILTER_SELECT_REG     (LABX_FILTER_REGS_BASE + 0x00000004)
+#define FILTER_CONTROL_REG    (LABX_FILTER_REGS_BASE + 0x00000008)
+#  define MATCH_ARCH_ID_SHIFT     24
+#    define MATCH_ARCH_XILINX_SRL16E (0x10)
+#    define MATCH_ARCH_DIRECT        (0x20)
+#  define MAC_ADDRESS_LOAD_ACTIVE 0x00000100
+#  define MAC_ADDRESS_LOAD_LAST   0x00000200
+#define FILTER_LOAD_REG       (LABX_FILTER_REGS_BASE + 0x0000000C)
+
 /* Locate the FIFO structure offset from the Ethernet base address */
 ll_fifo_s *ll_fifo = (ll_fifo_s *) (LABX_PRIMARY_ETH_BASEADDR + LABX_FIFO_REGS_BASE);
 
+/* Gateware revision break points at which different features exist */
+#define MAKE_REVISION(major, minor)  (((major & REVISION_MASK) << REVISION_MAJOR_SHIFT) | \
+                                      (minor & REVISION_MASK))
+
+/* Supported Cpu_Ethernet gateware revision range */
+#define DRIVER_GW_REV_MIN MAKE_REVISION(1, 6)
+#define DRIVER_GW_REV_MAX MAKE_REVISION(1, 6)
 
 #if !defined(CONFIG_NET_MULTI)
 static struct eth_device *xps_ll_dev = NULL;
@@ -269,6 +283,10 @@ static struct eth_device *xps_ll_dev = NULL;
 struct labx_eth_private {
   int           idx;
   unsigned char dev_addr[6];
+
+  /* Core revision */
+  uint32_t revMajor;
+  uint32_t revMinor;
 
   /* Number of match units */
   uint32_t numMatchUnits;
@@ -340,7 +358,7 @@ static uint32_t read_phy_register(int phy_addr, int reg_addr)
   addr = (LABX_MDIO_ETH_BASEADDR + MDIO_DATA_REG);
   readValue = *((volatile uint32_t *) addr);
 
-  return(readValue);
+  return readValue;
 }
 
 /* Writes a value to a MAC register */
@@ -364,7 +382,7 @@ static void labx_eth_write_mdio_config(int config_data)
 uint32_t labx_eth_read_mac_reg(uint32_t reg_offset)
 {
   uint32_t val = *(volatile uint32_t *)(LABX_PRIMARY_ETH_BASEADDR + reg_offset);
-  return(val);
+  return val;
 }
 
 static int phy_addr = LABX_ETHERNET_PHY_ADDR;
@@ -517,7 +535,7 @@ static int labx_eth_send_fifo(unsigned char *buffer, int length)
   /* Check the Tx FIFO vacancy to ensure there is room to enqueue */
   if(ll_fifo->tdfv < length) {
     printf("Insufficient Tx FIFO vacancy (%u bytes) to transmit %u-byte packet\n", (ll_fifo->tdfv * sizeof(uint32_t)), length);
-    return(-1);
+    return -1;
   }
 
   /* Write to the data FIFO, enqueuing the packet's contents */
@@ -531,7 +549,7 @@ static int labx_eth_send_fifo(unsigned char *buffer, int length)
    */
   ll_fifo->tlf = length;
 
-  return(length);
+  return length;
 }
 
 static int labx_eth_recv_fifo(void)
@@ -570,7 +588,7 @@ static int labx_eth_recv_fifo(void)
     ll_fifo->rdfr = FIFO_RESET_MAGIC;
   }
 
-  return(0);
+  return 0;
 }
 
 /* Constants for match unit loading */
@@ -597,7 +615,7 @@ static void wait_match_config(void) {
     statusWord = *((volatile uint32_t *) addr);
     if (timeout-- == 0)
       {
-        printf("labx_ethernet : wait_match_config timeout!\n");
+        printf("%s : wait_match_config timeout!\n", DRIVER_NAME);
         break;
       }
   } while(statusWord & MAC_ADDRESS_LOAD_ACTIVE);
@@ -848,7 +866,7 @@ static int labx_eth_addr_setup(struct labx_eth_private *lp)
     configure_mac_filter(lp, 1, MAC_BROADCAST, MAC_MATCH_ALL);
   }
   
-  return(0);
+  return 0;
 }
 
 static void labx_eth_restart(void)
@@ -863,6 +881,8 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
 {
   struct labx_eth_private *lp = (struct labx_eth_private *)dev->priv;
   uint32_t addr;
+  uint32_t revisionReg;
+  uint32_t hwRevision;
   uint32_t matchArchId;
 
   if(!first) {
@@ -871,7 +891,28 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
      */
     labx_eth_restart();
     labx_eth_phy_ctrl();
-    return(0);
+    return 0;
+  }
+
+  /* Check the core revision against what the driver supports */
+  /* Check the revision to ensure the driver supports the gateware */
+  addr        = (LABX_PRIMARY_ETH_BASEADDR + REVISION_REG);
+  revisionReg = *((volatile uint32_t *) addr);
+
+  lp->revMajor = ((revisionReg >> REVISION_MAJOR_SHIFT) & REVISION_MASK);
+  lp->revMinor = ((revisionReg >> REVISION_MINOR_SHIFT) & REVISION_MASK);
+
+  hwRevision = MAKE_REVISION(lp->revMajor, lp->revMinor);
+  if((hwRevision < DRIVER_GW_REV_MIN) | (hwRevision > DRIVER_GW_REV_MAX)) {
+    printf("%s : Incompatible hardware version %d.%d is out of range [%d.%d, %d.%d]\n",
+           DRIVER_NAME,
+           lp->revMajor,
+           lp->revMinor,
+           ((DRIVER_GW_REV_MIN >> REVISION_MAJOR_SHIFT) & REVISION_MASK),
+           (DRIVER_GW_REV_MIN & REVISION_MASK),
+           ((DRIVER_GW_REV_MAX >> REVISION_MAJOR_SHIFT) & REVISION_MASK),
+           (DRIVER_GW_REV_MAX & REVISION_MASK));
+    return -1;
   }
 
   /* Determine how many MAC address filters the instance supports, as reported
@@ -888,7 +929,13 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
   addr = (LABX_PRIMARY_ETH_BASEADDR + FILTER_CONTROL_REG);
   matchArchId = (*((volatile uint32_t *) addr) >> MATCH_ARCH_ID_SHIFT);
 
-  printf("Lab X Ethernet has %d MAC filters, ", lp->numMatchUnits);
+  /* Announce the instance and its characteristics */
+  printf("%s : revision %d.%d, %d MAC filters, ", 
+         DRIVER_NAME, 
+         lp->revMajor,
+         lp->revMinor,
+         lp->numMatchUnits);
+
   switch(matchArchId) {
   case MATCH_ARCH_XILINX_SRL16E:
     /* Xilinx architecture */
@@ -938,7 +985,7 @@ static int labx_eth_init(struct eth_device *dev, bd_t *bis)
   labx_eth_phy_ctrl();
   first = 0;
 
-  return(0);
+  return 0;
 }
 
 static void labx_eth_halt(struct eth_device *dev)
@@ -953,7 +1000,7 @@ int labx_eth_send(struct eth_device *dev, volatile void *packet, int length)
     if(labx_eth_phy_ctrl() == 0)
       return 0;
 
-  return(labx_eth_send_fifo((unsigned char *)packet, length));
+  return labx_eth_send_fifo((unsigned char *)packet, length);
 }
 
 int labx_eth_recv(struct eth_device *dev)
@@ -970,7 +1017,7 @@ int labx_eth_initialize(bd_t *bis)
     hang();
   
   memset(dev, 0, sizeof(*dev));
-  sprintf(dev->name, "labx_ethernet%d", WHICH_ETH_PORT);
+  sprintf(dev->name, "%s%d", DRIVER_NAME, WHICH_ETH_PORT);
   dev->name[NAMESIZE - 1] = '\0';
   
   dev->iobase = LABX_PRIMARY_ETH_BASEADDR;
@@ -982,5 +1029,5 @@ int labx_eth_initialize(bd_t *bis)
   
   eth_register(dev);
   
-  return(0);
+  return 0;
 }
